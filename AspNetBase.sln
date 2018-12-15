@@ -15,19 +15,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5F237D35-721
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{893DD8D0-F0F1-4647-B508-4E93461B7ECF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetBase.Server", "AspNetBase.Server\AspNetBase.Server.csproj", "{6DF8137A-6844-4F5D-BA9C-4E92757300E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetBase.Server", "src\Presentation\AspNetBase.Server\AspNetBase.Server.csproj", "{6DF8137A-6844-4F5D-BA9C-4E92757300E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{E491E503-6454-4ECD-BC2C-EB485FF4053C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{7B74C6DA-ADB0-4C13-ADDC-FC1B075BA3B9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{3DA4D692-D0BA-4729-BBC8-813924C1612B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{3DA4D692-D0BA-4729-BBC8-813924C1612B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{37BE498A-CAFF-43F3-83CF-BA6B55A63862}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetBase.DataAccess", "AspNetBase.DbEntites\AspNetBase.DataAccess.csproj", "{CB74E1FF-03D2-4121-A475-92FF1C1CDA3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetBase.DataAccess", "src\Infrastructure\AspNetBase.DataAccess\AspNetBase.DataAccess.csproj", "{CB74E1FF-03D2-4121-A475-92FF1C1CDA3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetBase.Server.Models", "AspNetBase.Server.ViewModels\AspNetBase.Server.Models.csproj", "{A46C9951-7496-419A-8176-0B305D602087}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetBase.Server.Models", "src\Presentation\AspNetBase.Server.Models\AspNetBase.Server.Models.csproj", "{A46C9951-7496-419A-8176-0B305D602087}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
