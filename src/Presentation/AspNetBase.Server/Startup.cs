@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,23 +33,25 @@ namespace AspNetBase.Server
         options.MinimumSameSitePolicy = SameSiteMode.None;
       });
 
-      services.AddDbContext<AppDbContext>(options =>
-          options.UseSqlServer(
-              Configuration.GetConnectionString("DefaultConnection")));
+      services.AddSingleton<IDesignTimeDbContextFactory<AppDbContext>>(
+        _s => new DesignTimeDbContextFactory());
+
+      services.AddScoped<AppDbContext>(
+        s => s.GetService<IDesignTimeDbContextFactory<AppDbContext>>().CreateDbContext(null));
 
       services.AddIdentity<AppUser, AppRole>()
-          .AddEntityFrameworkStores<AppDbContext>()
-          .AddDefaultTokenProviders();
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddDefaultTokenProviders();
 
       services
         .AddMvc()
         .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
         .AddRazorPagesOptions(options =>
-      {
-        options.AllowAreas = true;
-        options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
-        options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
-      });
+        {
+          options.AllowAreas = true;
+          options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+          options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+        });
 
       services.ConfigureApplicationCookie(options =>
       {
