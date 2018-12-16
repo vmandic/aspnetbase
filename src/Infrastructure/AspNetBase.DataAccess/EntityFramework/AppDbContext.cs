@@ -1,27 +1,16 @@
-using AspNetBase.DataAccess.Base;
-using AspNetBase.DataAccess.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using AspNetBase.DataAccess.Base;
+using AspNetBase.DataAccess.Entities;
+using AspNetBase.DataAccess.Utilities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetBase.DataAccess.Data
 {
-  public class AppDbContext : IdentityDbContext<
-    AppUser,
-    AppRole,
-    int,
-    AppUserClaim,
-    AppUserRole,
-    AppUserLogin,
-    AppRoleClaim,
-    AppUserToken
-  >
+  public class AppDbContext : IdentityDbContext<AppUser, AppRole, int, AppUserClaim, AppUserRole, AppUserLogin, AppRoleClaim, AppUserToken>
   {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-    {
-    }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -34,7 +23,7 @@ namespace AspNetBase.DataAccess.Data
       {
         var type = builder.Entity(entityType);
         type.HasKey(nameof(IEntityBase<int>.Id));
-        type.Property(nameof(IEntityBase<int>.Uid)).HasDefaultValueSql("NEWID()");
+        type.Property(nameof(IEntityBase<int>.Uid)).HasValueGenerator<GuidValueGenerator>();
         type.HasIndex(nameof(IEntityBase<int>.Uid)).IsUnique();
         type.ToTable(entityType.Name);
       }

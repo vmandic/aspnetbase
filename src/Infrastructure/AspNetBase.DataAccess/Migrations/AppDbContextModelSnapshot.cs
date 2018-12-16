@@ -34,9 +34,7 @@ namespace AspNetBase.DataAccess.Migrations
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256);
 
-                    b.Property<Guid>("Uid")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("NEWID()");
+                    b.Property<Guid>("Uid");
 
                     b.HasKey("Id");
 
@@ -63,9 +61,7 @@ namespace AspNetBase.DataAccess.Migrations
 
                     b.Property<int>("RoleId");
 
-                    b.Property<Guid>("Uid")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("NEWID()");
+                    b.Property<Guid>("Uid");
 
                     b.HasKey("Id");
 
@@ -113,9 +109,7 @@ namespace AspNetBase.DataAccess.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<Guid>("Uid")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("NEWID()");
+                    b.Property<Guid>("Uid");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
@@ -146,9 +140,7 @@ namespace AspNetBase.DataAccess.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<Guid>("Uid")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("NEWID()");
+                    b.Property<Guid>("Uid");
 
                     b.Property<int>("UserId");
 
@@ -176,9 +168,7 @@ namespace AspNetBase.DataAccess.Migrations
                     b.Property<string>("ProviderKey")
                         .IsRequired();
 
-                    b.Property<Guid>("Uid")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("NEWID()");
+                    b.Property<Guid>("Uid");
 
                     b.Property<int>("UserId");
 
@@ -202,9 +192,7 @@ namespace AspNetBase.DataAccess.Migrations
 
                     b.Property<int>("RoleId");
 
-                    b.Property<Guid>("Uid")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("NEWID()");
+                    b.Property<Guid>("Uid");
 
                     b.Property<int>("UserId");
 
@@ -232,9 +220,7 @@ namespace AspNetBase.DataAccess.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<Guid>("Uid")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("NEWID()");
+                    b.Property<Guid>("Uid");
 
                     b.Property<int>("UserId");
 
