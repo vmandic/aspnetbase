@@ -3,19 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AspNetBase.Core.Models.Identity
 {
-  public class ExternalLoginDto : IExternalLoginModel
+  public class ExternalLoginPageModel : PageModel, IExternalLoginModel
   {
-    public ExternalLoginDto(string errorMessage)
-    {
-      ErrorMessage = errorMessage;
-    }
-    public ExternalLoginDto(string returnUrl, string loginProvider, ExternalLoginInputModel input)
-    {
-      ReturnUrl = returnUrl;
-      LoginProvider = loginProvider;
-      Input = input;
-    }
-
     [BindProperty]
     public ExternalLoginInputModel Input { get; set; }
 
@@ -25,5 +14,16 @@ namespace AspNetBase.Core.Models.Identity
 
     [TempData]
     public string ErrorMessage { get; set; }
+
+    public void MapFromDto(IExternalLoginModel dto)
+    {
+      if (dto != null)
+      {
+        this.LoginProvider = dto.LoginProvider;
+        this.ReturnUrl = dto.ReturnUrl;
+        this.ErrorMessage = dto.ErrorMessage;
+        this.Input = dto.Input;
+      }
+    }
   }
 }
