@@ -1,4 +1,4 @@
-namespace AspNetBase.Common.Composition
+namespace AspNetBase.Core.Composition
 {
     public static class CompositionRoot
     {
