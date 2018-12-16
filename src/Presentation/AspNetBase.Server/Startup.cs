@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +34,10 @@ namespace AspNetBase.Server
         options.CheckConsentNeeded = context => true;
         options.MinimumSameSitePolicy = SameSiteMode.None;
       });
+
+      services.AddHttpContextAccessor();
+      services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+      services.AddScoped<IUrlHelper>(s => new UrlHelper(s.GetService<IActionContextAccessor>().ActionContext));
 
       services.AddSingleton<IDesignTimeDbContextFactory<AppDbContext>>(
         _s => new DesignTimeDbContextFactory());
