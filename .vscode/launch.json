@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/Presentation/AspNetBase.Server/bin/Debug/netcoreapp2.1/AspNetBase.Server.dll",
+            "program": "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.Server/bin/Debug/netcoreapp2.1/AspNetBase.Presentation.Server.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Presentation/AspNetBase.Server",
+            "cwd": "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.Server",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {

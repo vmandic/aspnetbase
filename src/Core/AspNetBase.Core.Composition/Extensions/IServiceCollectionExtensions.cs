@@ -10,28 +10,25 @@ namespace AspNetBase.Core.Composition.Extensions
 {
   public static class IServiceCollectionExtensions
   {
+    private static Type registerDependencyAttributeType =
+      typeof(RegisterDependencyAttribute);
+
     private static IEnumerable<Type> GetIocRegisteredTypes()
     {
-      IEnumerable<Type> GetTypes()
+      IEnumerable<Type> GetCoreProviderTypes()
       {
-        foreach (var assemblyName in GetReferencedAssemblyNames())
-          foreach (var type in GetTypesWithIocRegistrationAttribute(assemblyName))
-            yield return type;
+        foreach (var type in GetTypesWithIocRegistrationAttribute("AspNetBase.Core.Providers"))
+          yield return type;
       }
 
-      return GetTypes().Distinct();
+      return GetCoreProviderTypes().Distinct();
     }
 
-    private static IEnumerable<Type> GetTypesWithIocRegistrationAttribute(AssemblyName assemblyName) =>
+    private static IEnumerable<Type> GetTypesWithIocRegistrationAttribute(string assemblyName) =>
       Assembly
-        .Load(assemblyName)
-        .GetTypes()
-        .Where(x => x.GetCustomAttribute<RegisterDependencyAttribute>() != null);
-
-    private static AssemblyName[] GetReferencedAssemblyNames() =>
-      Assembly
-        .GetExecutingAssembly()
-        .GetReferencedAssemblies();
+      .Load(assemblyName)
+      .GetTypes()
+      .Where(x => x.IsDefined(registerDependencyAttributeType, false));
 
     public static IServiceCollection RegisterExportedTypes(this IServiceCollection services)
     {
