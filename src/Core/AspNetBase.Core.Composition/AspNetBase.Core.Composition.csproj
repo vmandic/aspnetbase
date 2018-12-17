@@ -5,8 +5,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj" />
-    <ProjectReference Include="..\..\Core\AspNetBase.Core.Providers\AspNetBase.Core.Providers.csproj" />
+    <ProjectReference Include="..\..\Common\AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj" />
+    <ProjectReference Include="..\AspNetBase.Core.Providers\AspNetBase.Core.Providers.csproj" />
     <ProjectReference Include="..\AspNetBase.Core.Contracts\AspNetBase.Core.Contracts.csproj" />
   </ItemGroup>
 

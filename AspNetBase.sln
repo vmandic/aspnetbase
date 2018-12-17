@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetBase.Core.Models", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetBase.Core.Providers", "src\Core\AspNetBase.Core.Providers\AspNetBase.Core.Providers.csproj", "{82BC2350-7212-4803-99E5-C4FFBE0B74B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetBase.Common.Utils", "AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj", "{9E17540B-EA31-48CD-A94F-938F1DFBF212}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetBase.Common.Utils", "src\Common\AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj", "{9E17540B-EA31-48CD-A94F-938F1DFBF212}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

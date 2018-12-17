@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj" />
+    <ProjectReference Include="..\..\Common\AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj" />
     <ProjectReference Include="..\AspNetBase.Core.Models\AspNetBase.Core.Models.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\AspNetBase.Core.Contracts\AspNetBase.Core.Contracts.csproj" />

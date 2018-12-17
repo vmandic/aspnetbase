@@ -1,10 +1,6 @@
-using AspNetBase.Common.Utils.Attributes;
+using System;
 using AspNetBase.Core.Composition.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace AspNetBase.Core.Composition
 {
@@ -12,11 +8,12 @@ namespace AspNetBase.Core.Composition
   {
     public static IServiceProvider Initialize(IServiceCollection services)
     {
+      // NOTE: register exported types
       services.RegisterExportedTypes();
+
+      // NOTE: other services
 
       return services.BuildServiceProvider();
     }
-
-   
   }
 }

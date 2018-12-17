@@ -1,18 +1,15 @@
-using AspNetBase.Common.Utils.Attributes;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AspNetBase.Common.Utils.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AspNetBase.Core.Composition.Extensions
 {
   public static class IServiceCollectionExtensions
   {
-    private static readonly Lazy<IEnumerable<Type>> TypesToRegister =
-      new Lazy<IEnumerable<Type>>(() => GetIocRegisteredTypes());
-
     private static IEnumerable<Type> GetIocRegisteredTypes()
     {
       IEnumerable<Type> GetTypes()
@@ -38,10 +35,12 @@ namespace AspNetBase.Core.Composition.Extensions
 
     public static IServiceCollection RegisterExportedTypes(this IServiceCollection services)
     {
-      foreach (var registerType in TypesToRegister.Value)
+      foreach (var registerType in GetIocRegisteredTypes())
       {
-        var dep = registerType.GetCustomAttribute<RegisterDependencyAttribute>();
-        services.Add(new ServiceDescriptor(dep.ContractType, registerType, dep.Lifetime));
+        var dependencyAttr = registerType.GetCustomAttribute<RegisterDependencyAttribute>();
+        var contractType = registerType.GetInterface($"I{registerType.Name}");
+
+        services.Add(new ServiceDescriptor(contractType, registerType, dependencyAttr.Lifetime));
       }
 
       return services;
