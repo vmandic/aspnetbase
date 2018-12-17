@@ -8,7 +8,8 @@ namespace AspNetBase.Core.Contracts.Services.Identity
   {
     // FEAUTER: external login
     IActionResult ChallengeExternalLoginProvider(string provider, string returnUrl = null);
-    Task<(IActionResult, IExternalLoginModel)> LoginWithExternalProvider(string returnUrl = null, string remoteError = null);
+    Task < (IActionResult, IExternalLoginModel) > LoginWithExternalProvider(string returnUrl = null, string remoteError = null);
+    Task < (IActionResult, IExternalLoginModel) > ConfirmExternalLogin(ModelState modelState, string returnUrl = null);
 
     // FEATURE: regular login
 

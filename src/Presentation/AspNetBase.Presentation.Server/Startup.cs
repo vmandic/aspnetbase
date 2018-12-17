@@ -40,13 +40,15 @@ namespace AspNetBase.Presentation.Server
     {
       if (env.IsDevelopment())
       {
-        app.UseDeveloperExceptionPage();
-        app.UseDatabaseErrorPage();
+        app
+          .UseDeveloperExceptionPage()
+          .UseDatabaseErrorPage();
       }
       else
       {
-        app.UseExceptionHandler("/Home/Error");
-        app.UseHsts();
+        app
+          .UseExceptionHandler("/Home/Error")
+          .UseHsts();
       }
 
       app

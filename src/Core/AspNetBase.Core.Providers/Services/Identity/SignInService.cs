@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Core.Models.Identity;
@@ -7,8 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace AspNetBase.Core.Providers.Services.Identity
 {
@@ -19,8 +19,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
       ILogger<SignInService> logger,
       UserManager<AppUser> userManager,
       SignInManager<AppUser> signInManager,
-      IUrlHelper urlHelper) : base(logger, userManager, signInManager, urlHelper)
-    { }
+      IUrlHelper urlHelper) : base(logger, userManager, signInManager, urlHelper) { }
 
     public IActionResult ChallengeExternalLoginProvider(string provider, string returnUrl = null)
     {
@@ -88,6 +87,50 @@ namespace AspNetBase.Core.Providers.Services.Identity
           new PageResult(),
           new ExternalLoginDto(returnUrl, info.LoginProvider, input));
       }
+    }
+
+    public async Task < (IActionResult, IExternalLoginModel) > ConfirmExternalLogin(ModelState modelState, string returnUrl = null)
+    {
+      returnUrl = returnUrl ?? urlHelper.Content("~/");
+
+      // Get the information about the user from the external login provider
+      var info = await signInManager.GetExternalLoginInfoAsync();
+      if (info == null)
+      {
+        return (
+          new RedirectToPageResult("./Login", new { ReturnUrl = returnUrl }),
+          new ExternalLoginDto("Error loading external login information during confirmation."));
+      }
+
+      if (modelState.IsValid)
+      {
+        var user = new AppUser { UserName = Input.Email, Email = Input.Email };
+        var result = await userManager.CreateAsync(user);
+
+        if (result.Succeeded)
+        {
+          result = await userManager.AddLoginAsync(user, info);
+
+          if (result.Succeeded)
+          {
+            await signInManager.SignInAsync(user, isPersistent : false);
+            logger.LogInformation(
+              "User created an account using {Name} provider.",
+              info.LoginProvider);
+
+            return (new LocalRedirectResult(returnUrl), null);
+          }
+        }
+
+        foreach (var error in result.Errors)
+        {
+          modelState.AddModelError(string.Empty, error.Description);
+        }
+      }
+
+      return (
+          new PageResult(),
+          new ExternalLoginDto(returnUrl, info.LoginProvider, null));
     }
   }
 }

@@ -96,39 +96,44 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
 
     public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
     {
-      returnUrl = returnUrl ?? Url.Content("~/");
-      // Get the information about the user from the external login provider
-      var info = await _signInManager.GetExternalLoginInfoAsync();
-      if (info == null)
-      {
-        ErrorMessage = "Error loading external login information during confirmation.";
-        return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
-      }
+      var (actionResult, externalLoginDto) = await _signInService.ConfirmExternalLogin(ModelState, returnUrl);
+      this.MapFromDto(externalLoginDto);
 
-      if (ModelState.IsValid)
-      {
-        var user = new AppUser { UserName = Input.Email, Email = Input.Email };
-        var result = await _userManager.CreateAsync(user);
-        if (result.Succeeded)
-        {
-          result = await _userManager.AddLoginAsync(user, info);
-          if (result.Succeeded)
-          {
-            await _signInManager.SignInAsync(user, isPersistent : false);
-            _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-            return LocalRedirect(returnUrl);
-          }
-        }
-        foreach (var error in result.Errors)
-        {
-          ModelState.AddModelError(string.Empty, error.Description);
-        }
-      }
+      return actionResult;
 
-      LoginProvider = info.LoginProvider;
-      ReturnUrl = returnUrl;
+      // returnUrl = returnUrl ?? Url.Content("~/");
+      // // Get the information about the user from the external login provider
+      // var info = await _signInManager.GetExternalLoginInfoAsync();
+      // if (info == null)
+      // {
+      //   ErrorMessage = "Error loading external login information during confirmation.";
+      //   return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+      // }
 
-      return Page();
+      // if (ModelState.IsValid)
+      // {
+      //   var user = new AppUser { UserName = Input.Email, Email = Input.Email };
+      //   var result = await _userManager.CreateAsync(user);
+      //   if (result.Succeeded)
+      //   {
+      //     result = await _userManager.AddLoginAsync(user, info);
+      //     if (result.Succeeded)
+      //     {
+      //       await _signInManager.SignInAsync(user, isPersistent : false);
+      //       _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+      //       return LocalRedirect(returnUrl);
+      //     }
+      //   }
+      //   foreach (var error in result.Errors)
+      //   {
+      //     ModelState.AddModelError(string.Empty, error.Description);
+      //   }
+      // }
+
+      // LoginProvider = info.LoginProvider;
+      // ReturnUrl = returnUrl;
+
+      // return Page();
     }
   }
 }
