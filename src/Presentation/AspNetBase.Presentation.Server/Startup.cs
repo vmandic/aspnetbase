@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +25,7 @@ namespace AspNetBase.Presentation.Server
     public IConfiguration Configuration { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
-    public IServiceProvider ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services)
     {
       services.Configure<CookiePolicyOptions>(options =>
       {
@@ -70,15 +69,9 @@ namespace AspNetBase.Presentation.Server
       // using Microsoft.AspNetCore.Identity.UI.Services;
       services.AddSingleton<IEmailSender, EmailSender>();
 
-      return new Container()
-        // optional: to support MEF attributed services discovery
-        .WithMef()
-        // setup DI adapter
-        .WithDependencyInjectionAdapter(services,
-        // optional: propagate exception if specified types are not resolved, and prevent fallback to default Asp resolution
-            throwIfUnresolved: type => type.Name.EndsWith("Controller"))
-        // add registrations from CompositionRoot classs
-        .ConfigureServiceProvider<CompositionRoot>();
+      //var provider = CompositionRoot.Initialize(services);
+
+      //return provider;
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
