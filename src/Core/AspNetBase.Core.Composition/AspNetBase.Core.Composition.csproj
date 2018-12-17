@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="DryIoc" Version="3.0.2" />
-    <PackageReference Include="DryIoc.Microsoft.DependencyInjection" Version="2.1.0" />
+    <PackageReference Include="System.Interactive" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj" />
     <ProjectReference Include="..\..\Core\AspNetBase.Core.Providers\AspNetBase.Core.Providers.csproj" />
+    <ProjectReference Include="..\AspNetBase.Core.Contracts\AspNetBase.Core.Contracts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

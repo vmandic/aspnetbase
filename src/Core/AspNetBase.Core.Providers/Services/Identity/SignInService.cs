@@ -1,15 +1,18 @@
-using System.Security.Claims;
-using System.Threading.Tasks;
+using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Core.Models.Identity;
 using AspNetBase.Infrastructure.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace AspNetBase.Core.Providers.Services.Identity
 {
+  [RegisterDependency(ServiceLifetime.Scoped)]
   public class SignInService : IdentityBaseService<SignInService>, ISignInService
   {
     public SignInService(

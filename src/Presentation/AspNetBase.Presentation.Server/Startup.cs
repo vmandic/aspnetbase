@@ -1,3 +1,4 @@
+using AspNetBase.Core.Composition;
 using AspNetBase.Infrastructure.DataAccess.Data;
 using AspNetBase.Infrastructure.DataAccess.Entities;
 using AspNetBase.Presentation.Server.Utilities;
@@ -5,13 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace AspNetBase.Presentation.Server
 {
@@ -25,7 +26,7 @@ namespace AspNetBase.Presentation.Server
     public IConfiguration Configuration { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
-    public void ConfigureServices(IServiceCollection services)
+    public IServiceProvider ConfigureServices(IServiceCollection services)
     {
       services.Configure<CookiePolicyOptions>(options =>
       {
@@ -42,7 +43,7 @@ namespace AspNetBase.Presentation.Server
 
       services.AddSingleton<IDesignTimeDbContextFactory<AppDbContext>, DesignTimeDbContextFactory>();
 
-      services.AddScoped<AppDbContext>(
+      services.AddScoped(
         s => s.GetService<IDesignTimeDbContextFactory<AppDbContext>>().CreateDbContext(null));
 
       services.AddIdentity<AppUser, AppRole>()
@@ -65,13 +66,9 @@ namespace AspNetBase.Presentation.Server
         options.LogoutPath = $"/Identity/Account/Logout";
         options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
       });
+      
 
-      // using Microsoft.AspNetCore.Identity.UI.Services;
-      services.AddSingleton<IEmailSender, EmailSender>();
-
-      //var provider = CompositionRoot.Initialize(services);
-
-      //return provider;
+      return CompositionRoot.Initialize(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
