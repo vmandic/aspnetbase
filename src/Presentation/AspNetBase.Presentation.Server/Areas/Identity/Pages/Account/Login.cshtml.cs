@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Core.Models.Identity;
 using AspNetBase.Infrastructure.DataAccess.Entities;
@@ -7,10 +11,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
@@ -69,32 +69,31 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
-      // ..............................................................................................
-
       returnUrl = returnUrl ?? Url.Content("~/");
 
       if (ModelState.IsValid)
       {
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        var (result, errorMessages) = await _signInService.SignInWithPassword(new LoginDto(Input.Email, Input.Password, Input.RememberMe, true));
+        var (result, errorMessages) = await _signInService.SignInWithPassword(
+          new LoginDto(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure : true));
 
-        if (result.Succeeded)
-        {
-          return LocalRedirect(returnUrl);
-        }
-        if (result.RequiresTwoFactor)
-        {
-          return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
-        }
-        if (result.IsLockedOut)
-        {
-          return RedirectToPage("./Lockout");
-        }
-        else
+        if (errorMessages.Count > 0)
         {
           errorMessages.ForEach(msg => ModelState.AddModelError(string.Empty, msg));
           return Page();
+        }
+        else if (result.Succeeded)
+        {
+          return LocalRedirect(returnUrl);
+        }
+        else if (result.RequiresTwoFactor)
+        {
+          return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
+        }
+        else if (result.IsLockedOut)
+        {
+          return RedirectToPage("./Lockout");
         }
       }
 

@@ -5,6 +5,7 @@ namespace AspNetBase.Core.Models.Identity
 {
   public class ExternalLoginDto : IExternalLoginModel
   {
+    public ExternalLoginDto() { }
     public ExternalLoginDto(string errorMessage)
     {
       ErrorMessage = errorMessage;

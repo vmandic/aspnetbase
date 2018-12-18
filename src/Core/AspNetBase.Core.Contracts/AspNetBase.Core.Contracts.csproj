@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspNetBase.Core.Models\AspNetBase.Core.Models.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

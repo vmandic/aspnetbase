@@ -10,18 +10,15 @@ namespace AspNetBase.Core.Providers.Services.Identity
     protected readonly ILogger<TServiceImpl> logger;
     protected readonly UserManager<AppUser> userManager;
     protected readonly SignInManager<AppUser> signInManager;
-    protected readonly IUrlHelper urlHelper;
 
     protected IdentityBaseService(
       ILogger<TServiceImpl> logger,
       UserManager<AppUser> userManager,
-      SignInManager<AppUser> signInManager,
-      IUrlHelper urlHelper)
+      SignInManager<AppUser> signInManager)
     {
       this.logger = logger;
       this.userManager = userManager;
       this.signInManager = signInManager;
-      this.urlHelper = urlHelper;
     }
   }
 }

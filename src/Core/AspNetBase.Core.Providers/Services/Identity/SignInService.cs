@@ -23,12 +23,10 @@ namespace AspNetBase.Core.Providers.Services.Identity
       ILogger<SignInService> logger,
       UserManager<AppUser> userManager,
       SignInManager<AppUser> signInManager,
-      IUrlHelper urlHelper,
-      IHttpContextAccessor httpContextAccessor) : base(logger, userManager, signInManager, urlHelper)
+      IHttpContextAccessor httpContextAccessor) : base(logger, userManager, signInManager)
     {
       this._httpContextAccessor = httpContextAccessor;
     }
-
 
     public async Task<(SignInResult, ICollection<string> errorMessages)> SignInWithPassword(LoginDto loginDto)
     {
