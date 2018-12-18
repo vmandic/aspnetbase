@@ -2,6 +2,7 @@ using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Core.Models.Identity;
 using AspNetBase.Infrastructure.DataAccess.Entities;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -125,9 +126,9 @@ namespace AspNetBase.Core.Providers.Services.Identity
           new ExternalLoginDto(returnUrl, info.LoginProvider));
     }
 
-    public Task<IEnumerable<string>> GetExternalLoginProviders()
+    public Task<IEnumerable<AuthenticationScheme>> GetExternalLoginProviders()
     {
-      throw new System.NotImplementedException();
+      return signInManager.GetExternalAuthenticationSchemesAsync();
     }
   }
 }
