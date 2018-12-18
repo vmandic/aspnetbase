@@ -1,22 +1,23 @@
-using System.Threading.Tasks;
 using AspNetBase.Core.Models.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace AspNetBase.Core.Contracts.Services.Identity
 {
   public interface ISignInService
   {
-    // FEAUTER: external login
-    IActionResult ChallengeExternalLoginProvider(string provider, string returnUrl = null);
-    Task < (IActionResult, IExternalLoginModel) > LoginWithExternalProvider(string returnUrl = null, string remoteError = null);
-    Task < (IActionResult, IExternalLoginModel) > ConfirmExternalLogin(ModelState modelState, string returnUrl = null);
-
     // FEATURE: regular login
+    Task<(SignInResult, ICollection<string> errorMessages)> SignInWithPassword(LoginDto loginDto);
 
     // FEATURE: 2fa login
 
     // FEATURE: recovery login
 
     // FEATURE: logout
+    Task SignOut(string authenticationScheme);
   }
 }

@@ -9,11 +9,13 @@ namespace AspNetBase.Core.Models.Identity
     {
       ErrorMessage = errorMessage;
     }
-    public ExternalLoginDto(string returnUrl, string loginProvider, ExternalLoginInputModel input)
+    public ExternalLoginDto(string returnUrl, string loginProvider, ExternalLoginInputModel input = null)
     {
       ReturnUrl = returnUrl;
       LoginProvider = loginProvider;
-      Input = input;
+
+      if (input != null)
+        Input = input;
     }
 
     [BindProperty]

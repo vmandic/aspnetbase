@@ -1,16 +1,15 @@
+using AspNetBase.Common.Utils.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using AspNetBase.Common.Utils.Attributes;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AspNetBase.Core.Composition.Extensions
 {
   public static class IServiceCollectionExtensions
   {
-    private static Type registerDependencyAttributeType =
+    private static readonly Type registerDependencyAttributeType =
       typeof(RegisterDependencyAttribute);
 
     private static IEnumerable<Type> GetIocRegisteredTypes()

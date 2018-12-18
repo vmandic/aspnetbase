@@ -22,7 +22,12 @@ namespace AspNetBase.Core.Models.Identity
         this.LoginProvider = dto.LoginProvider;
         this.ReturnUrl = dto.ReturnUrl;
         this.ErrorMessage = dto.ErrorMessage;
-        this.Input = dto.Input;
+
+        if (dto.Input != null)
+        {
+          this.Input = dto.Input;
+        }
+        
       }
     }
   }
