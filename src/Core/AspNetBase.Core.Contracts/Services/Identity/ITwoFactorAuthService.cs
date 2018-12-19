@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using AspNetBase.Infrastructure.DataAccess.Entities;
+using System.Threading.Tasks;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace AspNetBase.Core.Contracts.Services.Identity
@@ -12,5 +9,6 @@ namespace AspNetBase.Core.Contracts.Services.Identity
     Task EnsureUserForTwoFactorAuthentication();
     Task<AppUser> GetTwoFactorAuthenticationUser();
     Task<SignInResult> SignIn(string authCode, bool rememberMe, bool rememberMachine);
+    Task<SignInResult> RecoveryCodeSignInAsync(string recoveryCode);
   }
 }

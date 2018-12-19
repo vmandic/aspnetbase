@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Infrastructure.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace AspNetBase.Core.Providers.Services.Identity
 {
@@ -37,6 +35,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public async Task<SignInResult> SignIn(string authCode, bool rememberMe, bool rememberMachine)
     {
+      await EnsureUserForTwoFactorAuthentication();
       var result = await signInManager.TwoFactorAuthenticatorSignInAsync(
         authCode,
         rememberMe,
@@ -55,6 +54,28 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
       logger.LogWarning("Invalid authenticator code entered on user 2fa sign in.");
       return SignInResult.Failed;
+    }
+
+    public async Task<SignInResult> RecoveryCodeSignInAsync(string recoveryCode)
+    {
+      await EnsureUserForTwoFactorAuthentication();
+      var result = await signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
+
+      if (result.Succeeded)
+      {
+        logger.LogInformation("User logged in with a recovery code.");
+        return result;
+      }
+      else if (result.IsLockedOut)
+      {
+        logger.LogWarning("User with 2fa recovery code sign in attempt is locked out.");
+        return result;
+      }
+      else
+      {
+        logger.LogWarning("Invalid 2fa sign in recovery code entered by user.");
+        return SignInResult.Failed;
+      }
     }
   }
 }

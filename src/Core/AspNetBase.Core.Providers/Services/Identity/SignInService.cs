@@ -5,10 +5,10 @@ using AspNetBase.Infrastructure.DataAccess.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -28,7 +28,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
       this._httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<(SignInResult, ICollection<string> errorMessages)> SignInWithPassword(LoginDto loginDto)
+    public async Task<(SignInResult, IEnumerable<string> errorMessages)> SignInWithPassword(LoginDto loginDto)
     {
       var result = await signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, loginDto.RememberMe, loginDto.LockoutOnFailure);
 
@@ -38,19 +38,21 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
       if (result == SignInResult.Failed || result == SignInResult.NotAllowed)
       {
-        logger.LogWarning("User login failed.");
+        logger.LogWarning("User sign in with password failed.");
         return (result, new List<string> { "Invalid login attempt." });
       }
       else
       {
-        logger.LogWarning("User login successful.");
-        return (result, null);
+        logger.LogWarning("User signed in with password succefully.");
+        return (result, Enumerable.Empty<string>());
       }
     }
 
-    public Task SignOut(string authenticationScheme)
+    public Task SignOut(string authenticationScheme = null)
     {
-      return _httpContextAccessor.HttpContext.SignOutAsync(authenticationScheme);
+      var task = _httpContextAccessor.HttpContext.SignOutAsync(authenticationScheme);
+      logger.LogWarning("User signed out successfully.");
+      return task;
     }
   }
 }

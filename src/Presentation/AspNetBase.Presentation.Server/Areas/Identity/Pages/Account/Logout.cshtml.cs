@@ -1,44 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AspNetBase.Core.Contracts.Services.Identity;
 using Microsoft.AspNetCore.Authorization;
-using AspNetBase.Infrastructure.DataAccess.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
-    public class LogoutModel : PageModel
+  [AllowAnonymous]
+  public class LogoutModel : PageModel
+  {
+    private readonly ISignInService _signInService;
+
+    public LogoutModel(ISignInService signInService)
     {
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly ILogger<LogoutModel> _logger;
-
-        public LogoutModel(SignInManager<AppUser> signInManager, ILogger<LogoutModel> logger)
-        {
-            _signInManager = signInManager;
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-        }
-
-        public async Task<IActionResult> OnPost(string returnUrl = null)
-        {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            if (returnUrl != null)
-            {
-                return LocalRedirect(returnUrl);
-            }
-            else
-            {
-                return Page();
-            }
-        }
+      this._signInService = signInService;
     }
+
+    public void OnGet()
+    {
+    }
+
+    public async Task<IActionResult> OnPost(string returnUrl = null)
+    {
+      await _signInService.SignOut();
+
+      return (returnUrl != null
+        ? LocalRedirect(returnUrl)
+        : (IActionResult)Page());
+    }
+  }
 }

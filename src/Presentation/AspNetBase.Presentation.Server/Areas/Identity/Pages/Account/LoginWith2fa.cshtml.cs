@@ -1,32 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using AspNetBase.Core.Contracts.Services.Identity;
-using AspNetBase.Infrastructure.DataAccess.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
 {
   [AllowAnonymous]
   public class LoginWith2faModel : PageModel
   {
-    private readonly SignInManager<AppUser> _signInManager;
-    private readonly ILogger<LoginWith2faModel> _logger;
     private readonly ITwoFactorAuthService _2faService;
 
-    public LoginWith2faModel(
-      SignInManager<AppUser> signInManager,
-      ILogger<LoginWith2faModel> logger,
-      ITwoFactorAuthService twoFactorAuthService)
+    public LoginWith2faModel(ITwoFactorAuthService twoFactorAuthService)
     {
-      _signInManager = signInManager;
-      _logger = logger;
       _2faService = twoFactorAuthService;
     }
 

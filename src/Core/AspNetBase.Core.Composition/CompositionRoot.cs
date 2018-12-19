@@ -1,6 +1,6 @@
-using System;
 using AspNetBase.Core.Composition.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace AspNetBase.Core.Composition
 {
@@ -11,7 +11,9 @@ namespace AspNetBase.Core.Composition
       // NOTE: register exported types
       services.RegisterExportedTypes();
 
+
       // NOTE: other services
+      // ...
 
       return services.BuildServiceProvider();
     }

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using System.Diagnostics;
 
 namespace AspNetBase.Presentation.Server.Areas.Identity.Pages
 {
-    [AllowAnonymous]
+  [AllowAnonymous]
     public class ErrorModel : PageModel
     {
         public string RequestId { get; set; }

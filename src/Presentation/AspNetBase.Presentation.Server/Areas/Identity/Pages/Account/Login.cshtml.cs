@@ -1,17 +1,15 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Core.Models.Identity;
-using AspNetBase.Infrastructure.DataAccess.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
 {
@@ -20,15 +18,14 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
   {
     private readonly ISignInService _signInService;
     private readonly IExternalSignInService _externalSignInService;
-    private readonly SignInManager<AppUser> _signInManager;
-    private readonly ILogger<LoginModel> _logger;
 
-    public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger, IExternalSignInService externalSignInService, ISignInService signInService)
+    public LoginModel(
+      IExternalSignInService externalSignInService,
+      ISignInService signInService,
+      IServiceProvider sp)
     {
       _signInService = signInService;
       _externalSignInService = externalSignInService;
-      _signInManager = signInManager;
-      _logger = logger;
     }
 
     [BindProperty]
@@ -69,8 +66,6 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
-      returnUrl = returnUrl ?? Url.Content("~/");
-
       if (ModelState.IsValid)
       {
         // This doesn't count login failures towards account lockout
@@ -78,22 +73,24 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
         var (result, errorMessages) = await _signInService.SignInWithPassword(
           new LoginDto(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure : true));
 
-        if (errorMessages.Count > 0)
+        if (errorMessages.Count() > 0)
         {
           errorMessages.ForEach(msg => ModelState.AddModelError(string.Empty, msg));
           return Page();
         }
-        else if (result.Succeeded)
+        else if (result.IsLockedOut)
         {
+          return RedirectToPage("./Lockout");
+        }
+
+        returnUrl = returnUrl ?? Url.Content("~/");
+        if (result.Succeeded)
+        { 
           return LocalRedirect(returnUrl);
         }
         else if (result.RequiresTwoFactor)
         {
           return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
-        }
-        else if (result.IsLockedOut)
-        {
-          return RedirectToPage("./Lockout");
         }
       }
 
