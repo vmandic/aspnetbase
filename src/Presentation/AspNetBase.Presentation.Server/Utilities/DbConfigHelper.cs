@@ -21,11 +21,11 @@ namespace AspNetBase.Presentation.Server.Utilities
       var connectionString = GetOsDependentConnectionString(config);
       var forceSqlite = config.GetValue<bool>("AlwaysUseSqlite");
 
-      string dbCtxAssemblyNamespace = typeof(AppDbContext).Assembly.GetName().Name;
+      string dbctxAssemblyName = typeof(AppDbContext).Assembly.GetName().Name;
 
       return !forceSqlite && isWindows ?
-        builder.UseSqlServer(connectionString, opts => opts.MigrationsAssembly(dbCtxAssemblyNamespace)) :
-        builder.UseSqlite(connectionString, opts => opts.MigrationsAssembly(dbCtxAssemblyNamespace));
+        builder.UseSqlServer(connectionString, opts => opts.MigrationsAssembly(dbctxAssemblyName)) :
+        builder.UseSqlite(connectionString, opts => opts.MigrationsAssembly(dbctxAssemblyName));
     }
   }
 }
