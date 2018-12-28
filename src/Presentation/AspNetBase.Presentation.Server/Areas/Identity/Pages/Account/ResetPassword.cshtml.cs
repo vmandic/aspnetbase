@@ -13,7 +13,6 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
   [AllowAnonymous]
   public class ResetPasswordModel : PageModel
   {
-    private readonly UserManager<AppUser> _userManager;
     private readonly IPasswordService _passwordService;
 
     public ResetPasswordModel(IPasswordService passwordService)

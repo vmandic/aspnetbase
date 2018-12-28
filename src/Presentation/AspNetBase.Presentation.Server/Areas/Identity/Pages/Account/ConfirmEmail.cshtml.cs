@@ -10,7 +10,6 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
   [AllowAnonymous]
   public class ConfirmEmailModel : PageModel
   {
-    private readonly ISignInService _signInService;
     private readonly IRegisterAccountService _registerAccountService;
 
     public ConfirmEmailModel(IRegisterAccountService registerAccountService)

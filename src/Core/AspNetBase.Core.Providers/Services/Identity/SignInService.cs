@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Core.Models.Identity;
@@ -7,9 +10,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace AspNetBase.Core.Providers.Services.Identity
@@ -28,12 +28,12 @@ namespace AspNetBase.Core.Providers.Services.Identity
       this._httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<(SignInResult, IEnumerable<string> errorMessages)> SignInWithPassword(LoginDto loginDto)
+    public async Task < (SignInResult, IEnumerable<string> errorMessages) > SignInWithPassword(LoginDto loginDto)
     {
       var result = await signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, loginDto.RememberMe, loginDto.LockoutOnFailure);
 
       if (result == SignInResult.Success) logger.LogInformation("User logged in.");
-      else if (result.RequiresTwoFactor) logger.LogInformation("User requires two factor authentication.");
+      else if (result.RequiresTwoFactor) logger.LogWarning("User requires two factor authentication.");
       else if (result.IsLockedOut) logger.LogWarning("User account locked out.");
 
       if (result == SignInResult.Failed || result == SignInResult.NotAllowed)
@@ -43,7 +43,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
       }
       else
       {
-        logger.LogWarning("User signed in with password succefully.");
+        logger.LogInformation("User signed in with password successfully.");
         return (result, Enumerable.Empty<string>());
       }
     }
@@ -51,8 +51,13 @@ namespace AspNetBase.Core.Providers.Services.Identity
     public Task SignOut(string authenticationScheme = null)
     {
       var task = _httpContextAccessor.HttpContext.SignOutAsync(authenticationScheme);
-      logger.LogWarning("User signed out successfully.");
-      return task;
+      return task.ContinueWith(t =>
+      {
+        if (t.Status == TaskStatus.RanToCompletion)
+        {
+          logger.LogInformation("User signed out successfully.");
+        }
+      });
     }
   }
 }
