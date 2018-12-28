@@ -36,7 +36,7 @@ namespace AspNetBase.Core.Composition.Extensions
         switch (dependencyAttr.InjectionStyle)
         {
           case ServiceInjectionStyle.Instant:
-            services.Add(new ServiceDescriptor(contractType, registerType, dependencyAttr.Lifetime));
+            RegisterInstantService(services, registerType, dependencyAttr, contractType);
             break;
           case ServiceInjectionStyle.Func:
             RegisterFuncService(services, funcType, registerType, dependencyAttr, contractType);
