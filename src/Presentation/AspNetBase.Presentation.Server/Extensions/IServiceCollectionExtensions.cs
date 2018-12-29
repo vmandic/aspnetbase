@@ -34,13 +34,14 @@ namespace AspNetBase.Presentation.Server.Extensions
 
     public static IServiceCollection AddIdentityAuthWithEntityFramework(this IServiceCollection services)
     {
-      services.AddIdentity<AppUser, AppRole>()    // adds authentication, cookies, and identity services
+      services
+        .AddIdentity<AppUser, AppRole>()          // adds authentication, cookies, and identity services
         .AddEntityFrameworkStores<AppDbContext>() // adds default User and Role store implementations
         .AddDefaultTokenProviders();              // adds the identity default token generators
 
       // TODO: add custom UserClaimsFactory implementation to support additional Claims during sign in
 
-      // overrides the AddIdentity defaults for the added cookies
+      // NOTE: overrides the AddIdentity defaults for the added cookies with AddIdentity
       services.ConfigureApplicationCookie(options =>
       {
         options.LoginPath = $"/Identity/Account/Login";
@@ -53,6 +54,7 @@ namespace AspNetBase.Presentation.Server.Extensions
 
     public static IServiceCollection AddHttpHelpers(this IServiceCollection services)
     {
+      // NOTE: already injected with AddIdentity
       services.AddHttpContextAccessor();
       services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
       services.AddScoped<IUrlHelper>(

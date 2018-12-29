@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AspNetBase.Presentation.Server.Utilities
 {
+  // Adds support for design-time actions such as database migrations.
   public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
   {
     public AppDbContext CreateDbContext(string[] args) =>

@@ -21,20 +21,30 @@ namespace AspNetBase.Infrastructure.DataAccess.Data
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder builder)
-    {
-      base.OnModelCreating(builder);
+        {
+            base.OnModelCreating(builder);
 
-      // NOTE: commenting code below makes migrations work?
-      var entities = typeof(IEntityBase<>)?.Assembly?.GetTypes()?.Where(x => x != null && x.Namespace != null && x.Namespace.Contains("Entities"));
+            ConfigureAllEntities(builder);
+        }
 
-      foreach (var entityType in entities)
-      {
-        var type = builder.Entity(entityType);
-        type.HasKey(nameof(IEntityBase<int>.Id));
-        type.Property(nameof(IEntityBase<int>.Uid)).HasValueGenerator<GuidValueGenerator>();
-        type.HasIndex(nameof(IEntityBase<int>.Uid)).IsUnique();
-        type.ToTable(entityType.Name);
-      }
+        private static void ConfigureAllEntities(ModelBuilder builder)
+        {
+            var entities = typeof(IEntityBase<>)?.Assembly
+              ?.GetTypes()
+              ?.Where(x =>
+                x != null
+                && x.Namespace != null
+                && x.Namespace.Contains("Entities"))
+              ?.Distinct();
+
+            foreach (var entityType in entities)
+            {
+                var type = builder.Entity(entityType);
+                type.HasKey(nameof(IEntityBase<int>.Id));
+                type.Property(nameof(IEntityBase<int>.Uid)).HasValueGenerator<GuidValueGenerator>();
+                type.HasIndex(nameof(IEntityBase<int>.Uid)).IsUnique();
+                type.ToTable(entityType.Name);
+            }
+        }
     }
-  }
 }

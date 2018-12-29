@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Common.Utils.Extensions;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,17 +14,16 @@ namespace AspNetBase.Core.Composition.Extensions
   {
     private static IEnumerable<Type> GetIocCoreProviderRegisteredTypes() =>
       typeof(CoreProvidersAssemblyMarker).Assembly
-      .GetTypes()
-      .Where(x => x.IsDefined(typeof(RegisterDependencyAttribute), false))
-      .Distinct(x => x.FullName)
-      .OrderBy(x => x.FullName);
+        .GetTypes()
+        .Where(x => x.IsDefined(typeof(RegisterDependencyAttribute), false))
+        .Distinct(x => x.FullName);
 
     public static IServiceCollection RegisterExportedTypes(this IServiceCollection services, ILogger<CompositionRoot> logger)
     {
       var funcType = typeof(Func<>);
       var lazyType = typeof(Lazy<>);
 
-      foreach (var registerType in GetIocCoreProviderRegisteredTypes())
+      Parallel.ForEach(GetIocCoreProviderRegisteredTypes(), registerType =>
       {
         logger.LogInformation("Processing IoC registration type: '{registrationType}'", registerType.FullName);
 
@@ -53,7 +53,7 @@ namespace AspNetBase.Core.Composition.Extensions
           default:
             throw new InvalidOperationException("Unsupported IoC container service injection style.");
         }
-      }
+      });
 
       return services;
 
