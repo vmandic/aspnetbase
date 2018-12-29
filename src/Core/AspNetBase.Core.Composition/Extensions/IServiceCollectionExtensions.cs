@@ -1,101 +1,116 @@
-using AspNetBase.Common.Utils.Attributes;
-using AspNetBase.Common.Utils.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using AspNetBase.Common.Utils.Attributes;
+using AspNetBase.Common.Utils.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Core.Composition.Extensions
 {
   public static class IServiceCollectionExtensions
   {
-    private static readonly Type registerDependencyAttributeType =
-      typeof(RegisterDependencyAttribute);
-
     private static IEnumerable<Type> GetIocCoreProviderRegisteredTypes() =>
-      Assembly
-        .Load("AspNetBase.Core.Providers")
-        .GetTypes()
-        .Where(x => x.IsDefined(registerDependencyAttributeType, false))
-        .Distinct();
+      typeof(CoreProvidersAssemblyMarker).Assembly
+      .GetTypes()
+      .Where(x => x.IsDefined(typeof(RegisterDependencyAttribute), false))
+      .Distinct();
 
-    public static IServiceCollection RegisterExportedTypes(this IServiceCollection services)
+    public static IServiceCollection RegisterExportedTypes(this IServiceCollection services, ILogger<CompositionRoot> logger)
     {
       var funcType = typeof(Func<>);
       var lazyType = typeof(Lazy<>);
 
       foreach (var registerType in GetIocCoreProviderRegisteredTypes())
       {
+        logger.LogInformation("Processing IoC registration type: {registrationType}", registerType.FullName);
+
         var dependencyAttr = registerType.GetCustomAttribute<RegisterDependencyAttribute>();
         var contractType = dependencyAttr.InterfaceType ?? registerType.GetInterface($"I{registerType.Name}");
 
         if (contractType == null)
-          throw new InvalidOperationException($"No IoC interface type could be resolved for a concrete type '{registerType.FullName}'.");
+          throw new InvalidOperationException(
+            $"No IoC container registration interface type could be resolved for the concrete type of name '{registerType.FullName}'.");
 
         switch (dependencyAttr.InjectionStyle)
         {
           case ServiceInjectionStyle.Instant:
-            RegisterInstantService(services, registerType, dependencyAttr, contractType);
+            RegisterInstantService(registerType, contractType, dependencyAttr);
             break;
           case ServiceInjectionStyle.Func:
-            RegisterFuncService(services, funcType, registerType, dependencyAttr, contractType);
+            RegisterFuncService(registerType, contractType, dependencyAttr);
             break;
           case ServiceInjectionStyle.Lazy:
-            RegisterLazyService(services, lazyType, registerType, dependencyAttr, contractType);
+            RegisterLazyService(registerType, contractType, dependencyAttr);
             break;
           case ServiceInjectionStyle.All:
-            RegisterInstantService(services, registerType, dependencyAttr, contractType);
-            RegisterFuncService(services, funcType, registerType, dependencyAttr, contractType);
-            RegisterLazyService(services, lazyType, registerType, dependencyAttr, contractType);
+            RegisterInstantService(registerType, contractType, dependencyAttr);
+            RegisterFuncService(registerType, contractType, dependencyAttr);
+            RegisterLazyService(registerType, contractType, dependencyAttr);
             break;
           default:
-            throw new InvalidOperationException("Unsupported service injection style.");
+            throw new InvalidOperationException("Unsupported IoC container service injection style.");
         }
       }
 
       return services;
-    }
 
-    private static void RegisterInstantService(
-      IServiceCollection services,
-      Type registerType,
-      RegisterDependencyAttribute dependencyAttr,
-      Type contractType)
-    {
-      services.Add(new ServiceDescriptor(contractType, registerType, dependencyAttr.Lifetime));
-    }
+      void RegisterInstantService(
+        Type registerType,
+        Type contractType,
+        RegisterDependencyAttribute depAttr)
+      {
+        services.Add(new ServiceDescriptor(contractType, registerType, depAttr.Lifetime));
+        logger.LogInformation(
+          "Type '{type}' injected as '{contract}' with injection style '{style}' and lifetime '{lifetime}'.",
+          registerType.FullName,
+          contractType.FullName,
+          depAttr.InjectionStyle,
+          depAttr.Lifetime);
+      }
 
-    private static void RegisterLazyService(
-      IServiceCollection services,
-      Type lazyType,
-      Type registerType,
-      RegisterDependencyAttribute dependencyAttr,
-      Type contractType)
-    {
-      services.Add(new ServiceDescriptor(
-        lazyType.MakeGenericType(contractType),
+      void RegisterLazyService(
+        Type registerType,
+        Type contractType,
+        RegisterDependencyAttribute depAttr)
+      {
+        services.Add(new ServiceDescriptor(
+          lazyType.MakeGenericType(contractType),
 
-        // WARNING: Generic type unsupported
-        sp => Lazy.Create(() => Activator.CreateInstance(registerType)),
+          // WARNING: Generic type unsupported
+          sp => Lazy.Create(() => Activator.CreateInstance(registerType)),
 
-        dependencyAttr.Lifetime));
-    }
+          depAttr.Lifetime));
 
-    private static void RegisterFuncService(
-      IServiceCollection services,
-      Type funcType,
-      Type registerType,
-      RegisterDependencyAttribute dependencyAttr,
-      Type contractType)
-    {
-      services.Add(new ServiceDescriptor(
-        funcType.MakeGenericType(contractType),
+        logger.LogInformation(
+          "Type '{type}' injected as '{contract}' with injection style '{style}' and lifetime '{lifetime}'.",
+          registerType.FullName,
+          contractType.FullName,
+          depAttr.InjectionStyle,
+          depAttr.Lifetime);
+      }
 
-        // WARNING: Generic type unsupported
-        sp => FuncToObject(() => Activator.CreateInstance(registerType)),
+      void RegisterFuncService(
+        Type registerType,
+        Type contractType,
+        RegisterDependencyAttribute depAttr)
+      {
+        services.Add(new ServiceDescriptor(
+          funcType.MakeGenericType(contractType),
 
-        dependencyAttr.Lifetime));
+          // WARNING: Generic type unsupported
+          sp => FuncToObject(() => Activator.CreateInstance(registerType)),
+
+          depAttr.Lifetime));
+
+        logger.LogInformation(
+          "Type '{type}' injected as '{contract}' with injection style '{style}' and lifetime '{lifetime}'.",
+          registerType.FullName,
+          contractType.FullName,
+          depAttr.InjectionStyle,
+          depAttr.Lifetime);
+      }
     }
 
     private static object FuncToObject<T>(Func<T> func) => func;

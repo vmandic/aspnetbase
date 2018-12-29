@@ -1,15 +1,20 @@
 using AspNetBase.Core.Composition.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace AspNetBase.Core.Composition
 {
-  public static class CompositionRoot
+  public abstract class CompositionRoot
   {
-    public static IServiceProvider Initialize(IServiceCollection services)
+    private CompositionRoot() { }
+
+    public static IServiceProvider Initialize(
+      IServiceCollection services,
+      ILogger<CompositionRoot> logger)
     {
       // NOTE: register exported types
-      services.RegisterExportedTypes();
+      services.RegisterExportedTypes(logger);
 
 
       // NOTE: other services

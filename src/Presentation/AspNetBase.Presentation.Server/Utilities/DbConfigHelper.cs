@@ -12,7 +12,7 @@ namespace AspNetBase.Presentation.Server.Utilities
     public static string GetOsDependentConnectionString(IConfigurationRoot config) =>
       config.GetConnectionString(!config.GetValue<bool>("AlwaysUseSqlite") && isWindows ?
         "MsSqlLocalDb" :
-        "SqlLiteLocalDb");
+        "SqliteLocalDb");
 
     public static DbContextOptionsBuilder<AppDbContext> UseOsDependentDbProvider(
       this DbContextOptionsBuilder<AppDbContext> builder,
@@ -21,11 +21,11 @@ namespace AspNetBase.Presentation.Server.Utilities
       var connectionString = GetOsDependentConnectionString(config);
       var forceSqlite = config.GetValue<bool>("AlwaysUseSqlite");
 
-      string dbctxAssemblyName = typeof(AppDbContext).Assembly.GetName().Name;
+      string migrationsAssembly = typeof(AppDbContext).Assembly.GetName().Name;
 
       return !forceSqlite && isWindows ?
-        builder.UseSqlServer(connectionString, opts => opts.MigrationsAssembly(dbctxAssemblyName)) :
-        builder.UseSqlite(connectionString, opts => opts.MigrationsAssembly(dbctxAssemblyName));
+        builder.UseSqlServer(connectionString, opts => opts.MigrationsAssembly(migrationsAssembly)) :
+        builder.UseSqlite(connectionString, opts => opts.MigrationsAssembly(migrationsAssembly));
     }
   }
 }

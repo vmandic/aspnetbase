@@ -30,7 +30,12 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public async Task < (SignInResult, IEnumerable<string> errorMessages) > SignInWithPassword(LoginDto loginDto)
     {
-      var result = await signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, loginDto.RememberMe, loginDto.LockoutOnFailure);
+      // NOTE: uses the default UserClaimsFactory and assigns the default Claims with the default Identity.AuthenticationScheme
+      var result = await signInManager.PasswordSignInAsync(
+        loginDto.Email,
+        loginDto.Password,
+        loginDto.RememberMe,
+        loginDto.LockoutOnFailure);
 
       if (result == SignInResult.Success) logger.LogInformation("User logged in.");
       else if (result.RequiresTwoFactor) logger.LogWarning("User requires two factor authentication.");
@@ -50,7 +55,10 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public Task SignOut(string authenticationScheme = null)
     {
-      var task = _httpContextAccessor.HttpContext.SignOutAsync(authenticationScheme);
+      var task = authenticationScheme == null ?
+        _httpContextAccessor.HttpContext.SignOutAsync() :
+        _httpContextAccessor.HttpContext.SignOutAsync(authenticationScheme);
+
       return task.ContinueWith(t =>
       {
         if (t.Status == TaskStatus.RanToCompletion)
