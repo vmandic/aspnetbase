@@ -22,7 +22,6 @@ namespace AspNetBase.Presentation.Server
 
     public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
     {
-      loggerFactory.AddConsole(LogLevel.Trace);
       LoggerFactory = loggerFactory;
       Configuration = configuration;
     }

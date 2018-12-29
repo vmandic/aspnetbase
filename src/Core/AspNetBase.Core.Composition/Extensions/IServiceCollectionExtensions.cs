@@ -15,7 +15,8 @@ namespace AspNetBase.Core.Composition.Extensions
       typeof(CoreProvidersAssemblyMarker).Assembly
       .GetTypes()
       .Where(x => x.IsDefined(typeof(RegisterDependencyAttribute), false))
-      .Distinct();
+      .Distinct(x => x.FullName)
+      .OrderBy(x => x.FullName);
 
     public static IServiceCollection RegisterExportedTypes(this IServiceCollection services, ILogger<CompositionRoot> logger)
     {
@@ -24,7 +25,7 @@ namespace AspNetBase.Core.Composition.Extensions
 
       foreach (var registerType in GetIocCoreProviderRegisteredTypes())
       {
-        logger.LogInformation("Processing IoC registration type: {registrationType}", registerType.FullName);
+        logger.LogInformation("Processing IoC registration type: '{registrationType}'", registerType.FullName);
 
         var dependencyAttr = registerType.GetCustomAttribute<RegisterDependencyAttribute>();
         var contractType = dependencyAttr.InterfaceType ?? registerType.GetInterface($"I{registerType.Name}");
