@@ -1,7 +1,10 @@
+using System;
 using AspNetBase.Core.Composition.Extensions;
+using AspNetBase.Core.Providers.Services.Identity;
+using AspNetBase.Infrastructure.DataAccess.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace AspNetBase.Core.Composition
 {
@@ -16,9 +19,9 @@ namespace AspNetBase.Core.Composition
       // NOTE: register exported types
       services.RegisterExportedTypes(logger);
 
-
       // NOTE: other services
       // ...
+      // services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, AppUserClaimsPrincipalFactory>();
 
       return services.BuildServiceProvider();
     }

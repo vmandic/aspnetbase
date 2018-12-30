@@ -23,7 +23,8 @@ namespace AspNetBase.Core.Composition.Extensions
       var funcType = typeof(Func<>);
       var lazyType = typeof(Lazy<>);
 
-      Parallel.ForEach(GetIocCoreProviderRegisteredTypes(), registerType =>
+      // WARNING: parallel processing causes issues, possible due to closure fn below
+      foreach(var registerType in GetIocCoreProviderRegisteredTypes())
       {
         logger.LogInformation("Processing IoC registration type: '{registrationType}'", registerType.FullName);
 
@@ -53,7 +54,7 @@ namespace AspNetBase.Core.Composition.Extensions
           default:
             throw new InvalidOperationException("Unsupported IoC container service injection style.");
         }
-      });
+      }
 
       return services;
 

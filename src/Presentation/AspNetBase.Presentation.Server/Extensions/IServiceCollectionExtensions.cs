@@ -7,6 +7,7 @@ using AspNetBase.Infrastructure.DataAccess.Data;
 using AspNetBase.Infrastructure.DataAccess.Entities;
 using AspNetBase.Presentation.Server.Extensions;
 using AspNetBase.Presentation.Server.Utilities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,11 +36,11 @@ namespace AspNetBase.Presentation.Server.Extensions
     public static IServiceCollection AddIdentityAuthWithEntityFramework(this IServiceCollection services)
     {
       services
-        .AddIdentity<AppUser, AppRole>()          // adds authentication, cookies, and identity services
-        .AddEntityFrameworkStores<AppDbContext>() // adds default User and Role store implementations
-        .AddDefaultTokenProviders();              // adds the identity default token generators
-
-      // TODO: add custom UserClaimsFactory implementation to support additional Claims during sign in
+        .AddIdentity<AppUser, AppRole>(opts => {    // adds authentication, cookies, and identity services
+          // TODO: set additional ASP.NET Identity options
+        })
+        .AddEntityFrameworkStores<AppDbContext>()   // adds default User and Role store implementations
+        .AddDefaultTokenProviders();                // adds the identity default token generators
 
       // NOTE: overrides the AddIdentity defaults for the added cookies with AddIdentity
       services.ConfigureApplicationCookie(options =>

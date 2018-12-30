@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AspNetBase.Presentation.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AspNetBase.Presentation.Server.Controllers
 {
@@ -15,6 +16,7 @@ namespace AspNetBase.Presentation.Server.Controllers
       return View();
     }
 
+    [Authorize]
     public IActionResult About()
     {
       ViewData["Message"] = "Your application description page.";

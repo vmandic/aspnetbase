@@ -6,6 +6,7 @@ using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Core.Models.Identity;
 using AspNetBase.Infrastructure.DataAccess.Entities;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +31,8 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public async Task < (SignInResult, IEnumerable<string> errorMessages) > SignInWithPassword(LoginDto loginDto)
     {
-      // NOTE: uses the default UserClaimsFactory and assigns the default Claims with the default Identity.AuthenticationScheme
+      // NOTE: uses the default UserClaimsFactory and assigns the default
+      // Claims with the default Identity.Application Auth Scheme
       var result = await signInManager.PasswordSignInAsync(
         loginDto.Email,
         loginDto.Password,
@@ -53,17 +55,27 @@ namespace AspNetBase.Core.Providers.Services.Identity
       }
     }
 
-    public Task SignOut(string authenticationScheme = null)
+    public Task SignOut()
     {
-      var task = authenticationScheme == null ?
-        _httpContextAccessor.HttpContext.SignOutAsync() :
-        _httpContextAccessor.HttpContext.SignOutAsync(authenticationScheme);
-
-      return task.ContinueWith(t =>
+      // NOTE: signs out all three auth schemes added by AddIdentity
+      return signInManager.SignOutAsync().ContinueWith(t =>
       {
         if (t.Status == TaskStatus.RanToCompletion)
         {
           logger.LogInformation("User signed out successfully.");
+        }
+      });
+    }
+
+    public Task SignOut(string authenticationScheme)
+    {
+      return _httpContextAccessor.HttpContext.SignOutAsync(authenticationScheme).ContinueWith(t =>
+      {
+        if (t.Status == TaskStatus.RanToCompletion)
+        {
+          logger.LogInformation(
+            "User signed out successfully for auth scheme: {scheme}",
+            authenticationScheme);
         }
       });
     }
