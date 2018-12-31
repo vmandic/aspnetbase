@@ -1,8 +1,8 @@
+using System;
 using AspNetBase.Infrastructure.DataAccess.Base;
 using Microsoft.AspNetCore.Identity;
-using System;
 
-namespace AspNetBase.Infrastructure.DataAccess.Entities
+namespace AspNetBase.Infrastructure.DataAccess.Entities.Identity
 {
   public class AppUserToken : IdentityUserToken<int>, IEntityBase<int>
   {

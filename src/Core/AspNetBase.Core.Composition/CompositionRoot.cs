@@ -1,7 +1,7 @@
 using System;
 using AspNetBase.Core.Composition.Extensions;
 using AspNetBase.Core.Providers.Services.Identity;
-using AspNetBase.Infrastructure.DataAccess.Entities;
+using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

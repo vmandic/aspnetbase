@@ -1,1 +1,1 @@
-dotnet ef migrations add initial -s ../AspNetBase.Server/AspNetBase.Server.csproj
+dotnet ef migrations add initial -s ../../AspNetBase.Presentation.Server/AspNetBase.Presentation.Server.csproj

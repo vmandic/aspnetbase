@@ -3,29 +3,25 @@ using System;
 using AspNetBase.Infrastructure.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AspNetBase.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20181216122950_initial")]
+    [Migration("20181231145618_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppRole", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppRole", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -42,8 +38,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.HasIndex("Uid")
                         .IsUnique();
@@ -51,11 +46,10 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     b.ToTable("AppRole");
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppRoleClaim", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppRoleClaim", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClaimType");
 
@@ -75,11 +69,10 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     b.ToTable("AppRoleClaim");
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppUser", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUser", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
 
@@ -123,8 +116,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.HasIndex("Uid")
                         .IsUnique();
@@ -132,11 +124,10 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     b.ToTable("AppUser");
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppUserClaim", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUserClaim", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClaimType");
 
@@ -156,27 +147,21 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     b.ToTable("AppUserClaim");
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppUserLogin", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUserLogin", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("LoginProvider")
-                        .IsRequired();
+                    b.Property<string>("ProviderKey");
+
+                    b.Property<int>("Id");
 
                     b.Property<string>("ProviderDisplayName");
-
-                    b.Property<string>("ProviderKey")
-                        .IsRequired();
 
                     b.Property<Guid>("Uid");
 
                     b.Property<int>("UserId");
 
-                    b.HasKey("Id");
-
-                    b.HasAlternateKey("LoginProvider", "ProviderKey");
+                    b.HasKey("LoginProvider", "ProviderKey");
 
                     b.HasIndex("Uid")
                         .IsUnique();
@@ -186,21 +171,17 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     b.ToTable("AppUserLogin");
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppUserRole", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUserRole", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("UserId");
 
                     b.Property<int>("RoleId");
 
+                    b.Property<int>("Id");
+
                     b.Property<Guid>("Uid");
 
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasAlternateKey("UserId", "RoleId");
+                    b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
@@ -210,27 +191,21 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     b.ToTable("AppUserRole");
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppUserToken", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUserToken", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("UserId");
 
-                    b.Property<string>("LoginProvider")
-                        .IsRequired();
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
+
+                    b.Property<int>("Id");
 
                     b.Property<Guid>("Uid");
 
-                    b.Property<int>("UserId");
-
                     b.Property<string>("Value");
 
-                    b.HasKey("Id");
-
-                    b.HasAlternateKey("UserId", "LoginProvider", "Name");
+                    b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.HasIndex("Uid")
                         .IsUnique();
@@ -238,46 +213,46 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     b.ToTable("AppUserToken");
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppRoleClaim", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppRoleClaim", b =>
                 {
-                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.AppRole")
+                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppUserClaim", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUserClaim", b =>
                 {
-                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.AppUser")
+                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppUserLogin", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUserLogin", b =>
                 {
-                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.AppUser")
+                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppUserRole", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUserRole", b =>
                 {
-                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.AppRole")
+                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.AppUser")
+                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.AppUserToken", b =>
+            modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUserToken", b =>
                 {
-                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.AppUser")
+                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AspNetBase.Infrastructure.DataAccess.Entities
+namespace AspNetBase.Infrastructure.DataAccess.Entities.Identity
 {
   public class AppUserRole : IdentityUserRole<int>, IEntityBase<int>
   {

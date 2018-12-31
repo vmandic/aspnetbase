@@ -1,5 +1,5 @@
-using AspNetBase.Infrastructure.DataAccess.Entities;
 using System.Threading.Tasks;
+using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace AspNetBase.Core.Contracts.Services.Identity

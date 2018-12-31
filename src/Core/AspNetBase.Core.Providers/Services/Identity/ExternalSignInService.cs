@@ -1,15 +1,15 @@
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Core.Models.Identity;
-using AspNetBase.Infrastructure.DataAccess.Entities;
+using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace AspNetBase.Core.Providers.Services.Identity
@@ -29,7 +29,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
       return new ChallengeResult(provider, properties);
     }
 
-    public async Task<(SignInResult, IExternalLoginModel)> SignInWithExternalProvider(string remoteError = null)
+    public async Task < (SignInResult, IExternalLoginModel) > SignInWithExternalProvider(string remoteError = null)
     {
       if (remoteError != null)
         return (
@@ -46,8 +46,8 @@ namespace AspNetBase.Core.Providers.Services.Identity
       var result = await signInManager.ExternalLoginSignInAsync(
         info.LoginProvider,
         info.ProviderKey,
-        isPersistent: false,
-        bypassTwoFactor: true);
+        isPersistent : false,
+        bypassTwoFactor : true);
 
       if (result.Succeeded)
       {
@@ -69,7 +69,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
       {
         input = new ExternalLoginInputModel
         {
-          Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
         };
       }
 
@@ -78,7 +78,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
         new ExternalLoginDto { LoginProvider = info.LoginProvider, Input = input });
     }
 
-    public async Task<(IdentityResult, IExternalLoginModel, ICollection<string> errorMessages)> ConfirmExternalLogin(string email)
+    public async Task < (IdentityResult, IExternalLoginModel, ICollection<string> errorMessages) > ConfirmExternalLogin(string email)
     {
       var errorMessages = new List<string>();
 
@@ -101,7 +101,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
         if (result.Succeeded)
         {
-          await signInManager.SignInAsync(user, isPersistent: false);
+          await signInManager.SignInAsync(user, isPersistent : false);
           logger.LogInformation(
             "User created an account using {Name} provider.",
             info.LoginProvider);

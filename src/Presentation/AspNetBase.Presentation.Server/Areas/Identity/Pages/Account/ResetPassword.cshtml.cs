@@ -1,12 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 using AspNetBase.Core.Contracts.Services.Identity;
-using AspNetBase.Infrastructure.DataAccess.Entities;
+using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
 {
@@ -64,7 +64,7 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account
         return Page();
 
       var (_, errorMessages) =
-        await _passwordService.ResetPassword(Input.Email, Input.Code, Input.Password);
+      await _passwordService.ResetPassword(Input.Email, Input.Code, Input.Password);
 
       if (errorMessages.Count() > 0)
       {

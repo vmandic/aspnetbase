@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AspNetBase.Infrastructure.DataAccess.Migrations
@@ -13,7 +12,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
@@ -29,7 +28,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -56,7 +55,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     RoleId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
@@ -78,7 +77,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
@@ -105,12 +104,10 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     UserId = table.Column<int>(nullable: false),
                     Uid = table.Column<Guid>(nullable: false),
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppUserLogin", x => x.Id);
-                    table.UniqueConstraint("AK_AppUserLogin_LoginProvider_ProviderKey", x => new { x.LoginProvider, x.ProviderKey });
+                    table.PrimaryKey("PK_AppUserLogin", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
                         name: "FK_AppUserLogin_AppUser_UserId",
                         column: x => x.UserId,
@@ -127,12 +124,10 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     RoleId = table.Column<int>(nullable: false),
                     Uid = table.Column<Guid>(nullable: false),
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppUserRole", x => x.Id);
-                    table.UniqueConstraint("AK_AppUserRole_UserId_RoleId", x => new { x.UserId, x.RoleId });
+                    table.PrimaryKey("PK_AppUserRole", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
                         name: "FK_AppUserRole_AppRole_RoleId",
                         column: x => x.RoleId,
@@ -155,14 +150,12 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true),
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(nullable: false),
                     Uid = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppUserToken", x => x.Id);
-                    table.UniqueConstraint("AK_AppUserToken_UserId_LoginProvider_Name", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.PrimaryKey("PK_AppUserToken", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
                         name: "FK_AppUserToken_AppUser_UserId",
                         column: x => x.UserId,
@@ -175,8 +168,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                 name: "RoleNameIndex",
                 table: "AppRole",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppRole_Uid",
@@ -204,8 +196,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                 name: "UserNameIndex",
                 table: "AppUser",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppUser_Uid",

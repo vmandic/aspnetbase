@@ -1,15 +1,15 @@
-using AspNetBase.Common.Utils.Attributes;
-using AspNetBase.Core.Contracts.Services.Identity;
-using AspNetBase.Infrastructure.DataAccess.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using AspNetBase.Common.Utils.Attributes;
+using AspNetBase.Core.Contracts.Services.Identity;
+using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Core.Providers.Services.Identity
 {
@@ -27,7 +27,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
       this._emailSender = emailSender;
     }
 
-    public async Task<(bool, string callbackUrl)> ForgotPassword(
+    public async Task < (bool, string callbackUrl) > ForgotPassword(
       string userEmail,
       Func<string, string> getCallbackUrl,
       bool sendEmailConfirmation = true)
@@ -42,16 +42,16 @@ namespace AspNetBase.Core.Providers.Services.Identity
       var code = await userManager.GeneratePasswordResetTokenAsync(user);
       var callbackUrl = getCallbackUrl(code);
 
-      if(sendEmailConfirmation)
+      if (sendEmailConfirmation)
         await _emailSender.SendEmailAsync(
-            userEmail,
-            "Reset Password",
-            $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+          userEmail,
+          "Reset Password",
+          $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
       return (true, callbackUrl);
     }
 
-    public async Task<(bool, IEnumerable<string> errorMessages)> ResetPassword(string email, string resetToken, string password)
+    public async Task < (bool, IEnumerable<string> errorMessages) > ResetPassword(string email, string resetToken, string password)
     {
       var user = await userManager.FindByEmailAsync(email);
 

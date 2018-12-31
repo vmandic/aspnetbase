@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AspNetBase.Infrastructure.DataAccess.Entities
+namespace AspNetBase.Infrastructure.DataAccess.Entities.Identity
 {
-  public class AppUserClaim : IdentityUserClaim<int>, IEntityBase<int>
+  public class AppUserLogin : IdentityUserLogin<int>, IEntityBase<int>
   {
     public Guid Uid { get; set; }
+    public int Id { get; set; }
   }
 }

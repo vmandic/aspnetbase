@@ -1,11 +1,11 @@
+using System;
+using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Core.Contracts.Services.Identity;
-using AspNetBase.Infrastructure.DataAccess.Entities;
+using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 
 namespace AspNetBase.Core.Providers.Services.Identity
 {
@@ -15,8 +15,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
     public TwoFactorAuthService(
       ILogger<TwoFactorAuthService> logger,
       UserManager<AppUser> userManager,
-      SignInManager<AppUser> signInManager)
-      : base(logger, userManager, signInManager) { }
+      SignInManager<AppUser> signInManager) : base(logger, userManager, signInManager) { }
 
     public Task EnsureUserForTwoFactorAuthentication()
     {
