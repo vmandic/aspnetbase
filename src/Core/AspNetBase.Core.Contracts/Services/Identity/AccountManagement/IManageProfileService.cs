@@ -8,8 +8,8 @@ namespace AspNetBase.Core.Contracts.Services.Identity.AccountManagement
 {
   public interface IManageProfileService
   {
-    Task < (UserProfileDto, IEnumerable<string> errors) > GetUserProfile(ClaimsPrincipal loggedInUser);
-    Task < (bool saved, IEnumerable<string> errors) > SaveUserProfile(UserProfileDto userProfileDto);
+    Task<UserProfileDto> GetUserProfile(ClaimsPrincipal loggedInUser);
+    Task<bool> SaveUserProfile(UserProfileDto userProfileDto);
     Task SendVerificationEmail(ClaimsPrincipal loggedInUser, Func<string, int, string> getCallbackUrl);
   }
 }
