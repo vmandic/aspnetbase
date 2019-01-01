@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,8 @@ namespace AspNetBase.Presentation.Server.Extensions
 
       services.AddScoped(
         s => s.GetService<IDesignTimeDbContextFactory<AppDbContext>>().CreateDbContext(null));
+
+      services.AddScoped(s => (DbContext)s.GetService<AppDbContext>());
 
       return services;
     }

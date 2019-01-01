@@ -13,10 +13,12 @@ namespace AspNetBase.Core.Composition.Extensions
   public static class IServiceCollectionExtensions
   {
     private static IEnumerable<Type> GetIocCoreProviderRegisteredTypes() =>
-      typeof(CoreProvidersAssemblyMarker).Assembly
-        .GetTypes()
-        .Where(x => x.IsDefined(typeof(RegisterDependencyAttribute), false))
-        .Distinct(x => x.FullName);
+      Enumerable.Concat(
+        typeof(CoreProvidersAssemblyMarker).Assembly.GetTypes(),
+        typeof(InfrastructureDataAccessAssemblyMarker).Assembly.GetTypes()
+      )
+      .Where(x => x.IsDefined(typeof(RegisterDependencyAttribute), false))
+      .Distinct(x => x.FullName);
 
     public static IServiceCollection RegisterExportedTypes(this IServiceCollection services, ILogger<CompositionRoot> logger)
     {
@@ -24,7 +26,7 @@ namespace AspNetBase.Core.Composition.Extensions
       var lazyType = typeof(Lazy<>);
 
       // WARNING: parallel processing causes issues, possible due to closure fn below
-      foreach(var registerType in GetIocCoreProviderRegisteredTypes())
+      foreach (var registerType in GetIocCoreProviderRegisteredTypes())
       {
         logger.LogInformation("Processing IoC registration type: '{registrationType}'", registerType.FullName);
 

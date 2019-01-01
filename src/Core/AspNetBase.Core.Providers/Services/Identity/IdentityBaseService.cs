@@ -1,3 +1,6 @@
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +22,22 @@ namespace AspNetBase.Core.Providers.Services.Identity
       this.logger = logger;
       this.userManager = userManager;
       this.signInManager = signInManager;
+    }
+
+    protected async Task<AppUser> GetUserOrThrow(ClaimsPrincipal loggedInUser)
+    {
+      if (loggedInUser == null)
+      {
+        throw new ArgumentNullException(nameof(loggedInUser));
+      }
+
+      var user = await userManager.GetUserAsync(loggedInUser);
+      if (user == null)
+      {
+        throw new InvalidOperationException("Unable to load user for the given claims principal.");
+      }
+
+      return user;
     }
   }
 }
