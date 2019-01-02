@@ -4,8 +4,11 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using AspNetBase.Common.Utils.Extensions;
+using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Core.Contracts.Services.Identity.AccountManagement;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,20 +19,32 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
   {
     const string AUTH_URI_FORMAT = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
     const string QR_CODE_ISSUER = "AspNetBase.Presentation.Server";
+    private readonly ISignInService _signInService;
     private readonly UrlEncoder _urlEncoder;
 
     public ManageAuthenticationService(
       ILogger<ManageAuthenticationService> logger,
       UserManager<AppUser> userManager,
       SignInManager<AppUser> signInManager,
+      ISignInService signInService,
       UrlEncoder urlEncoder) : base(logger, userManager, signInManager)
     {
+      _signInService = signInService;
       _urlEncoder = urlEncoder;
     }
 
-    public Task<ChallengeResult> ChallengeExternalLogin(ClaimsPrincipal loggedInUser, string externalLoginProvider, string redirectUrl)
+    public async Task<ChallengeResult> ChallengeExternalLogin(ClaimsPrincipal loggedInUser, string externalLoginProvider, string redirectUrl)
     {
-      throw new System.NotImplementedException();
+      // Clear the existing external cookie to ensure a clean login process
+      await _signInService.SignOut(IdentityConstants.ExternalScheme);
+
+      // Request a redirect to the external login provider to link a login for the current user
+      var authProps = signInManager.ConfigureExternalAuthenticationProperties(
+        externalLoginProvider,
+        redirectUrl,
+        loggedInUser.GetUserId().ToString());
+
+      return new ChallengeResult(externalLoginProvider, authProps);
     }
 
     public async Task<bool> CheckUserHas2faEnabled(ClaimsPrincipal loggedInUser)
@@ -103,22 +118,54 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
       throw new System.NotImplementedException();
     }
 
-    public Task < (IList<UserLoginInfo> currentLogins, IList<UserLoginInfo> otherLogins, bool enableLoginRemoval) > GetUserLogins(ClaimsPrincipal loggedInUser)
+    public async Task < (IList<UserLoginInfo> currentLogins, IList<AuthenticationScheme> otherLogins, bool enableLoginRemoval) > GetUserLogins(ClaimsPrincipal loggedInUser)
     {
-      throw new System.NotImplementedException();
+      var user = await GetUserOrThrow(loggedInUser);
+      var currentLogins = await userManager.GetLoginsAsync(user);
+
+      return (
+        currentLogins,
+        otherLogins: (await signInManager
+          .GetExternalAuthenticationSchemesAsync())
+        .Where(auth => currentLogins.All(ul => auth.Name != ul.LoginProvider))
+        .ToList(),
+        enableLoginRemoval : user.PasswordHash != null || currentLogins.Count > 1
+      );
     }
 
-    public Task<bool> LinkExternalLogin(ClaimsPrincipal loggedInUser)
+    public async Task<bool> LinkExternalLogin(ClaimsPrincipal loggedInUser)
     {
-      throw new System.NotImplementedException();
+      var user = await GetUserOrThrow(loggedInUser);
+
+      var info = await signInManager.GetExternalLoginInfoAsync(await userManager.GetUserIdAsync(user));
+
+      if (info == null)
+        return false;
+
+      var result = await userManager.AddLoginAsync(user, info);
+
+      if (!result.Succeeded)
+        return false;
+
+      // Clear the existing external cookie to ensure a clean login process
+      await _signInService.SignOut(IdentityConstants.ExternalScheme);
+
+      return true;
     }
 
-    public Task<bool> RemoveExternalLogin(ClaimsPrincipal loggedInUser)
+    public async Task<bool> RemoveExternalLogin(ClaimsPrincipal loggedInUser, string loginProvider, string providerKey)
     {
-      throw new System.NotImplementedException();
+      var user = await GetUserOrThrow(loggedInUser);
+      var result = await userManager.RemoveLoginAsync(user, loginProvider, providerKey);
+
+      if (!result.Succeeded)
+        return false;
+
+      await signInManager.RefreshSignInAsync(user);
+      return true;
     }
 
-    public Task<bool> Reset2fa(ClaimsPrincipal loggedInUser)
+    public async Task<bool> Reset2fa(ClaimsPrincipal loggedInUser)
     {
       throw new System.NotImplementedException();
     }

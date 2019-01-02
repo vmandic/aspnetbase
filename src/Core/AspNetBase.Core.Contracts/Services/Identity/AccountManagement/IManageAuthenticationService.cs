@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +21,8 @@ namespace AspNetBase.Core.Contracts.Services.Identity.AccountManagement
     Task<bool> Reset2fa(ClaimsPrincipal loggedInUser);
 
     // External logins:
-    Task < (IList<UserLoginInfo> currentLogins, IList<UserLoginInfo> otherLogins, bool enableLoginRemoval) > GetUserLogins(ClaimsPrincipal loggedInUser);
-    Task<bool> RemoveExternalLogin(ClaimsPrincipal loggedInUser);
+    Task < (IList<UserLoginInfo> currentLogins, IList<AuthenticationScheme> otherLogins, bool enableLoginRemoval) > GetUserLogins(ClaimsPrincipal loggedInUser);
+    Task<bool> RemoveExternalLogin(ClaimsPrincipal loggedInUser, string loginProvider, string providerKey);
     Task<ChallengeResult> ChallengeExternalLogin(ClaimsPrincipal loggedInUser, string externalLoginProvider, string redirectUrl);
     Task<bool> LinkExternalLogin(ClaimsPrincipal loggedInUser);
 
