@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNetBase.Core.Contracts.Services.Identity.AccountManagement;
@@ -64,10 +66,24 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
       return true;
     }
 
-    public Task<IDictionary<string, string>> GetPersonalData(ClaimsPrincipal loggedInUser)
+    public async Task<IDictionary<string, string>> GetPersonalData(ClaimsPrincipal loggedInUser)
     {
-      throw new System.NotImplementedException();
+      var user = await GetUserOrThrow(loggedInUser);
+      logger.LogInformation("User with ID '{UserId}' asked for their personal data.", user.Id);
+
+      // Only include personal data for download
+      var personalData = new Dictionary<string, string>();
+
+      foreach (var p in GetPersonalDataProps())
+        personalData.Add(p.Name, p.GetValue(user)?.ToString() ?? "null");
+
+      return personalData;
     }
+
+    private static IEnumerable<PropertyInfo> GetPersonalDataProps() =>
+      typeof(AppUser)
+      .GetProperties()
+      .Where(p => Attribute.IsDefined(p, typeof(PersonalDataAttribute)));
 
     public Task<bool> SetUserNewPassword(ClaimsPrincipal loggedInUser, string newPassword)
     {
