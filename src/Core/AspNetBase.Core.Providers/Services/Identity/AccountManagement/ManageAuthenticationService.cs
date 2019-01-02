@@ -21,14 +21,24 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
       throw new System.NotImplementedException();
     }
 
-    public Task<bool> CheckUserHas2faEnabled(ClaimsPrincipal loggedInUser)
+    public async Task<bool> CheckUserHas2faEnabled(ClaimsPrincipal loggedInUser)
     {
-      throw new System.NotImplementedException();
+      var user = await GetUserOrThrow(loggedInUser);
+      return await userManager.GetTwoFactorEnabledAsync(user);
     }
 
-    public Task Disable2fa(ClaimsPrincipal loggedInUser)
+    public async Task<bool> Disable2fa(ClaimsPrincipal loggedInUser)
     {
-      throw new System.NotImplementedException();
+      var user = await GetUserOrThrow(loggedInUser);
+      var result = await userManager.SetTwoFactorEnabledAsync(user, false);
+
+      if (!result.Succeeded)
+      {
+        return false;
+      }
+
+      logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", user.Id);
+      return true;
     }
 
     public Task < (IEnumerable<string> recoveryCodes, IEnumerable<string> errors) > Enable2fa(ClaimsPrincipal loggedInUser)
@@ -36,7 +46,7 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
       throw new System.NotImplementedException();
     }
 
-    public Task Forget2fa(ClaimsPrincipal loggedInUser)
+    public Task<bool> Forget2fa(ClaimsPrincipal loggedInUser)
     {
       throw new System.NotImplementedException();
     }
@@ -61,17 +71,17 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
       throw new System.NotImplementedException();
     }
 
-    public Task LinkExternalLogin(ClaimsPrincipal loggedInUser)
+    public Task<bool> LinkExternalLogin(ClaimsPrincipal loggedInUser)
     {
       throw new System.NotImplementedException();
     }
 
-    public Task RemoveExternalLogin(ClaimsPrincipal loggedInUser)
+    public Task<bool> RemoveExternalLogin(ClaimsPrincipal loggedInUser)
     {
       throw new System.NotImplementedException();
     }
 
-    public Task Reset2fa(ClaimsPrincipal loggedInUser)
+    public Task<bool> Reset2fa(ClaimsPrincipal loggedInUser)
     {
       throw new System.NotImplementedException();
     }
