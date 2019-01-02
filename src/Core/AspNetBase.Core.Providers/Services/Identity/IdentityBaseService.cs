@@ -1,6 +1,7 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Core.Providers.Services.Identity
 {
-  public abstract class IdentityBaseService<TServiceImpl>
+  public abstract class IdentityBaseService<TServiceImpl> : IIdentityBaseService
   {
     protected readonly ILogger<TServiceImpl> logger;
     protected readonly UserManager<AppUser> userManager;
@@ -24,7 +25,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
       this.signInManager = signInManager;
     }
 
-    protected async Task<AppUser> GetUserOrThrow(ClaimsPrincipal loggedInUser)
+    public async Task<AppUser> GetUserOrThrow(ClaimsPrincipal loggedInUser)
     {
       if (loggedInUser == null)
       {
