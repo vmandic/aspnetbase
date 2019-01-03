@@ -17,7 +17,7 @@ namespace AspNetBase.Core.Contracts.Services.Identity.AccountManagement
     // Enable 2fa:
     Task < (string sharedKey, string qrCodeUri) > Get2faSharedKeyAndQrCodeUri(ClaimsPrincipal loggedInUser, AppUser user = null, string authUriFormat = null, string qrCodeIssuer = null);
     Task < (bool isTokenValid, IEnumerable<string> recoveryCodes) > Enable2fa(ClaimsPrincipal loggedInUser, string verificationCode, AppUser user = null);
-    Task<IEnumerable<string>> GenerateNew2faRecoveryCodes(ClaimsPrincipal loggedInUser, int numberOfCodesToGenerate = 10, AppUser user = null);
+    Task<IEnumerable<string>> GenerateNew2faRecoveryCodes(ClaimsPrincipal loggedInUser, int? numberOfCodesToGenerate = null, AppUser user = null);
     Task<bool> Reset2fa(ClaimsPrincipal loggedInUser);
 
     // External logins:

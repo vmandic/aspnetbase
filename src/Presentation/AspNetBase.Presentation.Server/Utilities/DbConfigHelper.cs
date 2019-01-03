@@ -5,27 +5,23 @@ using Microsoft.Extensions.Configuration;
 
 namespace AspNetBase.Presentation.Server.Utilities
 {
-  public static class ConnectionStringHelper
+  public static class DbConfigHelper
   {
-    static bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+    public static bool IsCurrentOsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
-    public static string GetOsDependentConnectionString(IConfigurationRoot config) =>
-      config.GetConnectionString(!config.GetValue<bool>("AlwaysUseSqlite") && isWindows ?
+    private static string GetOsDependentConnectionString(IConfiguration config, bool alwaysUseSqlite) =>
+      config.GetConnectionString(!alwaysUseSqlite && IsCurrentOsWindows ?
         "MsSqlLocalDb" :
         "SqliteLocalDb");
 
-    public static DbContextOptionsBuilder<AppDbContext> UseOsDependentDbProvider(
-      this DbContextOptionsBuilder<AppDbContext> builder,
-      IConfigurationRoot config)
+    public static(string conString, bool forceSqlite, string migrationsAssembly) GetDbProviderDetails(IConfiguration config)
     {
-      var connectionString = GetOsDependentConnectionString(config);
-      var forceSqlite = config.GetValue<bool>("AlwaysUseSqlite");
+      var alwaysUseSqlite = config.GetValue<bool>("AlwaysUseSqlite");
 
-      string migrationsAssembly = typeof(AppDbContext).Assembly.GetName().Name;
-
-      return !forceSqlite && isWindows ?
-        builder.UseSqlServer(connectionString, opts => opts.MigrationsAssembly(migrationsAssembly)) :
-        builder.UseSqlite(connectionString, opts => opts.MigrationsAssembly(migrationsAssembly));
+      return (
+        GetOsDependentConnectionString(config, alwaysUseSqlite),
+        alwaysUseSqlite,
+        typeof(AppDbContext).Assembly.GetName().Name);
     }
   }
 }

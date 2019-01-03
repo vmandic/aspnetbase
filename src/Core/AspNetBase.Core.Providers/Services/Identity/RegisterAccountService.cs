@@ -38,6 +38,21 @@ namespace AspNetBase.Core.Providers.Services.Identity
       Func<string, int, string> getCallbackUrl,
       bool sendEmailConfirmation = true)
     {
+      if (string.IsNullOrWhiteSpace(email))
+      {
+        throw new ArgumentException("Invalid argument value provided.", nameof(email));
+      }
+
+      if (string.IsNullOrWhiteSpace(password))
+      {
+        throw new ArgumentException("Invalid argument value provided.", nameof(password));
+      }
+
+      if (getCallbackUrl == null)
+      {
+        throw new ArgumentNullException(nameof(getCallbackUrl));
+      }
+
       var user = new AppUser { UserName = email, Email = email };
       var result = await userManager.CreateAsync(user, password);
 
@@ -62,6 +77,16 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public async Task<IdentityResult> ConfirmEmailAddress(int userId, string confirmationToken)
     {
+      if (userId < 1)
+      {
+        throw new ArgumentOutOfRangeException(nameof(userId));
+      }
+
+      if (string.IsNullOrWhiteSpace(confirmationToken))
+      {
+        throw new ArgumentException("Invalid argument value provided.", nameof(confirmationToken));
+      }
+
       var user = await userManager.Users.SingleOrDefaultAsync(x => x.Id == userId);
 
       if (user == null)

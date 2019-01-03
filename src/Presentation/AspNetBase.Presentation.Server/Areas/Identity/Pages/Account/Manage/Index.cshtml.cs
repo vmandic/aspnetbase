@@ -64,21 +64,26 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account.Manage
     public async Task<IActionResult> OnPostAsync()
     {
       if (!ModelState.IsValid)
-      {
         return Page();
+
+      var result = await _manageProfileService.SaveUserProfile(User, Input.Email, Input.PhoneNumber);
+
+      if (result.saved)
+      {
+        StatusMessage = "Your profile has been updated";
+        return RedirectToPage();
       }
 
-      await _manageProfileService.SaveUserProfile(User, Input.Email, Input.PhoneNumber);
-      StatusMessage = "Your profile has been updated";
-      return RedirectToPage();
+      foreach (var error in result.errors)
+        ModelState.AddModelError(string.Empty, error);
+
+      return Page();
     }
 
     public async Task<IActionResult> OnPostSendVerificationEmailAsync()
     {
       if (!ModelState.IsValid)
-      {
         return Page();
-      }
 
       await _manageProfileService.SendVerificationEmail(
         User,

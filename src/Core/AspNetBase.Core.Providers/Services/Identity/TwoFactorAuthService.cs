@@ -34,6 +34,11 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public async Task<SignInResult> SignIn(string authCode, bool rememberMe, bool rememberMachine)
     {
+      if (string.IsNullOrWhiteSpace(authCode))
+      {
+        throw new ArgumentException("Invalid argument value provided.", nameof(authCode));
+      }
+
       await EnsureUserForTwoFactorAuthentication();
       var result = await signInManager.TwoFactorAuthenticatorSignInAsync(
         authCode,
@@ -57,6 +62,11 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public async Task<SignInResult> RecoveryCodeSignInAsync(string recoveryCode)
     {
+      if (string.IsNullOrWhiteSpace(recoveryCode))
+      {
+        throw new ArgumentException("Invalid argument value provided.", nameof(recoveryCode));
+      }
+
       await EnsureUserForTwoFactorAuthentication();
       var result = await signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 

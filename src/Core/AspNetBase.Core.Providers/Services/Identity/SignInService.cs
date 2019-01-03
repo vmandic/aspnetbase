@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,6 +32,11 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public async Task < (SignInResult, IEnumerable<string> errorMessages) > SignInWithPassword(LoginDto loginDto)
     {
+      if (loginDto == null)
+      {
+        throw new ArgumentNullException(nameof(loginDto));
+      }
+
       // NOTE: uses the default UserClaimsFactory and assigns the default
       // Claims with the default Identity.Application Auth Scheme
       var result = await signInManager.PasswordSignInAsync(
@@ -69,6 +75,11 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public Task SignOut(string authenticationScheme)
     {
+      if (string.IsNullOrWhiteSpace(authenticationScheme))
+      {
+        throw new ArgumentException("Invalid argument value provided.", nameof(authenticationScheme));
+      }
+
       return _httpContextAccessor.HttpContext.SignOutAsync(authenticationScheme).ContinueWith(t =>
       {
         if (t.Status == TaskStatus.RanToCompletion)

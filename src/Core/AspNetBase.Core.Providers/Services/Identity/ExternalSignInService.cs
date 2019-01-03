@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -24,6 +25,12 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public ChallengeResult ChallengeExternalLoginProvider(string provider, string redirectUrl)
     {
+      if (string.IsNullOrWhiteSpace(provider))
+        throw new ArgumentException("Invalid argument value provided.", nameof(provider));
+
+      if (string.IsNullOrWhiteSpace(redirectUrl))
+        throw new ArgumentException("Invalid argument value provided.", nameof(redirectUrl));
+
       // Request a redirect to the external login provider.
       var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
       return new ChallengeResult(provider, properties);
@@ -80,6 +87,11 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public async Task < (IdentityResult, IExternalLoginModel, ICollection<string> errorMessages) > ConfirmExternalLogin(string email)
     {
+      if (string.IsNullOrWhiteSpace(email))
+      {
+        throw new ArgumentException("message", nameof(email));
+      }
+
       var errorMessages = new List<string>();
 
       // Get the information about the user from the external login provider

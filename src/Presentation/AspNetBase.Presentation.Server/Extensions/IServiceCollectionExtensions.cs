@@ -24,42 +24,44 @@ namespace AspNetBase.Presentation.Server.Extensions
 {
   public static class IServiceCollectionExtensions
   {
-    public static IServiceCollection AddEntityFramework(this IServiceCollection services)
+    public static IServiceCollection AddEntityFramework(this IServiceCollection services, IConfiguration config)
     {
       services.AddSingleton<IDesignTimeDbContextFactory<AppDbContext>, DesignTimeDbContextFactory>();
 
-      services.AddScoped(
-        s => s.GetService<IDesignTimeDbContextFactory<AppDbContext>>().CreateDbContext(null));
-
-      services.AddScoped(s => (DbContext)s.GetService<AppDbContext>());
+      services.AddDbContext<AppDbContext>(opts =>
+      {
+        opts.UseOsDependentDbProvider(config);
+      });
 
       return services;
     }
 
-    public static IServiceCollection AddIdentityAuthWithEntityFramework(this IServiceCollection services)
+    public static IServiceCollection AddIdentity(this IServiceCollection services)
     {
       services
         .AddIdentity<AppUser, AppRole>(opts =>
-        { // adds authentication, cookies, and identity services
-          // TODO: set additional ASP.NET Identity options
+        { // NOTE: adds authentication, cookies, and identity services
+          opts.User.RequireUniqueEmail = true;
         })
-        .AddEntityFrameworkStores<AppDbContext>() // adds default User and Role store implementations
-        .AddDefaultTokenProviders(); // adds the identity default token generators
+        .AddEntityFrameworkStores<AppDbContext>() // NOTE: adds default User and Role store implementations
+        .AddDefaultTokenProviders(); // NOTE: adds the identity default token generators
 
       // NOTE: overrides the AddIdentity defaults for the added cookies with AddIdentity
-      services.ConfigureApplicationCookie(options =>
+      services.ConfigureApplicationCookie(opts =>
       {
-        options.LoginPath = $"/Identity/Account/Login";
-        options.LogoutPath = $"/Identity/Account/Logout";
-        options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+        opts.LoginPath = $"/Identity/Account/Login";
+        opts.LogoutPath = $"/Identity/Account/Logout";
+        opts.AccessDeniedPath = $"/Identity/Account/AccessDenied";
       });
+
+      // ? TODO: add JwtBearer Auth and auth policies
 
       return services;
     }
 
     public static IServiceCollection AddHttpHelpers(this IServiceCollection services)
     {
-      // NOTE: already injected with AddIdentity
+      // NOTE: already injected with AddIdentity (but later)
       services.AddHttpContextAccessor();
       services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
       services.AddScoped<IUrlHelper>(

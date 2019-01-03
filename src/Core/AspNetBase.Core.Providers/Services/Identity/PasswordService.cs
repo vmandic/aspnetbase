@@ -32,12 +32,22 @@ namespace AspNetBase.Core.Providers.Services.Identity
       Func<string, string> getCallbackUrl,
       bool sendEmailConfirmation = true)
     {
+      if (string.IsNullOrWhiteSpace(userEmail))
+      {
+        throw new ArgumentException("Invalid argument value provided.", nameof(userEmail));
+      }
+
+      if (getCallbackUrl == null)
+      {
+        throw new ArgumentNullException(nameof(getCallbackUrl));
+      }
+
       var user = await userManager.FindByEmailAsync(userEmail);
 
       if (user == null || !(await userManager.IsEmailConfirmedAsync(user)))
         return (false, string.Empty);
 
-      // For more information on how to enable account confirmation and password reset please 
+      // For more information on how to enable account confirmation and password reset please
       // visit https://go.microsoft.com/fwlink/?LinkID=532713
       var code = await userManager.GeneratePasswordResetTokenAsync(user);
       var callbackUrl = getCallbackUrl(code);
@@ -53,6 +63,21 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     public async Task < (bool, IEnumerable<string> errorMessages) > ResetPassword(string email, string resetToken, string password)
     {
+      if (string.IsNullOrWhiteSpace(email))
+      {
+        throw new ArgumentException("Invalid argument value provided.", nameof(email));
+      }
+
+      if (string.IsNullOrWhiteSpace(resetToken))
+      {
+        throw new ArgumentException("Invalid argument value provided.", nameof(resetToken));
+      }
+
+      if (string.IsNullOrWhiteSpace(password))
+      {
+        throw new ArgumentException("Invalid argument value provided.", nameof(password));
+      }
+
       var user = await userManager.FindByEmailAsync(email);
 
       if (user == null)
@@ -62,7 +87,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
       if (result.Succeeded)
       {
-        logger.LogInformation($"Password reset succesfully for user: '{email}'");
+        logger.LogInformation($"Password reset successfully for user: '{email}'");
         return (true, Enumerable.Empty<string>());
       }
 

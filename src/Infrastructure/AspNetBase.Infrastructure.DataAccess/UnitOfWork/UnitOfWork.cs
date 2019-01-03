@@ -10,11 +10,11 @@ namespace AspNetBase.Infrastructure.DataAccess.UnitOfWork
   [RegisterDependency(ServiceLifetime.Scoped)]
   public class UnitOfWork : IUnitOfWork
   {
-    private readonly DbContext ctx;
+    private readonly AppDbContext _context;
 
-    public UnitOfWork(DbContext ctx)
+    public UnitOfWork(AppDbContext context)
     {
-      this.ctx = ctx;
+      _context = context;
     }
 
     public event Action AfterCommit;
@@ -23,7 +23,7 @@ namespace AspNetBase.Infrastructure.DataAccess.UnitOfWork
     {
       try
       {
-        var result = ctx.SaveChanges() > 0;
+        var result = _context.SaveChanges() > 0;
 
         if (result)
           AfterCommit?.Invoke();
@@ -44,7 +44,7 @@ namespace AspNetBase.Infrastructure.DataAccess.UnitOfWork
     {
       try
       {
-        var result = await ctx.SaveChangesAsync() > 0;
+        var result = await _context.SaveChangesAsync() > 0;
 
         if (result)
           AfterCommit?.Invoke();

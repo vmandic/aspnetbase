@@ -3,12 +3,6 @@ using AspNetBase.Core.Composition;
 using AspNetBase.Presentation.Server.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -31,8 +25,8 @@ namespace AspNetBase.Presentation.Server
     {
       services
         .AddHttpHelpers()
-        .AddEntityFramework()
-        .AddIdentityAuthWithEntityFramework()
+        .AddEntityFramework(Configuration)
+        .AddIdentity()
         .AddMvcWithRazorPages();
 
       return CompositionRoot.Initialize(services, LoggerFactory.CreateLogger<CompositionRoot>());

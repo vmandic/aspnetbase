@@ -4,13 +4,16 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Core.Contracts.Services.Identity.AccountManagement;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
 {
+  [RegisterDependency(ServiceLifetime.Scoped)]
   public class ManageAccountService : IdentityBaseService<ManageAccountService>, IManageAccountService
   {
     public ManageAccountService(
@@ -22,6 +25,7 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
     {
       var user = await GetUserOrThrow(loggedInUser);
 
+      // NOTE: handles password strength and rules validation set through ASP.NET Identity
       var changePasswordResult = await userManager.ChangePasswordAsync(
         user,
         oldPassword,
@@ -63,7 +67,7 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
 
       logger.LogInformation("User with ID '{UserId}' deleted themselves.", user.Id);
 
-      return true;
+      return result.Succeeded;
     }
 
     public async Task<IDictionary<string, string>> GetPersonalData(ClaimsPrincipal loggedInUser)
@@ -71,7 +75,7 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
       var user = await GetUserOrThrow(loggedInUser);
       logger.LogInformation("User with ID '{UserId}' asked for their personal data.", user.Id);
 
-      // Only include personal data for download
+      // NOTE: Only include personal data for download
       var personalData = new Dictionary<string, string>();
 
       foreach (var p in GetPersonalDataProps())

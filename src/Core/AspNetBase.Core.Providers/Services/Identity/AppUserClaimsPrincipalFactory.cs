@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
@@ -17,6 +18,9 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
     protected override async Task<ClaimsIdentity> GenerateClaimsAsync(AppUser user)
     {
+      if (user == null)
+        throw new ArgumentNullException(nameof(user));
+
       var identity = await base.GenerateClaimsAsync(user);
       identity.AddClaim(new Claim("uid", user.Uid.ToString()));
 
