@@ -177,7 +177,15 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
 
     public async Task<bool> Reset2fa(ClaimsPrincipal loggedInUser)
     {
-      throw new System.NotImplementedException();
+      var user = await GetUserOrThrow(loggedInUser);
+
+      await userManager.SetTwoFactorEnabledAsync(user, false);
+      await userManager.ResetAuthenticatorKeyAsync(user);
+
+      logger.LogInformation("User with ID '{UserId}' has reset their authentication app key.", user.Id);
+
+      await signInManager.RefreshSignInAsync(user);
+      return true;
     }
 
     public async Task < (string sharedKey, string qrCodeUri) > Get2faSharedKeyAndQrCodeUri(ClaimsPrincipal loggedInUser, AppUser user = null, string authUriFormat = null, string qrCodeIssuer = null)

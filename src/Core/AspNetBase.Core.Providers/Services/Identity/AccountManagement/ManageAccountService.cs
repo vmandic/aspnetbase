@@ -85,9 +85,17 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
       .GetProperties()
       .Where(p => Attribute.IsDefined(p, typeof(PersonalDataAttribute)));
 
-    public Task<bool> SetUserNewPassword(ClaimsPrincipal loggedInUser, string newPassword)
+    public async Task < (bool passwordSet, IEnumerable<string> errors) > SetUserNewPassword(ClaimsPrincipal loggedInUser, string newPassword)
     {
-      throw new System.NotImplementedException();
+      var user = await GetUserOrThrow(loggedInUser);
+
+      var addPasswordResult = await userManager.AddPasswordAsync(user, newPassword);
+
+      if (!addPasswordResult.Succeeded)
+        return (false, addPasswordResult.Errors.Select(x => x.Description));
+
+      await signInManager.RefreshSignInAsync(user);
+      return (true, Enumerable.Empty<string>());
     }
   }
 }
