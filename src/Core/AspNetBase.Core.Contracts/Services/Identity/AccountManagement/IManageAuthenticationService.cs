@@ -11,13 +11,13 @@ namespace AspNetBase.Core.Contracts.Services.Identity.AccountManagement
   public interface IManageAuthenticationService : IIdentityBaseService
   {
     // Disable 2fa:
-    Task<bool> CheckUserHas2faEnabled(ClaimsPrincipal loggedInUser);
+    Task<bool> CheckUserHas2faEnabled(ClaimsPrincipal loggedInUser, AppUser user = null);
     Task<bool> Disable2fa(ClaimsPrincipal loggedInUser);
 
     // Enable 2fa:
     Task < (string sharedKey, string qrCodeUri) > Get2faSharedKeyAndQrCodeUri(ClaimsPrincipal loggedInUser, AppUser user = null, string authUriFormat = null, string qrCodeIssuer = null);
     Task < (bool isTokenValid, IEnumerable<string> recoveryCodes) > Enable2fa(ClaimsPrincipal loggedInUser, string verificationCode, AppUser user = null);
-    Task<IEnumerable<string>> GenerateNew2faRecoveryCodes(ClaimsPrincipal loggedInUser);
+    Task<IEnumerable<string>> GenerateNew2faRecoveryCodes(ClaimsPrincipal loggedInUser, int numberOfCodesToGenerate = 10, AppUser user = null);
     Task<bool> Reset2fa(ClaimsPrincipal loggedInUser);
 
     // External logins:

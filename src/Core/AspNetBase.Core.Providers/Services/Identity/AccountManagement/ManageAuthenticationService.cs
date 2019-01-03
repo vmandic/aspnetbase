@@ -47,9 +47,9 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
       return new ChallengeResult(externalLoginProvider, authProps);
     }
 
-    public async Task<bool> CheckUserHas2faEnabled(ClaimsPrincipal loggedInUser)
+    public async Task<bool> CheckUserHas2faEnabled(ClaimsPrincipal loggedInUser, AppUser user = null)
     {
-      var user = await GetUserOrThrow(loggedInUser);
+      user = user ?? await GetUserOrThrow(loggedInUser);
       return await userManager.GetTwoFactorEnabledAsync(user);
     }
 
@@ -108,14 +108,24 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
       throw new System.NotImplementedException();
     }
 
-    public Task<IEnumerable<string>> GenerateNew2faRecoveryCodes(ClaimsPrincipal loggedInUser)
+    public async Task<IEnumerable<string>> GenerateNew2faRecoveryCodes(ClaimsPrincipal loggedInUser, int numberOfCodesToGenerate = 10, AppUser user = null)
     {
-      throw new System.NotImplementedException();
+      user = user ?? await GetUserOrThrow(loggedInUser);
+
+      var codes = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(
+        user,
+        numberOfCodesToGenerate);
+
+      logger.LogInformation(
+        "User with ID '{UserId}' has generated new 2FA recovery codes.",
+        user.Id);
+
+      return codes;
     }
 
     public Task < (bool hasAuthenticator, bool is2FaEnabled, bool isMachineRemembered, int recoveryCodesLeft) > Get2faInfo(ClaimsPrincipal loggedInUser)
     {
-      throw new System.NotImplementedException();
+      return null;
     }
 
     public async Task < (IList<UserLoginInfo> currentLogins, IList<AuthenticationScheme> otherLogins, bool enableLoginRemoval) > GetUserLogins(ClaimsPrincipal loggedInUser)

@@ -46,7 +46,7 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account.Manage
 
       if (!loginRemoved)
       {
-        throw new InvalidOperationException($"Unexpected error occurred removing external login for user with username '{User.Identity.Name}'.");
+        throw new InvalidOperationException($"Unexpected error occurred removing external login for user with ID '{User.GetUserId()}'.");
       }
 
       StatusMessage = "The external login was removed.";
