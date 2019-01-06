@@ -1,36 +1,36 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AspNetBase.Core.Composition;
 using AspNetBase.Infrastructure.DataAccess.Data;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
-using AspNetBase.Presentation.Server.Extensions;
 using AspNetBase.Presentation.Server.Utilities;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Presentation.Server.Extensions
 {
-  public static class IServiceCollectionExtensions
+    public static class IServiceCollectionExtensions
   {
-    public static IServiceCollection AddEntityFramework(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddEntityFramework(
+      this IServiceCollection services,
+      IConfiguration config,
+      ILoggerFactory loggerFactory,
+      IHostingEnvironment env)
     {
       services.AddSingleton<IDesignTimeDbContextFactory<AppDbContext>, DesignTimeDbContextFactory>();
 
       services.AddDbContext<AppDbContext>(opts =>
       {
-        opts.UseOsDependentDbProvider(config);
+        opts
+          .UseLoggerFactory(loggerFactory)
+          .UseOsDependentDbProvider(config);
+
+        if (env.IsDevelopment())
+          opts.EnableSensitiveDataLogging();
       });
 
       return services;

@@ -23,7 +23,7 @@ namespace AspNetBase.Infrastructure.DataAccess.UnitOfWork
     {
       try
       {
-        var result = _context.SaveChanges() > 0;
+        var result = _context.SaveChanges() >= 0;
 
         if (result)
           AfterCommit?.Invoke();
@@ -44,7 +44,7 @@ namespace AspNetBase.Infrastructure.DataAccess.UnitOfWork
     {
       try
       {
-        var result = await _context.SaveChangesAsync() > 0;
+        var result = await _context.SaveChangesAsync() >= 0;
 
         if (result)
           AfterCommit?.Invoke();

@@ -13,11 +13,13 @@ namespace AspNetBase.Presentation.Server
   {
     public ILoggerFactory LoggerFactory { get; }
     public IConfiguration Configuration { get; }
+    public IHostingEnvironment HostEnv { get; }
 
-    public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
+    public Startup(IConfiguration config, ILoggerFactory loggerFact, IHostingEnvironment env)
     {
-      LoggerFactory = loggerFactory;
-      Configuration = configuration;
+      LoggerFactory = loggerFact;
+      Configuration = config;
+      HostEnv = env;
     }
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -25,7 +27,7 @@ namespace AspNetBase.Presentation.Server
     {
       services
         .AddHttpHelpers()
-        .AddEntityFramework(Configuration)
+        .AddEntityFramework(Configuration, LoggerFactory, HostEnv)
         .AddIdentity()
         .AddMvcWithRazorPages();
 
@@ -33,9 +35,9 @@ namespace AspNetBase.Presentation.Server
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app)
     {
-      if (env.IsDevelopment())
+      if (HostEnv.IsDevelopment())
       {
         app
           .UseDeveloperExceptionPage()

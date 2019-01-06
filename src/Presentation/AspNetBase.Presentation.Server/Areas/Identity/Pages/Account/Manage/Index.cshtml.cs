@@ -23,6 +23,7 @@ namespace AspNetBase.Presentation.Server.Areas.Identity.Pages.Account.Manage
       _manageProfileService = manageProfileService;
     }
 
+    [BindProperty]
     public string Username { get; set; }
 
     public bool IsEmailConfirmed { get; set; }
