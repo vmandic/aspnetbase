@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace AspNetBase.Infrastructure.DataAccess.Migrations
+namespace AspNetBase.Infrastructure.DbMigrations.SqliteMigrations
 {
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -104,6 +104,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     UserId = table.Column<int>(nullable: false),
                     Uid = table.Column<Guid>(nullable: false),
                     Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table =>
                 {
@@ -124,6 +125,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     RoleId = table.Column<int>(nullable: false),
                     Uid = table.Column<Guid>(nullable: false),
                     Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table =>
                 {
@@ -150,7 +152,8 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true),
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Uid = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>

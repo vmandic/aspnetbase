@@ -1,5 +1,6 @@
 using AspNetBase.Infrastructure.DataAccess.Data;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
+using AspNetBase.Infrastructure.DataAccess.Extensions;
 using AspNetBase.Presentation.Server.Utilities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Presentation.Server.Extensions
@@ -63,8 +65,8 @@ namespace AspNetBase.Presentation.Server.Extensions
     {
       // NOTE: already injected with AddIdentity (but later)
       services.AddHttpContextAccessor();
-      services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-      services.AddScoped<IUrlHelper>(
+      services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+      services.TryAddScoped<IUrlHelper>(
         s => new UrlHelper(s.GetService<IActionContextAccessor>().ActionContext));
 
       return services;

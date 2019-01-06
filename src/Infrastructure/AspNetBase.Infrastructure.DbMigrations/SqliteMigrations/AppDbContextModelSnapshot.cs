@@ -3,16 +3,14 @@ using System;
 using AspNetBase.Infrastructure.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace AspNetBase.Infrastructure.DataAccess.Migrations
+namespace AspNetBase.Infrastructure.DbMigrations.SqliteMigrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20181231145618_initial")]
-    partial class initial
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,7 +151,8 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
 
                     b.Property<string>("ProviderKey");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -177,7 +176,8 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
 
                     b.Property<int>("RoleId");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("Uid");
 
@@ -199,7 +199,8 @@ namespace AspNetBase.Infrastructure.DataAccess.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("Uid");
 

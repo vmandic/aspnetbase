@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\..\Core\AspNetBase.Core.Contracts\AspNetBase.Core.Contracts.csproj" />
     <ProjectReference Include="..\..\Core\AspNetBase.Core.Models\AspNetBase.Core.Models.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbMigrations\AspNetBase.Infrastructure.DbMigrations.csproj" />
   </ItemGroup>
 
   <ItemGroup>
