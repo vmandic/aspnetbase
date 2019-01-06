@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Common.Utils.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Core.Composition.Extensions
@@ -22,14 +23,9 @@ namespace AspNetBase.Core.Composition.Extensions
 
     public static IServiceCollection RegisterExportedTypes(this IServiceCollection services, ILogger<CompositionRoot> logger)
     {
-      var funcType = typeof(Func<>);
-      var lazyType = typeof(Lazy<>);
-
-      // WARNING: parallel processing causes issues, possible due to closure fn below
+      // WARNING: parallel processing causes issues
       foreach (var registerType in GetIocCoreProviderRegisteredTypes())
       {
-        logger.LogInformation("Processing IoC registration type: '{registrationType}'", registerType.FullName);
-
         var dependencyAttr = registerType.GetCustomAttribute<RegisterDependencyAttribute>();
         var contractType = dependencyAttr.InterfaceType ?? registerType.GetInterface($"I{registerType.Name}");
 
@@ -40,18 +36,18 @@ namespace AspNetBase.Core.Composition.Extensions
         switch (dependencyAttr.InjectionStyle)
         {
           case ServiceInjectionStyle.Instant:
-            RegisterInstantService(registerType, contractType, dependencyAttr);
+            RegisterInstantService(services, registerType, contractType, dependencyAttr, logger);
             break;
           case ServiceInjectionStyle.Func:
-            RegisterFuncService(registerType, contractType, dependencyAttr);
+            RegisterFuncService(services, registerType, contractType, dependencyAttr, logger);
             break;
           case ServiceInjectionStyle.Lazy:
-            RegisterLazyService(registerType, contractType, dependencyAttr);
+            RegisterLazyService(services, registerType, contractType, dependencyAttr, logger);
             break;
           case ServiceInjectionStyle.All:
-            RegisterInstantService(registerType, contractType, dependencyAttr);
-            RegisterFuncService(registerType, contractType, dependencyAttr);
-            RegisterLazyService(registerType, contractType, dependencyAttr);
+            RegisterInstantService(services, registerType, contractType, dependencyAttr, logger);
+            RegisterFuncService(services, registerType, contractType, dependencyAttr, logger);
+            RegisterLazyService(services, registerType, contractType, dependencyAttr, logger);
             break;
           default:
             throw new InvalidOperationException("Unsupported IoC container service injection style.");
@@ -59,62 +55,67 @@ namespace AspNetBase.Core.Composition.Extensions
       }
 
       return services;
+    }
 
-      void RegisterInstantService(
-        Type registerType,
-        Type contractType,
-        RegisterDependencyAttribute depAttr)
-      {
-        services.Add(new ServiceDescriptor(contractType, registerType, depAttr.Lifetime));
-        logger.LogInformation(
-          "Type '{type}' injected as '{contract}' with injection style '{style}' and lifetime '{lifetime}'.",
-          registerType.FullName,
-          contractType.FullName,
-          depAttr.InjectionStyle,
-          depAttr.Lifetime);
-      }
+    static void RegisterInstantService(
+      IServiceCollection services,
+      Type registerType,
+      Type contractType,
+      RegisterDependencyAttribute depAttr,
+      ILogger logger)
+    {
+      services.TryAdd(new ServiceDescriptor(contractType, registerType, depAttr.Lifetime));
+      LogInjection(logger, registerType, contractType, depAttr);
+    }
 
-      void RegisterLazyService(
-        Type registerType,
-        Type contractType,
-        RegisterDependencyAttribute depAttr)
-      {
-        services.Add(new ServiceDescriptor(
-          lazyType.MakeGenericType(contractType),
+    static void RegisterLazyService(
+      IServiceCollection services,
+      Type registerType,
+      Type contractType,
+      RegisterDependencyAttribute depAttr,
+      ILogger logger)
+    {
+      services.TryAdd(new ServiceDescriptor(
+        typeof(Lazy<>).MakeGenericType(contractType),
 
-          // WARNING: Generic type unsupported
-          sp => Lazy.Create(() => Activator.CreateInstance(registerType)),
+        // WARNING: Generic type unsupported
+        sp => Lazy.Create(() => Activator.CreateInstance(registerType)),
 
-          depAttr.Lifetime));
+        depAttr.Lifetime));
 
-        logger.LogInformation(
-          "Type '{type}' injected as '{contract}' with injection style '{style}' and lifetime '{lifetime}'.",
-          registerType.FullName,
-          contractType.FullName,
-          depAttr.InjectionStyle,
-          depAttr.Lifetime);
-      }
+      LogInjection(logger, registerType, contractType, depAttr);
+    }
 
-      void RegisterFuncService(
-        Type registerType,
-        Type contractType,
-        RegisterDependencyAttribute depAttr)
-      {
-        services.Add(new ServiceDescriptor(
-          funcType.MakeGenericType(contractType),
+    private static void RegisterFuncService(
+      IServiceCollection services,
+      Type registerType,
+      Type contractType,
+      RegisterDependencyAttribute depAttr,
+      ILogger logger)
+    {
+      services.TryAdd(new ServiceDescriptor(
+        typeof(Func<>).MakeGenericType(contractType),
 
-          // WARNING: Generic type unsupported
-          sp => FuncToObject(() => Activator.CreateInstance(registerType)),
+        // WARNING: Generic type unsupported
+        sp => FuncToObject(() => Activator.CreateInstance(registerType)),
 
-          depAttr.Lifetime));
+        depAttr.Lifetime));
 
-        logger.LogInformation(
-          "Type '{type}' injected as '{contract}' with injection style '{style}' and lifetime '{lifetime}'.",
-          registerType.FullName,
-          contractType.FullName,
-          depAttr.InjectionStyle,
-          depAttr.Lifetime);
-      }
+      LogInjection(logger, registerType, contractType, depAttr);
+    }
+
+    private static void LogInjection(
+      ILogger logger,
+      Type registerType,
+      Type contractType,
+      RegisterDependencyAttribute depAttr)
+    {
+      logger.LogInformation(
+        "Type '{type}' injected as '{contract}' with style '{style}' and scope '{lifetime}'.",
+        registerType.FullName,
+        contractType.FullName,
+        depAttr.InjectionStyle,
+        depAttr.Lifetime);
     }
 
     private static object FuncToObject<T>(Func<T> func) => func;
