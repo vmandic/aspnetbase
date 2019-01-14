@@ -1,4 +1,4 @@
-using AspNetBase.Infrastructure.DataAccess.Data;
+using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.Extensions;
 using AspNetBase.Presentation.Server.Utilities;

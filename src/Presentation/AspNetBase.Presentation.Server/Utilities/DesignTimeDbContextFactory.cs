@@ -1,5 +1,5 @@
 using System.IO;
-using AspNetBase.Infrastructure.DataAccess.Data;
+using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DataAccess.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;

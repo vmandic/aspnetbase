@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
-using AspNetBase.Infrastructure.DataAccess.Data;
+using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
