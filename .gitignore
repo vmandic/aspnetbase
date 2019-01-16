@@ -337,3 +337,6 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+
+# Custom ignores:
+local.sqlite
