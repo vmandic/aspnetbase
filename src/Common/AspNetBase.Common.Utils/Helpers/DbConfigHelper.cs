@@ -16,7 +16,7 @@ namespace AspNetBase.Common.Utils.Helpers
 
     public static(string conString, bool forceSqlite, string migrationsAssembly) GetDbProviderDetails(IConfiguration config)
     {
-      var alwaysUseSqlite = config.GetValue<bool>("AlwaysUseSqlite");
+      var alwaysUseSqlite = config.GetValue<bool>("Database:AlwaysUseSqlite");
 
       return (
         GetOsDependentConnectionString(config, alwaysUseSqlite),

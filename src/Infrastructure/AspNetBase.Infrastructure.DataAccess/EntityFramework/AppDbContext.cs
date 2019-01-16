@@ -25,6 +25,7 @@ namespace AspNetBase.Infrastructure.DataAccess.EntityFramework
         .GetTypes() ?
         .Where(x =>
           x != null &&
+          x.IsClass &&
           x.Namespace != null &&
           x.Namespace.Contains("Entities")) ?
         .Distinct();

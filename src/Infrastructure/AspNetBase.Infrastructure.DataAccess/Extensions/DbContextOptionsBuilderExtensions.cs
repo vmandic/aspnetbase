@@ -19,7 +19,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Extensions
       if (config == null)
         throw new ArgumentNullException(nameof(config));
 
-      var (connectionString, forceSqlite, migrationsAssembly) = DbConfigHelper.GetDbProviderDetails(config);
+      var(connectionString, forceSqlite, migrationsAssembly) = DbConfigHelper.GetDbProviderDetails(config);
 
       return !forceSqlite && DbConfigHelper.IsCurrentOsWindows ?
         builder.UseSqlServer(connectionString, opts => opts.MigrationsAssembly(migrationsAssembly)) :
@@ -36,7 +36,7 @@ namespace AspNetBase.Infrastructure.DataAccess.Extensions
       if (config == null)
         throw new ArgumentNullException(nameof(config));
 
-      var (connectionString, forceSqlite, migrationsAssembly) = DbConfigHelper.GetDbProviderDetails(config);
+      var(connectionString, forceSqlite, migrationsAssembly) = DbConfigHelper.GetDbProviderDetails(config);
 
       return !forceSqlite && DbConfigHelper.IsCurrentOsWindows ?
         builder.UseSqlServer(connectionString, opts => opts.MigrationsAssembly(migrationsAssembly)) :
