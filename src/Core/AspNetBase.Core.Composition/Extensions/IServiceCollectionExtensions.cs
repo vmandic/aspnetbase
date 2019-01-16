@@ -64,7 +64,7 @@ namespace AspNetBase.Core.Composition.Extensions
       RegisterDependencyAttribute depAttr,
       ILogger logger)
     {
-      services.TryAdd(new ServiceDescriptor(contractType, registerType, depAttr.Lifetime));
+      services.Add(new ServiceDescriptor(contractType, registerType, depAttr.Lifetime));
       LogInjection(logger, registerType, contractType, depAttr);
     }
 
@@ -75,7 +75,7 @@ namespace AspNetBase.Core.Composition.Extensions
       RegisterDependencyAttribute depAttr,
       ILogger logger)
     {
-      services.TryAdd(new ServiceDescriptor(
+      services.Add(new ServiceDescriptor(
         typeof(Lazy<>).MakeGenericType(contractType),
 
         // WARNING: Generic type unsupported
@@ -93,7 +93,7 @@ namespace AspNetBase.Core.Composition.Extensions
       RegisterDependencyAttribute depAttr,
       ILogger logger)
     {
-      services.TryAdd(new ServiceDescriptor(
+      services.Add(new ServiceDescriptor(
         typeof(Func<>).MakeGenericType(contractType),
 
         // WARNING: Generic type unsupported
