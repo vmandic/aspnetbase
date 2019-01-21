@@ -2,24 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DbInitilizer.Seed.Base;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Infrastructure.DbInitilizer.Seed
 {
-    internal class AppUserSeed : SeedBase<AppUser>
+  [RegisterDependency(ServiceLifetime.Scoped)]
+  internal class AppUserSeed : SeedBase<AppUser>
   {
     const string DEFAULT_PASSWORD = "Abcd1234!";
     private readonly UserManager<AppUser> _userManager;
 
-    public AppUserSeed(AppDbContext context, UserManager<AppUser> userManager) : base(context) =>
+    public AppUserSeed(AppDbContext context, ILogger<AppUser> logger, UserManager<AppUser> userManager)
+    : base(context, logger) =>
       _userManager = userManager;
+
+    public override int ExceutionOrder => 2;
 
     public override void Run()
     {
+      Logger.LogInformation("Seeding '{entityName}' data...", nameof(AppUser));
 
       #region Seed data (without passwords)
       var users = new List<AppUser>

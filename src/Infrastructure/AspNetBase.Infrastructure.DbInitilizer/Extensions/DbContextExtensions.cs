@@ -31,7 +31,7 @@ namespace AspNetBase.Infrastructure.DbInitilizer.Extensions
 
     public static void AddOrUpdate<TEntity>(this DbContext ctx, TEntity entity) where TEntity : class, IEntityBase<int>
     {
-      var existsInDb = ctx.Set<TEntity>().Any(x => x.Id == entity.Id);
+      var existsInDb = ctx.Set<TEntity>().AsNoTracking().Any(x => x.Id == entity.Id);
 
       if (existsInDb)
       {

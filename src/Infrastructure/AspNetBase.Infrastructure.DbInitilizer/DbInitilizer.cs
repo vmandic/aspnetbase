@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DbInitilizer.Seed;
+using AspNetBase.Infrastructure.DbInitilizer.Seed.Base;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,11 +43,13 @@ namespace AspNetBase.Infrastructure.DbInitilizer
       {
         var services = scope.ServiceProvider;
 
-        var dbContext = services.GetService<AppDbContext>();
-        var userManager = services.GetService<UserManager<AppUser>>();
-
         // Custom seed procedures per entity:
-        new AppUserSeed(dbContext, userManager).Run();
+        var seeders = typeof(DbInitilizer).Assembly.GetTypes()
+          .Where(x => x.IsClass && x.Namespace.EndsWith("Seed") && !x.Name.Contains("DisplayClass"))
+          .Select(x => (ISeed) services.GetService(x))
+          .OrderBy(x => x.ExceutionOrder);
+
+        foreach (var seeder in seeders) seeder.Run();
       }
     }
   }
