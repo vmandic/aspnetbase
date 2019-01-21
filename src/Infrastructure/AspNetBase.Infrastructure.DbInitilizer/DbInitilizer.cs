@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
@@ -44,12 +45,16 @@ namespace AspNetBase.Infrastructure.DbInitilizer
         var services = scope.ServiceProvider;
 
         // Custom seed procedures per entity:
-        var seeders = typeof(DbInitilizer).Assembly.GetTypes()
-          .Where(x => x.IsClass && x.Namespace.EndsWith("Seed") && !x.Name.Contains("DisplayClass"))
-          .Select(x => (ISeed) services.GetService(x))
-          .OrderBy(x => x.ExceutionOrder);
+        var seedersTypes = typeof(DbInitilizer).Assembly.GetTypes()
+          .Where(x => x.IsClass && (x.Namespace?.EndsWith("Seed") == true) && !x.IsDefined(typeof(CompilerGeneratedAttribute), false))
+          .ToList();
 
-        foreach (var seeder in seeders) seeder.Run();
+        var seeders = seedersTypes.Select(x => (ISeed) services.GetService(x)).OrderBy(x => x.ExceutionOrder);
+
+        foreach (var seeder in seeders)
+        {
+          seeder.Run();
+        }
       }
     }
   }

@@ -17,16 +17,16 @@ namespace AspNetBase.Common.Utils.Attributes
   {
     public RegisterDependencyAttribute(
       ServiceLifetime lifetime,
-      Type interfaceType = null,
+      Type contractType = null,
       ServiceInjectionStyle injectionStyle = ServiceInjectionStyle.Instant)
     {
       Lifetime = lifetime;
-      InterfaceType = interfaceType;
+      ContractType = contractType;
       InjectionStyle = injectionStyle;
     }
 
     public ServiceLifetime Lifetime { get; }
-    public Type InterfaceType { get; }
+    public Type ContractType { get; }
     public ServiceInjectionStyle InjectionStyle { get; }
   }
 }

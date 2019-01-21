@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Infrastructure.DbInitilizer.Seed
 {
-  [RegisterDependency(ServiceLifetime.Scoped)]
+  [RegisterDependency(ServiceLifetime.Scoped, typeof(AppUserRoleSeed))]
   public class AppUserRoleSeed : SeedBase<AppUserRole>
   {
     public AppUserRoleSeed(AppDbContext context, ILogger<AppUserRole> logger) : base(context, logger) { }

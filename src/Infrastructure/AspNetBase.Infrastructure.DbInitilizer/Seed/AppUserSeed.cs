@@ -13,14 +13,13 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Infrastructure.DbInitilizer.Seed
 {
-  [RegisterDependency(ServiceLifetime.Scoped)]
+  [RegisterDependency(ServiceLifetime.Scoped, typeof(AppUserSeed))]
   internal class AppUserSeed : SeedBase<AppUser>
   {
     const string DEFAULT_PASSWORD = "Abcd1234!";
     private readonly UserManager<AppUser> _userManager;
 
-    public AppUserSeed(AppDbContext context, ILogger<AppUser> logger, UserManager<AppUser> userManager)
-    : base(context, logger) =>
+    public AppUserSeed(AppDbContext context, ILogger<AppUser> logger, UserManager<AppUser> userManager) : base(context, logger) =>
       _userManager = userManager;
 
     public override int ExceutionOrder => 2;

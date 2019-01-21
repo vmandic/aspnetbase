@@ -14,10 +14,13 @@ namespace AspNetBase.Core.Composition.Extensions
   public static class IServiceCollectionExtensions
   {
     private static IEnumerable<Type> GetIocCoreProviderRegisteredTypes() =>
-      Enumerable.Concat(
+      new List<Type[]>
+      {
         typeof(CoreProvidersAssemblyMarker).Assembly.GetTypes(),
-        typeof(InfrastructureDataAccessAssemblyMarker).Assembly.GetTypes()
-      )
+        typeof(InfrastructureDataAccessAssemblyMarker).Assembly.GetTypes(),
+        typeof(InfrastructureDbInitializerAssemblyMarker).Assembly.GetTypes()
+      }
+      .SelectMany(x => x)
       .Where(x => x.IsDefined(typeof(RegisterDependencyAttribute), false))
       .Distinct(x => x.FullName);
 
@@ -27,11 +30,11 @@ namespace AspNetBase.Core.Composition.Extensions
       foreach (var registerType in GetIocCoreProviderRegisteredTypes())
       {
         var dependencyAttr = registerType.GetCustomAttribute<RegisterDependencyAttribute>();
-        var contractType = dependencyAttr.InterfaceType ?? registerType.GetInterface($"I{registerType.Name}");
+        var contractType = dependencyAttr.ContractType ?? registerType.GetInterface($"I{registerType.Name}");
 
         if (contractType == null)
           throw new InvalidOperationException(
-            $"No IoC container registration interface type could be resolved for the concrete type of name '{registerType.FullName}'.");
+            $"No IoC container registration contract type could be resolved for the concrete type '{registerType.FullName}'.");
 
         switch (dependencyAttr.InjectionStyle)
         {
