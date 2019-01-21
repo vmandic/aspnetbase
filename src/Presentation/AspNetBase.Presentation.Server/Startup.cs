@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Presentation.Server
 {
-    public class Startup
+  public class Startup
   {
     public ILoggerFactory LoggerFactory { get; }
     public IConfiguration Configuration { get; }
@@ -37,9 +37,9 @@ namespace AspNetBase.Presentation.Server
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app)
     {
-      app
-        .MigrateDb()
-        .SeedDb();
+      // app
+      //   .MigrateDb()
+      //   .SeedDb();
 
       if (HostEnv.IsDevelopment())
       {
@@ -50,8 +50,8 @@ namespace AspNetBase.Presentation.Server
       else
       {
         app
-          .UseExceptionHandler("/Home/Error")
-          .UseHsts();
+          .UseHsts()
+          .UseExceptionHandler("/Home/Error");
       }
 
       app
