@@ -37,8 +37,8 @@ namespace AspNetBase.Presentation.Server
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app)
     {
-      // app
-      //   .MigrateDb()
+       app
+         .MigrateDb();
       //   .SeedDb();
 
       if (HostEnv.IsDevelopment())
