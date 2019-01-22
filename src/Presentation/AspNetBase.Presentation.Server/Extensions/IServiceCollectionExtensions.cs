@@ -1,5 +1,5 @@
-using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
+using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DataAccess.Extensions;
 using AspNetBase.Presentation.Server.Utilities;
 using Microsoft.AspNetCore.Hosting;
@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Presentation.Server.Extensions
 {
-    public static class IServiceCollectionExtensions
+  public static class IServiceCollectionExtensions
   {
     public static IServiceCollection AddEntityFramework(
       this IServiceCollection services,
@@ -82,6 +82,8 @@ namespace AspNetBase.Presentation.Server.Extensions
           options.AllowAreas = true;
           options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
           options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+
+          options.Conventions.AuthorizeAreaFolder("Admin", "/");
         });
 
       return services;
