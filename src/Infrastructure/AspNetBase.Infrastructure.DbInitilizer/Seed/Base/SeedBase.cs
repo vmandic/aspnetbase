@@ -22,7 +22,7 @@ namespace AspNetBase.Infrastructure.DbInitilizer.Seed.Base
     public DbSet<TEntity> SeedSet { get; }
     public AppDbContext Context { get; }
     public ILogger<TEntity> Logger { get; }
-    public abstract int ExceutionOrder { get; }
+    public abstract int ExecutionOrder { get; }
     public abstract void Run();
   }
 }

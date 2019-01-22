@@ -83,6 +83,8 @@ namespace AspNetBase.Presentation.Server.Extensions
           options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
           options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
 
+          options.Conventions.AuthorizeFolder("/ManageUsers");
+          options.Conventions.AuthorizeFolder("/ManageRoles");
           options.Conventions.AuthorizeAreaFolder("Admin", "/");
         });
 

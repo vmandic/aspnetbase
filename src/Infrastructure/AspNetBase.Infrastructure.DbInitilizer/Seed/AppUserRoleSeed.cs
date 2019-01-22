@@ -14,7 +14,7 @@ namespace AspNetBase.Infrastructure.DbInitilizer.Seed
   {
     public AppUserRoleSeed(AppDbContext context, ILogger<AppUserRole> logger) : base(context, logger) { }
 
-    public override int ExceutionOrder => 3;
+    public override int ExecutionOrder => 3;
 
     public override void Run()
     {

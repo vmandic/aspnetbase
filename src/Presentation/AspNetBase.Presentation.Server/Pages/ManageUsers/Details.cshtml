@@ -1,0 +1,109 @@
+@page
+@model AspNetBase.Presentation.Server.Pages.ManageUsers.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AppUser</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.Uid)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.Uid)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.NormalizedUserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.NormalizedUserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.NormalizedEmail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.NormalizedEmail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.EmailConfirmed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.EmailConfirmed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.PasswordHash)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.PasswordHash)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.SecurityStamp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.SecurityStamp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.ConcurrencyStamp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.ConcurrencyStamp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.PhoneNumberConfirmed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.PhoneNumberConfirmed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.TwoFactorEnabled)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.TwoFactorEnabled)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.LockoutEnd)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.LockoutEnd)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.LockoutEnabled)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.LockoutEnabled)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.AccessFailedCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.AccessFailedCount)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.AppUser.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

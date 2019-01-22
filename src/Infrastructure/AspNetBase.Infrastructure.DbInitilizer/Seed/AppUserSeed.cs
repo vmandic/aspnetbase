@@ -22,7 +22,7 @@ namespace AspNetBase.Infrastructure.DbInitilizer.Seed
     public AppUserSeed(AppDbContext context, ILogger<AppUser> logger, UserManager<AppUser> userManager) : base(context, logger) =>
       _userManager = userManager;
 
-    public override int ExceutionOrder => 2;
+    public override int ExecutionOrder => 2;
 
     public override void Run()
     {
