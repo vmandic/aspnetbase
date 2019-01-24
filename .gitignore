@@ -339,4 +339,5 @@ ASALocalRun/
 .localhistory/
 
 # Custom ignores:
-local.sqlite
+logs/
+*.sqlite

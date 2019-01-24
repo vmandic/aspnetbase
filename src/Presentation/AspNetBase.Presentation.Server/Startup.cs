@@ -1,6 +1,9 @@
 using System;
 using AspNetBase.Core.Composition;
+using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Presentation.Server.Extensions;
+using ElmahCore;
+using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +32,15 @@ namespace AspNetBase.Presentation.Server
         .AddHttpHelpers()
         .AddEntityFramework(Configuration, LoggerFactory, HostEnv)
         .AddAuth()
-        .AddMvcRazorPages();
+        .AddMvcRazorPages()
+        .AddElmah<XmlFileErrorLog>(opts =>
+        {
+          opts.CheckPermissionAction = ctx =>
+            ctx.User.Identity.IsAuthenticated &&
+            ctx.User.IsInRole(Roles.SystemAdministrator);
+
+          opts.LogPath = "~/logs/errors";
+        });
 
       return CompositionRoot.Initialize(services, LoggerFactory.CreateLogger<CompositionRoot>());
     }
@@ -58,6 +69,7 @@ namespace AspNetBase.Presentation.Server
         .UseHttpsRedirection()
         .UseAuthentication()
         .UseStaticFiles()
+        .UseElmah()
         .UseMvc(routes =>
         {
           routes.MapRoute(

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Presentation.Server.Models;
+using ElmahCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,17 @@ namespace AspNetBase.Presentation.Server.Controllers
     public IActionResult Error()
     {
       return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    public IActionResult TestRiseError()
+    {
+      HttpContext.RiseError(new Exception("Test error 1.", new Exception("This is an inner exception 1.")));
+      return RedirectToAction(nameof(Index));
+    }
+
+    public IActionResult TestThrowEx()
+    {
+      throw new Exception("Test error 2.", new Exception("This is an inner exception 2."));
     }
   }
 }
