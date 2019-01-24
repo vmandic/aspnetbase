@@ -2,6 +2,7 @@ using System;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
+using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Infrastructure.DbInitilizer.Extensions;
 using AspNetBase.Infrastructure.DbInitilizer.Seed.Base;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,10 +21,10 @@ namespace AspNetBase.Infrastructure.DbInitilizer.Seed
     {
       Logger.LogInformation("Seeding '{entityName}' data...", nameof(AppUserRole));
 
-      var admintToSysAdminRole = new AppUserRole
+      var adminToSysAdminRole = new AppUserRole
       {
         Id = 1,
-        RoleId = 1,
+        RoleId = (int) Roles.SystemAdministrator,
         Uid = Guid.Parse("e4c4b20a-ce2b-49d4-afe4-a1f1b2f0cf8a"),
         UserId = 1
       };
@@ -31,12 +32,12 @@ namespace AspNetBase.Infrastructure.DbInitilizer.Seed
       var testToRegUserRole = new AppUserRole
       {
         Id = 2,
-        RoleId = 2,
+        RoleId = (int) Roles.RegularUser,
         Uid = Guid.Parse("a9372364-0437-417b-bd71-488dc7b9e0a5"),
         UserId = 2
       };
 
-      Context.AddOrUpdate(admintToSysAdminRole);
+      Context.AddOrUpdate(adminToSysAdminRole);
       Context.AddOrUpdate(testToRegUserRole);
 
       Context.SaveChanges();

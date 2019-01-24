@@ -51,6 +51,7 @@ namespace AspNetBase.Infrastructure.DbInitilizer
             && (x.Namespace?.EndsWith("Seed") == true)
             && !x.IsDefined(typeof(CompilerGeneratedAttribute), false))
           .Select(x => (ISeed) services.GetService(x))
+          .Where(x => !x.Skip)
           .OrderBy(x => x.ExecutionOrder);
 
         foreach (var seeder in seeders) seeder.Run();

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AspNetBase.Presentation.Server.Pages.ManageUsers
 {

@@ -1,7 +1,10 @@
+using AspNetBase.Common.Utils.Extensions;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
+using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Infrastructure.DataAccess.Extensions;
 using AspNetBase.Presentation.Server.Utilities;
+using AspNetBase.Presentation.Server.Utilities.Constants;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -38,15 +41,24 @@ namespace AspNetBase.Presentation.Server.Extensions
       return services;
     }
 
-    public static IServiceCollection AddIdentity(this IServiceCollection services)
+    public static IServiceCollection AddAuth(this IServiceCollection services)
     {
       services
         .AddIdentity<AppUser, AppRole>(opts =>
-        { // NOTE: adds authentication, cookies, and identity services
+        {
+          // NOTE: adds authentication, cookies, and identity services
           opts.User.RequireUniqueEmail = true;
         })
         .AddEntityFrameworkStores<AppDbContext>() // NOTE: adds default User and Role store implementations
         .AddDefaultTokenProviders(); // NOTE: adds the identity default token generators
+
+      // NOTE: configure additional authorization rules and policies
+      services.AddAuthorization(opts =>
+      {
+        opts.AddPolicy(
+          AppAuthorizationPolicies.RequiresSystemAdministrator,
+          p => p.RequireRole(Roles.SystemAdministrator.ToString()));
+      });
 
       // NOTE: overrides the AddIdentity defaults for the added cookies with AddIdentity
       services.ConfigureApplicationCookie(opts =>
@@ -72,7 +84,7 @@ namespace AspNetBase.Presentation.Server.Extensions
       return services;
     }
 
-    public static IServiceCollection AddMvcWithRazorPages(this IServiceCollection services)
+    public static IServiceCollection AddMvcRazorPages(this IServiceCollection services)
     {
       services
         .AddMvc()
@@ -80,12 +92,10 @@ namespace AspNetBase.Presentation.Server.Extensions
         .AddRazorPagesOptions(options =>
         {
           options.AllowAreas = true;
+
           options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
           options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
-
-          options.Conventions.AuthorizeFolder("/ManageUsers");
-          options.Conventions.AuthorizeFolder("/ManageRoles");
-          options.Conventions.AuthorizeAreaFolder("Admin", "/");
+          options.Conventions.AuthorizeAreaFolder("Admin", "/", AppAuthorizationPolicies.RequiresSystemAdministrator);
         });
 
       return services;

@@ -10,11 +10,12 @@ using Microsoft.Extensions.Options;
 namespace AspNetBase.Core.Providers.Services.Identity
 {
   [RegisterDependency(ServiceLifetime.Scoped, typeof(IUserClaimsPrincipalFactory<AppUser>))]
-  public class AppUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<AppUser>
+  public class AppUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<AppUser, AppRole>
   {
     public AppUserClaimsPrincipalFactory(
       UserManager<AppUser> userManager,
-      IOptions<IdentityOptions> optionsAccessor) : base(userManager, optionsAccessor) { }
+      RoleManager<AppRole> roleManager,
+      IOptions<IdentityOptions> optionsAccessor) : base(userManager, roleManager, optionsAccessor) { }
 
     protected override async Task<ClaimsIdentity> GenerateClaimsAsync(AppUser user)
     {

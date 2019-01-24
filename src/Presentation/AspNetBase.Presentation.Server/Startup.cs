@@ -28,8 +28,8 @@ namespace AspNetBase.Presentation.Server
       services
         .AddHttpHelpers()
         .AddEntityFramework(Configuration, LoggerFactory, HostEnv)
-        .AddIdentity()
-        .AddMvcWithRazorPages();
+        .AddAuth()
+        .AddMvcRazorPages();
 
       return CompositionRoot.Initialize(services, LoggerFactory.CreateLogger<CompositionRoot>());
     }

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AspNetBase.Common.Utils.Attributes;
+using AspNetBase.Common.Utils.Extensions;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
+using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Infrastructure.DbInitilizer.Seed.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,16 +28,18 @@ namespace AspNetBase.Infrastructure.DbInitilizer.Seed
       {
         new AppRole
         {
-        Id = 1,
-        Name = "System Administrator",
+        Id = (int) Roles.SystemAdministrator,
+        Name = Roles.SystemAdministrator.ToString(),
+        NormalizedName = Roles.SystemAdministrator.ToString().ToUpperInvariant(),
         ConcurrencyStamp = "c211894e-6247-4d0e-92a8-5a05cd2b58d9",
         Uid = Guid.Parse("d8768ba2-a233-412e-8a7c-227cb4816858")
         },
 
         new AppRole
         {
-        Id = 2,
-        Name = "Regular User",
+        Id = (int) Roles.RegularUser,
+        Name = Roles.RegularUser.ToString(),
+        NormalizedName = Roles.RegularUser.ToString().ToUpperInvariant(),
         ConcurrencyStamp = "877a5033-b5b0-4c70-af3f-74cf7b5fe433",
         Uid = Guid.Parse("e1a82e15-b603-47d9-b863-796d903f8db8")
         }
