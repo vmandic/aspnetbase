@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj" />
+    <ProjectReference Include="..\AspNetBase.Infrastructure.DbSeeds\AspNetBase.Infrastructure.DbSeeds.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -18,7 +18,7 @@ namespace AspNetBase.Core.Composition.Extensions
       {
         typeof(CoreProvidersAssemblyMarker).Assembly.GetTypes(),
         typeof(InfrastructureDataAccessAssemblyMarker).Assembly.GetTypes(),
-        typeof(InfrastructureDbInitializerAssemblyMarker).Assembly.GetTypes()
+        typeof(InfrastructureDbSeedsAssemblyMarker).Assembly.GetTypes()
       }
       .SelectMany(x => x)
       .Where(x => x.IsDefined(typeof(RegisterDependencyAttribute), false))

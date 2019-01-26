@@ -3,12 +3,12 @@ using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DataAccess.Enums;
-using AspNetBase.Infrastructure.DbInitilizer.Extensions;
-using AspNetBase.Infrastructure.DbInitilizer.Seed.Base;
+using AspNetBase.Infrastructure.DbSeeds.Base;
+using AspNetBase.Infrastructure.DbSeeds.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace AspNetBase.Infrastructure.DbInitilizer.Seed
+namespace AspNetBase.Infrastructure.DbSeeds
 {
   [RegisterDependency(ServiceLifetime.Scoped, typeof(AppUserRoleSeed))]
   public class AppUserRoleSeed : SeedBase<AppUserRole>

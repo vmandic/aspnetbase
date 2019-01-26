@@ -4,7 +4,7 @@ using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace AspNetBase.Infrastructure.DbInitilizer.Seed.Base
+namespace AspNetBase.Infrastructure.DbSeeds.Base
 {
   public abstract class SeedBase<TEntity> : ISeed where TEntity : class, IEntityBase<int>, new()
   {

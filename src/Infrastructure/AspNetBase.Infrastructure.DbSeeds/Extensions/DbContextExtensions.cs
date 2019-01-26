@@ -5,7 +5,7 @@ using AspNetBase.Infrastructure.DataAccess.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace AspNetBase.Infrastructure.DbInitilizer.Extensions
+namespace AspNetBase.Infrastructure.DbSeeds.Extensions
 {
   public static class DbContextExtensions
   {

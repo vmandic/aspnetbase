@@ -9,11 +9,11 @@
     <ProjectReference Include="..\AspNetBase.Core.Providers\AspNetBase.Core.Providers.csproj" />
     <ProjectReference Include="..\AspNetBase.Core.Contracts\AspNetBase.Core.Contracts.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbInitilizer\AspNetBase.Infrastructure.DbInitilizer.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbSeeds\AspNetBase.Infrastructure.DbSeeds.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
 </Project>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace AspNetBase.Presentation.Server.Utilities
+namespace AspNetBase.Presentation.Server.Utils
 {
     // Adds support for design-time actions such as database migrations.
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>

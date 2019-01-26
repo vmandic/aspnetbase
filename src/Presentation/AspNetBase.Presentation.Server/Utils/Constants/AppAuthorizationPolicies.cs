@@ -1,4 +1,4 @@
-namespace AspNetBase.Presentation.Server.Utilities.Constants
+namespace AspNetBase.Presentation.Server.Utils.Constants
 {
   public static class AppAuthorizationPolicies
   {

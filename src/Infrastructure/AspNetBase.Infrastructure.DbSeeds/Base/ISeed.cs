@@ -1,6 +1,6 @@
-namespace AspNetBase.Infrastructure.DbInitilizer.Seed.Base
+namespace AspNetBase.Infrastructure.DbSeeds.Base
 {
-  internal interface ISeed
+  public interface ISeed
   {
     bool Skip { get; }
     int ExecutionOrder { get; }
