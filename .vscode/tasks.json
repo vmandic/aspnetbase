@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.Server/AspNetBase.Presentation.Server.csproj"
+                "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.App/AspNetBase.Presentation.App.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

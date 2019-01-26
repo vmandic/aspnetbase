@@ -22,7 +22,7 @@ namespace AspNetBase.Core.Providers.Services.Identity.AccountManagement
   public class ManageAuthenticationService : IdentityBaseService<ManageAuthenticationService>, IManageAuthenticationService
   {
     const string AUTH_URI_FORMAT = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
-    const string QR_CODE_ISSUER = "AspNetBase.Presentation.Server";
+    const string QR_CODE_ISSUER = "AspNetBase.Presentation.App";
     const int NO_RECOVERY_CODES_TO_GEN = 10;
 
     private readonly ISignInService _signInService;

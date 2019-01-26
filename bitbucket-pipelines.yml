@@ -16,5 +16,5 @@ pipelines:
           - dotnet --info
           - dotnet restore
           - dotnet build
-          # dotnet build ./src/Presentation/AspNetBase.Presentation.Server/AspNetBase.Presentation.csproj
+          # dotnet build ./src/Presentation/AspNetBase.Presentation.App/AspNetBase.Presentation.csproj
           # - dotnet test $TEST_NAME

@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>aspnet-AspNetBase.Presentation.App-DF3DAAFF-951F-4764-81BD-94B5A4DA2DCD</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="elmahcore" Version="1.2.3" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.6" PrivateAssets="All" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Enrichers.AspnetcoreHttpcontext" Version="1.1.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.RollingFileAlternate" Version="2.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\AspNetBase.Core.Composition\AspNetBase.Core.Composition.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj" />
+    <ProjectReference Include="..\..\Core\AspNetBase.Core.Contracts\AspNetBase.Core.Contracts.csproj" />
+    <ProjectReference Include="..\..\Core\AspNetBase.Core.Models\AspNetBase.Core.Models.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbMigrations\AspNetBase.Infrastructure.DbMigrations.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbInitilizer\AspNetBase.Infrastructure.DbInitilizer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Services\" />
+  </ItemGroup>
+
+</Project>

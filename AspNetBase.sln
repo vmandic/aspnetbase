@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{3DA4D6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{37BE498A-CAFF-43F3-83CF-BA6B55A63862}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetBase.Presentation.Server", "src\Presentation\AspNetBase.Presentation.Server\AspNetBase.Presentation.Server.csproj", "{DEC1D5F2-DF8D-48DE-A283-2AD569A1564B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetBase.Presentation.App", "src\Presentation\AspNetBase.Presentation.App\AspNetBase.Presentation.App.csproj", "{DEC1D5F2-DF8D-48DE-A283-2AD569A1564B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetBase.Infrastructure.DataAccess", "src\Infrastructure\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj", "{3EF4D098-087A-4792-96EA-872E81FD3CE6}"
 EndProject

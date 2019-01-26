@@ -1,0 +1,120 @@
+@page
+@model AspNetBase.Presentation.App.Pages.ManageUsers.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].Uid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].NormalizedUserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].NormalizedEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].EmailConfirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].PasswordHash)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].SecurityStamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].ConcurrencyStamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].PhoneNumberConfirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].TwoFactorEnabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].LockoutEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].LockoutEnabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser[0].AccessFailedCount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.AppUser) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NormalizedUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NormalizedEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailConfirmed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PasswordHash)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecurityStamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConcurrencyStamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TwoFactorEnabled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LockoutEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LockoutEnabled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccessFailedCount)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
