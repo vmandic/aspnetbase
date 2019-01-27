@@ -31,16 +31,9 @@ namespace AspNetBase.Presentation.App
       services
         .AddHttpHelpers()
         .AddEntityFramework(Configuration, LoggerFactory, HostEnv)
-        .AddAuth()
+        .AddIdentityAuth()
         .AddMvcRazorPages()
-        .AddElmah<XmlFileErrorLog>(opts =>
-        {
-          opts.CheckPermissionAction = ctx =>
-            ctx.User.Identity.IsAuthenticated &&
-            ctx.User.IsInRole(Roles.SystemAdministrator);
-
-          opts.LogPath = "~/logs/errors";
-        });
+        .AddElmahErrorLogger();
 
       return CompositionRoot.Initialize(services, LoggerFactory.CreateLogger<CompositionRoot>());
     }

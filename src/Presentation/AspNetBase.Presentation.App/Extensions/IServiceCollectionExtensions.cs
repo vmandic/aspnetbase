@@ -1,10 +1,11 @@
-using AspNetBase.Common.Utils.Extensions;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Infrastructure.DataAccess.Extensions;
 using AspNetBase.Presentation.App.Utils;
 using AspNetBase.Presentation.App.Utils.Constants;
+using ElmahCore;
+using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Presentation.App.Extensions
 {
-  public static class IServiceCollectionExtensions
+    public static class IServiceCollectionExtensions
   {
     public static IServiceCollection AddEntityFramework(
       this IServiceCollection services,
@@ -41,7 +42,7 @@ namespace AspNetBase.Presentation.App.Extensions
       return services;
     }
 
-    public static IServiceCollection AddAuth(this IServiceCollection services)
+    public static IServiceCollection AddIdentityAuth(this IServiceCollection services)
     {
       services
         .AddIdentity<AppUser, AppRole>(opts =>
@@ -99,6 +100,18 @@ namespace AspNetBase.Presentation.App.Extensions
         });
 
       return services;
+    }
+
+    public static IServiceCollection AddElmahErrorLogger(this IServiceCollection services)
+    {
+      return services.AddElmah<XmlFileErrorLog>(opts =>
+      {
+        opts.CheckPermissionAction = ctx =>
+          ctx.User.Identity.IsAuthenticated &&
+          ctx.User.IsInRole(Roles.SystemAdministrator);
+
+        opts.LogPath = "~/logs/errors";
+      });
     }
   }
 }
