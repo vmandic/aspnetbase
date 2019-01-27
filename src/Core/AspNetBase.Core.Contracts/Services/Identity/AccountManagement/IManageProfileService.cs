@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AspNetBase.Core.Models.Identity.AccountManagement;
+using AspNetBase.Core.App.Models.Identity.AccountManagement;
 
 namespace AspNetBase.Core.Contracts.Services.Identity.AccountManagement
 {

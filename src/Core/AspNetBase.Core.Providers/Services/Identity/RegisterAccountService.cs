@@ -5,7 +5,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Core.Contracts.Services.Identity;
-using AspNetBase.Core.Models.Identity;
+using AspNetBase.Core.App.Models.Identity;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;

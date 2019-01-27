@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetBase.Core.Composition
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetBase.Core.Contracts", "src\Core\AspNetBase.Core.Contracts\AspNetBase.Core.Contracts.csproj", "{C1721AFE-FCD1-4ED9-A225-86267650EF29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetBase.Core.Models", "src\Core\AspNetBase.Core.Models\AspNetBase.Core.Models.csproj", "{A8A6250F-2E3E-41C2-B72B-A33D9610F2B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetBase.Core.App.Models", "src\Core\AspNetBase.Core.App.Models\AspNetBase.Core.App.Models.csproj", "{A8A6250F-2E3E-41C2-B72B-A33D9610F2B5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetBase.Core.Providers", "src\Core\AspNetBase.Core.Providers\AspNetBase.Core.Providers.csproj", "{82BC2350-7212-4803-99E5-C4FFBE0B74B8}"
 EndProject

@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNetBase.Core.Models\AspNetBase.Core.Models.csproj" />
+    <ProjectReference Include="..\AspNetBase.Core.App.Models\AspNetBase.Core.App.Models.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj" />
   </ItemGroup>
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Common.Utils.Extensions;
 using AspNetBase.Core.Contracts.Services.Identity.AccountManagement;
-using AspNetBase.Core.Models.Identity.AccountManagement;
+using AspNetBase.Core.App.Models.Identity.AccountManagement;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.UnitOfWork;
 using Microsoft.AspNetCore.Identity;

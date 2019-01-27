@@ -1,6 +1,6 @@
 using System;
 
-namespace AspNetBase.Core.Models.Identity
+namespace AspNetBase.Core.App.Models.Identity
 {
   public class LoginDto
   {

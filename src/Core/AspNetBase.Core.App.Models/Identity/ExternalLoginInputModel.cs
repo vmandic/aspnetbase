@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AspNetBase.Core.Models.Identity
+namespace AspNetBase.Core.App.Models.Identity
 {
   public class ExternalLoginInputModel
   {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using AspNetBase.Core.Models.Identity;
+using AspNetBase.Core.App.Models.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;

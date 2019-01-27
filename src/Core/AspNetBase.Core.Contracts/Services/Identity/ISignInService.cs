@@ -1,4 +1,4 @@
-using AspNetBase.Core.Models.Identity;
+using AspNetBase.Core.App.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;

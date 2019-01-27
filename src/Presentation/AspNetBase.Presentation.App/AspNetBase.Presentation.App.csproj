@@ -21,7 +21,7 @@
     <ProjectReference Include="..\..\Core\AspNetBase.Core.Composition\AspNetBase.Core.Composition.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\..\Core\AspNetBase.Core.Contracts\AspNetBase.Core.Contracts.csproj" />
-    <ProjectReference Include="..\..\Core\AspNetBase.Core.Models\AspNetBase.Core.Models.csproj" />
+    <ProjectReference Include="..\..\Core\AspNetBase.Core.App.Models\AspNetBase.Core.App.Models.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbMigrations\AspNetBase.Infrastructure.DbMigrations.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbInitilizer\AspNetBase.Infrastructure.DbInitilizer.csproj" />
   </ItemGroup>

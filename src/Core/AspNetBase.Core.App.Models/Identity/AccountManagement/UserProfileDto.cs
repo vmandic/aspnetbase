@@ -1,4 +1,4 @@
-namespace AspNetBase.Core.Models.Identity.AccountManagement
+namespace AspNetBase.Core.App.Models.Identity.AccountManagement
 {
   public class UserProfileDto
   {

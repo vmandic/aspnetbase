@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AspNetBase.Core.Models.Identity
+namespace AspNetBase.Core.App.Models.Identity
 {
   public class ExternalLoginPageModel : PageModel, IExternalLoginModel
   {

@@ -1,5 +1,5 @@
 using AspNetBase.Core.Contracts.Services.Identity;
-using AspNetBase.Core.Models.Identity;
+using AspNetBase.Core.App.Models.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
