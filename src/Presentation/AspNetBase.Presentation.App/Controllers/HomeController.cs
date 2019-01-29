@@ -9,16 +9,19 @@ using AspNetBase.Presentation.App.Models;
 using ElmahCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetBase.Presentation.App.Controllers
 {
   public class HomeController : Controller
   {
+    private readonly IEmailSender emailSender;
     private readonly UserManager<AppUser> userManager;
 
-    public HomeController(UserManager<AppUser> userManager)
+    public HomeController(UserManager<AppUser> userManager, IEmailSender emailSender)
     {
+      this.emailSender = emailSender;
       this.userManager = userManager;
     }
 
@@ -65,6 +68,16 @@ namespace AspNetBase.Presentation.App.Controllers
     public IActionResult TestThrowEx()
     {
       throw new Exception("Test error 2.", new Exception("This is an inner exception 2."));
+    }
+
+    public async Task<IActionResult> TestEmail(string message = null)
+    {
+      await emailSender.SendEmailAsync(
+        "mandic.vedran@gmail.com",
+        "test msg - " + DateTime.Now,
+        message ?? "Test message 123.");
+
+      return RedirectToAction(nameof(Index), new { mailSent = "YES" });
     }
   }
 }
