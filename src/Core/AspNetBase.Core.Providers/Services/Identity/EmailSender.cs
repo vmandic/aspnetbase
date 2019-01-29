@@ -54,10 +54,17 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
       _logger.LogInformation($"Sending email to: '{email}'");
 
-      using(var client = GetConfiguredSmtpClient())
+      if (bool.Parse(_config["Enabled"]))
       {
-        var mail = ComposeMailMessage(email, subject, htmlMessage);
-        await client.SendMailAsync(mail);
+        using(var client = GetConfiguredSmtpClient())
+        {
+          var mail = ComposeMailMessage(email, subject, htmlMessage);
+          await client.SendMailAsync(mail);
+        }
+      }
+      else
+      {
+        _logger.LogWarning("Email service is not enabled!");
       }
     }
 
