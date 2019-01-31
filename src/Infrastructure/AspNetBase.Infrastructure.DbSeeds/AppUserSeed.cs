@@ -92,11 +92,14 @@ namespace AspNetBase.Infrastructure.DbSeeds
       Context.SaveChanges();
 
       // update password one by one:
-      Task.WhenAll(
+      var r = Task.WhenAll(
           users.Select(user =>
             _userManager.AddPasswordAsync(user, DEFAULT_PASSWORD)))
         .GetAwaiter()
         .GetResult();
+
+      if (r.Any(x => !x.Succeeded))
+        throw new InvalidOperationException("Seeding user passwords failed!");
     }
   }
 }

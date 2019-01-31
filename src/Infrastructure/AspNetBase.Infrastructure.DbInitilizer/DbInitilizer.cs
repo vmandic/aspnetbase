@@ -45,14 +45,17 @@ namespace AspNetBase.Infrastructure.DbInitilizer
         var services = scope.ServiceProvider;
 
         // Custom seed procedures per entity:
-        var seeders = typeof(DbInitilizer).Assembly.GetTypes()
+        var seeders = typeof(InfrastructureDbSeedsAssemblyMarker).Assembly.GetTypes()
           .Where(x =>
-            x.IsClass
-            && (x.Namespace?.EndsWith("Seed") == true)
-            && !x.IsDefined(typeof(CompilerGeneratedAttribute), false))
+            x.IsClass &&
+            (x.Namespace?.EndsWith("DbSeeds") == true) &&
+            !x.IsDefined(typeof(CompilerGeneratedAttribute), false))
           .Select(x => (ISeed) services.GetService(x))
           .Where(x => !x.Skip)
           .OrderBy(x => x.ExecutionOrder);
+
+        if (seeders.Count() == 0)
+          throw new InvalidOperationException("No database seeders were found or loaded!");
 
         foreach (var seeder in seeders) seeder.Run();
       }
