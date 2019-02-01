@@ -18,11 +18,16 @@
     </script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
 </environment>
+
 <script src="~/lib/mvcgrid/mvc-grid.js" asp-append-version="true"></script>
-<script>
+<script defer>
   (function() {
     [].forEach.call(document.getElementsByClassName('mvc-grid'), function (el) {
         new MvcGrid(el);
     });
   }());
+
+  function gridNavButtonClick(e) {
+    window.location.assign(e.getAttribute("data-nav"));
+  }
 </script>

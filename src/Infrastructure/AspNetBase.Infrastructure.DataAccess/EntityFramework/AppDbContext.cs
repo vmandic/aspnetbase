@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using AspNetBase.Infrastructure.DataAccess.Base;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -27,7 +28,8 @@ namespace AspNetBase.Infrastructure.DataAccess.EntityFramework
           x != null &&
           x.IsClass &&
           x.Namespace != null &&
-          x.Namespace.Contains("Entities")) ?
+          x.Namespace.Contains("Entities") &&
+          !x.IsDefined(typeof(CompilerGeneratedAttribute), false)) ?
         .Distinct();
 
       foreach (var entityType in entities)

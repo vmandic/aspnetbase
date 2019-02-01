@@ -2,53 +2,36 @@
 @model AspNetBase.Presentation.App.Pages.ManageRoles.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Roles";
+
+    Func<int, string> editLink = (int rowId) => Url.Page("Edit", new { id = rowId});
+    Func<int, string> detailsLink = (int rowId) => Url.Page("Details", new { id = rowId});
 }
 
-<h2>Index</h2>
+<h2>Roles</h2>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">
+      <button class="btn btn-default" type="button">Create New</button>
+    </a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AppRole[0].Uid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppRole[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppRole[0].NormalizedName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppRole[0].ConcurrencyStamp)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.AppRole) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Uid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NormalizedName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConcurrencyStamp)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+@(Html.Grid(Model.Roles).Build(c =>
+  {
+    c.Add(m => m.Id).Titled("Id");
+    c.Add(m => m.Name).Titled("Role Name");
+
+    c.Add(m =>
+      $@"
+      <div class='btn-group' role='group'>
+          <button class='btn btn-default btn-sm' type='button' data-nav='{editLink(m.Id)}' onclick='gridNavButtonClick(this)'>
+            Edit
+          </button>
+          <button class='btn btn-default btn-sm' type='button' data-nav='{detailsLink(m.Id)}' onclick='gridNavButtonClick(this)'>
+            Details
+          </button>
+      </div>
+      ").Titled("Actions").Encoded(false);
+  }).Filterable().Sortable()
+)
+

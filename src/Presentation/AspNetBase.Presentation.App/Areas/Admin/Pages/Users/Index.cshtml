@@ -2,119 +2,42 @@
 @model AspNetBase.Presentation.App.Pages.ManageUsers.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Users";
+
+    Func<int, string> editLink = (int rowId) => Url.Page("Edit", new { id = rowId});
+    Func<int, string> detailsLink = (int rowId) => Url.Page("Details", new { id = rowId});
+    Func<int, string> deleteLink = (int rowId) => Url.Page("Delete", new { id = rowId});
 }
 
-<h2>Index</h2>
+<h2>Users</h2>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">
+      <button class="btn btn-default" type="button">Create New</button>
+    </a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].Uid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].NormalizedUserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].NormalizedEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].EmailConfirmed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].PasswordHash)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].SecurityStamp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].ConcurrencyStamp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].PhoneNumberConfirmed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].TwoFactorEnabled)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].LockoutEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].LockoutEnabled)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser[0].AccessFailedCount)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.AppUser) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Uid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NormalizedUserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NormalizedEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmailConfirmed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PasswordHash)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SecurityStamp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConcurrencyStamp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TwoFactorEnabled)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LockoutEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LockoutEnabled)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccessFailedCount)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+@(Html.Grid(Model.Users).Build(c =>
+  {
+    c.Add(m => m.Id).Titled("Id");
+    c.Add(m => m.UserName).Titled("Username");
+    c.Add(m => m.Email).Titled("Email");
+    c.Add(m => m.TwoFactorEnabled).Titled("2FA enabled");
+
+    c.Add(m =>
+      $@"
+      <div class='btn-group' role='group'>
+          <button class='btn btn-default btn-sm' type='button' data-nav='{editLink(m.Id)}' onclick='gridNavButtonClick(this)'>
+            Edit
+          </button>
+          <button class='btn btn-default btn-sm' type='button' data-nav='{detailsLink(m.Id)}' onclick='gridNavButtonClick(this)'>
+            Details
+          </button>
+          <button class='btn btn-default btn-sm' type='button' data-nav='{deleteLink(m.Id)}' onclick='gridNavButtonClick(this)'>
+            Delete
+          </button>
+      </div>
+      ").Titled("Actions").Encoded(false);
+  }).Filterable().Sortable()
+)
+
