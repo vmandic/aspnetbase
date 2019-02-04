@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 using AspNetBase.Common.Utils.Extensions;
-using AspNetBase.Infrastructure.Settings;
+using AspNetBase.Core.Settings;
 using Microsoft.Extensions.Configuration;
 
 namespace AspNetBase.Infrastructure.Utils

@@ -1,9 +1,8 @@
-using AspNetBase.Common.Utils.Attributes;
+using AspNetBase.Core.Settings.Base;
 
-namespace AspNetBase.Presentation.App.Settings
+namespace AspNetBase.Core.Settings
 {
-  [Settings("app:services:emailsender")]
-  public class EmailSenderSettings
+  public class EmailSenderSettings : ISetting
   {
     public bool Enabled { get; set; }
     public string Host { get; set; }
@@ -12,5 +11,6 @@ namespace AspNetBase.Presentation.App.Settings
     public string From { get; set; }
     public string Sender { get; set; }
     public string Password { get; set; }
+    public string Key => "app:services:emailsender";
   }
 }

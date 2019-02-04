@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj" />
+    <ProjectReference Include="..\..\Core\AspNetBase.Core.Settings\AspNetBase.Core.Settings.csproj" />
   </ItemGroup>
 
 </Project>

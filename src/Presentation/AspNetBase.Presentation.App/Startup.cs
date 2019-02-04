@@ -1,8 +1,8 @@
 using System;
 using AspNetBase.Core.Composition;
+using AspNetBase.Core.Settings.Extensions;
 using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Presentation.App.Extensions;
-using AspNetBase.Presentation.App.Settings;
 using ElmahCore;
 using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Builder;
@@ -42,13 +42,8 @@ namespace AspNetBase.Presentation.App
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IOptionsMonitor<AppSettings> opts)
+    public void Configure(IApplicationBuilder app)
     {
-      var appSettings = new AppSettings();
-      Configuration.Bind("app", appSettings);
-
-      var opts2 = opts.CurrentValue;
-
       app
         .MigrateDb()
         .SeedDb();
