@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
-using AspNetBase.Common.Utils.Helpers;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
+using AspNetBase.Infrastructure.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

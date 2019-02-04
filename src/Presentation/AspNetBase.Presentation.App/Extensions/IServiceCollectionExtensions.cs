@@ -1,7 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using AspNetBase.Common.Utils.Attributes;
+using AspNetBase.Common.Utils.Extensions;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Infrastructure.DataAccess.Extensions;
+using AspNetBase.Presentation.App.Settings;
 using AspNetBase.Presentation.App.Utils;
 using AspNetBase.Presentation.App.Utils.Constants;
 using ElmahCore;
@@ -19,7 +26,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Presentation.App.Extensions
 {
-    public static class IServiceCollectionExtensions
+  public static class IServiceCollectionExtensions
   {
     public static IServiceCollection AddEntityFramework(
       this IServiceCollection services,
@@ -27,6 +34,26 @@ namespace AspNetBase.Presentation.App.Extensions
       ILoggerFactory loggerFactory,
       IHostingEnvironment env)
     {
+      if (services == null)
+      {
+        throw new ArgumentNullException(nameof(services));
+      }
+
+      if (config == null)
+      {
+        throw new ArgumentNullException(nameof(config));
+      }
+
+      if (loggerFactory == null)
+      {
+        throw new ArgumentNullException(nameof(loggerFactory));
+      }
+
+      if (env == null)
+      {
+        throw new ArgumentNullException(nameof(env));
+      }
+
       services.AddSingleton<IDesignTimeDbContextFactory<AppDbContext>, DesignTimeDbContextFactory>();
 
       services.AddDbContext<AppDbContext>(opts =>
@@ -42,8 +69,13 @@ namespace AspNetBase.Presentation.App.Extensions
       return services;
     }
 
-    public static IServiceCollection AddIdentityAuth(this IServiceCollection services)
+    public static IServiceCollection AddIdentityUserRoleAuth(this IServiceCollection services)
     {
+      if (services == null)
+      {
+        throw new ArgumentNullException(nameof(services));
+      }
+
       services
         .AddIdentity<AppUser, AppRole>(opts =>
         {
@@ -76,6 +108,11 @@ namespace AspNetBase.Presentation.App.Extensions
 
     public static IServiceCollection AddHttpHelpers(this IServiceCollection services)
     {
+      if (services == null)
+      {
+        throw new ArgumentNullException(nameof(services));
+      }
+
       // NOTE: already injected with AddIdentity (but later)
       services.AddHttpContextAccessor();
       services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -87,6 +124,11 @@ namespace AspNetBase.Presentation.App.Extensions
 
     public static IServiceCollection AddMvcRazorPages(this IServiceCollection services)
     {
+      if (services == null)
+      {
+        throw new ArgumentNullException(nameof(services));
+      }
+
       services
         .AddMvc()
         .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
@@ -104,6 +146,11 @@ namespace AspNetBase.Presentation.App.Extensions
 
     public static IServiceCollection AddElmahErrorLogger(this IServiceCollection services)
     {
+      if (services == null)
+      {
+        throw new ArgumentNullException(nameof(services));
+      }
+
       return services.AddElmah<XmlFileErrorLog>(opts =>
       {
         opts.CheckPermissionAction = ctx =>
@@ -113,5 +160,52 @@ namespace AspNetBase.Presentation.App.Extensions
         opts.LogPath = "~/logs/errors";
       });
     }
+
+    public static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration config)
+    {
+      if (services == null)
+      {
+        throw new ArgumentNullException(nameof(services));
+      }
+
+      if (config == null)
+      {
+        throw new ArgumentNullException(nameof(config));
+      }
+
+      var targetTypes = new List<Type[]>
+      {
+        typeof(Program).Assembly.GetTypes(),
+        typeof(InfrastructureDataAccessAssemblyMarker).Assembly.GetTypes()
+      }.SelectMany(x => x);
+
+      var settingsAttrType = typeof(SettingsAttribute);
+      var settingTypes = targetTypes
+        .Where(x => x.IsDefined(settingsAttrType, false))
+        .ToList();
+
+      if (settingTypes.Count == 0)
+        throw new InvalidOperationException("No application settings were found to be configured.");
+
+      void ConfigureSetting<TSetting>(TSetting metaSettingsType) where TSetting : class
+      {
+        Type settingsType = metaSettingsType as Type;
+        var settingsAttr = (SettingsAttribute) (settingsType
+          .GetCustomAttributes(settingsAttrType, false)
+          .First());
+
+        var settings = config.Bind(metaSettingsType, settingsAttr.Key);
+
+        if (settings == null)
+          throw new InvalidOperationException($"Setting '{settingsType.FullName}' is null after trying to bind from config.");
+
+        services.AddSingleton(settings);
+      }
+
+      settingTypes.ForEach(ConfigureSetting);
+
+      return services;
+    }
+
   }
 }

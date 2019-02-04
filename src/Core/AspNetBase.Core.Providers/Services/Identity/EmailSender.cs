@@ -17,6 +17,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
     private readonly ILogger<EmailSender> _logger;
     private readonly IConfiguration _config;
 
+    // continue here, create new Common.Settings project for all settings
     public EmailSender(ILogger<EmailSender> logger, IConfiguration config)
     {
       this._logger = logger;

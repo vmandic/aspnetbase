@@ -1,7 +1,9 @@
 using System.Runtime.InteropServices;
+using AspNetBase.Common.Utils.Extensions;
+using AspNetBase.Infrastructure.Settings;
 using Microsoft.Extensions.Configuration;
 
-namespace AspNetBase.Common.Utils.Helpers
+namespace AspNetBase.Infrastructure.Utils
 {
   public static class DbConfigHelper
   {
@@ -16,11 +18,11 @@ namespace AspNetBase.Common.Utils.Helpers
 
     public static(string conString, bool forceSqlite, string migrationsAssembly) GetDbProviderDetails(IConfiguration config)
     {
-      var alwaysUseSqlite = config.GetValue<bool>("Database:AlwaysUseSqlite");
+      var dbSettings = config.Bind<DatabaseSettings>("app:database");
 
       return (
-        GetOsDependentConnectionString(config, alwaysUseSqlite),
-        alwaysUseSqlite,
+        GetOsDependentConnectionString(config, dbSettings.AlwaysUseSqlite),
+        dbSettings.AlwaysUseSqlite,
         DB_MIGRATIONS_ASSEMBLY_NAME
       );
     }
