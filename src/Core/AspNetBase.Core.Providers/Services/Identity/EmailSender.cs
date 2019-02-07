@@ -4,40 +4,31 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
+using AspNetBase.Core.Settings;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Core.Providers.Services.Identity
 {
-  [RegisterDependency(ServiceLifetime.Scoped)]
+    [RegisterDependency(ServiceLifetime.Scoped)]
   public class EmailSender : IEmailSender
   {
     private readonly ILogger<EmailSender> _logger;
-    private readonly IConfiguration _config;
+    private readonly EmailSenderSettings _settings;
 
-    // continue here, create new Common.Settings project for all settings
-    public EmailSender(ILogger<EmailSender> logger, IConfiguration config)
+    public EmailSender(ILogger<EmailSender> logger, EmailSenderSettings settings)
     {
       this._logger = logger;
-      this._config = config.GetSection("Services:EmailSender");
-
-      if (this._config == null)
-        throw new NullReferenceException("Config for section 'Services:EmailSender' is null.");
+      this._settings = settings;
     }
 
     private SmtpClient GetConfiguredSmtpClient()
     {
-      var client = new SmtpClient(
-        _config["Host"],
-        int.Parse(_config["Port"]));
+      var client = new SmtpClient(_settings.Host, _settings.Port);
 
-      client.Credentials = new NetworkCredential(
-        _config["Sender"],
-        _config["Password"]);
-
-      client.EnableSsl = bool.Parse(_config["EnableSsl"]);
+      client.Credentials = new NetworkCredential(_settings.Sender, _settings.Password);
+      client.EnableSsl = _settings.EnableSsl;
 
       return client;
     }
@@ -55,7 +46,7 @@ namespace AspNetBase.Core.Providers.Services.Identity
 
       _logger.LogInformation($"Sending email to: '{email}'");
 
-      if (bool.Parse(_config["Enabled"]))
+      if (_settings.Enabled)
       {
         using(var client = GetConfiguredSmtpClient())
         {
@@ -72,12 +63,12 @@ namespace AspNetBase.Core.Providers.Services.Identity
     private MailMessage ComposeMailMessage(string email, string subject, string htmlMessage)
     {
       var mail = new MailMessage(
-        _config["Sender"],
+        _settings.Sender,
         email,
         subject,
         htmlMessage);
 
-      mail.From = new MailAddress(_config["From"], "[NO-REPLY] aspnetbase.com");
+      mail.From = new MailAddress(_settings.From, "[NO-REPLY] aspnetbase.com");
       mail.SubjectEncoding = Encoding.UTF8;
       mail.BodyEncoding = Encoding.UTF8;
       mail.IsBodyHtml = true;

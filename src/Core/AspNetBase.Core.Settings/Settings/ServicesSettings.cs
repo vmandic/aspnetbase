@@ -1,10 +1,10 @@
-using AspNetBase.Core.Settings.Base;
+using AspNetBase.Core.Settings.Attributes;
 
 namespace AspNetBase.Core.Settings
 {
-  public class ServicesSettings : ISetting
+  [SettingsKey("app:services")]
+  public class ServicesSettings
   {
     public EmailSenderSettings EmailSender { get; set; }
-    public string Key => "app:services";
   }
 }

@@ -1,13 +1,12 @@
-using AspNetBase.Core.Settings.Base;
+using AspNetBase.Core.Settings.Attributes;
 
 namespace AspNetBase.Core.Settings
 {
-  public class DatabaseSettings : ISetting
+  [SettingsKey("app:database")]
+  public class DatabaseSettings
   {
     public bool AlwaysUseSqlite { get; set; }
     public bool MigrateOnStartup { get; set; }
     public bool SeedOnStartup { get; set; }
-
-    public string Key => "app:database";
   }
 }

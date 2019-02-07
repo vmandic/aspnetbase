@@ -1,10 +1,10 @@
-using AspNetBase.Core.Settings.Base;
+using AspNetBase.Core.Settings.Attributes;
 
 namespace AspNetBase.Core.Settings
 {
-  public class AppSettings : ISetting
+  [SettingsKey("app")]
+  public class AppSettings
   {
-    public string Key => "app";
     public DatabaseSettings Database { get; set; }
     public ServicesSettings Services { get; set; }
   }

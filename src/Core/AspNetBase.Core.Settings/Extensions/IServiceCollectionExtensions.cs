@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using AspNetBase.Common.Utils.Extensions;
-using AspNetBase.Core.Settings.Base;
+using AspNetBase.Core.Settings.Attributes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,10 +21,10 @@ namespace AspNetBase.Core.Settings.Extensions
         throw new ArgumentNullException(nameof(config));
       }
 
-      var iSettingType = typeof(ISetting);
-      var settingTypes = iSettingType.Assembly
+      var settingsKeyAttributeType = typeof(SettingsKeyAttribute);
+      var settingTypes = settingsKeyAttributeType.Assembly
         .GetTypes()
-        .Where(x => x.GetInterfaces().Contains(iSettingType))
+        .Where(x => x.IsDefined(settingsKeyAttributeType, false))
         .ToList();
 
       if (settingTypes.Count == 0)
@@ -32,15 +32,16 @@ namespace AspNetBase.Core.Settings.Extensions
 
       void ConfigureSetting<TSetting>(TSetting metaSettingsType) where TSetting : class
       {
-        Type settingsType = metaSettingsType as Type;
-        var settingsIntf = metaSettingsType as ISetting;
+        var settingsType = metaSettingsType as Type;
+        var settingsKeyAttr = (SettingsKeyAttribute) settingsType
+          .GetCustomAttributes(settingsKeyAttributeType, false).Single();
 
-        var settingsInstance = config.Bind(settingsType, settingsIntf.Key);
+        var settingsInstance = config.Bind(settingsType, settingsKeyAttr.KeyName);
 
         if (settingsInstance == null)
           throw new InvalidOperationException($"Setting '{settingsType.FullName}' is null after trying to bind from config.");
 
-        services.AddSingleton(settingsInstance);
+        services.Add(new ServiceDescriptor(settingsType, settingsInstance));
       }
 
       settingTypes.ForEach(ConfigureSetting);
