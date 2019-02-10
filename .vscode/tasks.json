@@ -1,15 +1,22 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "build",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.App/AspNetBase.Presentation.App.csproj"
-            ],
-            "problemMatcher": "$msCompile"
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-app",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.App/AspNetBase.Presentation.App.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-sln",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["build", "${workspaceFolder}"],
+      "problemMatcher": "$msCompile"
+    }
+  ]
 }
