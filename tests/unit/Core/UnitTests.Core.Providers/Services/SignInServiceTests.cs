@@ -1,8 +1,10 @@
 using System;
+using BaseTests.xUnit.Traits;
 using Xunit;
 
 namespace UnitTests.Core.Providers.Services
 {
+  [UnitTest(TestModule.BusinessLogicService), TestType(TestType.Functional)]
   public class SignInServiceTests
   {
     public SignInServiceTests()
