@@ -34,24 +34,16 @@ namespace AspNetBase.Presentation.App.Extensions
       IHostingEnvironment env)
     {
       if (services == null)
-      {
         throw new ArgumentNullException(nameof(services));
-      }
 
       if (config == null)
-      {
         throw new ArgumentNullException(nameof(config));
-      }
 
       if (loggerFactory == null)
-      {
         throw new ArgumentNullException(nameof(loggerFactory));
-      }
 
       if (env == null)
-      {
         throw new ArgumentNullException(nameof(env));
-      }
 
       services.AddSingleton<IDesignTimeDbContextFactory<AppDbContext>, DesignTimeDbContextFactory>();
 
@@ -71,9 +63,7 @@ namespace AspNetBase.Presentation.App.Extensions
     public static IServiceCollection AddIdentityUserRoleAuth(this IServiceCollection services)
     {
       if (services == null)
-      {
         throw new ArgumentNullException(nameof(services));
-      }
 
       services
         .AddIdentity<AppUser, AppRole>(opts =>
@@ -108,9 +98,7 @@ namespace AspNetBase.Presentation.App.Extensions
     public static IServiceCollection AddHttpHelpers(this IServiceCollection services)
     {
       if (services == null)
-      {
         throw new ArgumentNullException(nameof(services));
-      }
 
       // NOTE: already injected with AddIdentity (but later)
       services.AddHttpContextAccessor();
@@ -124,9 +112,7 @@ namespace AspNetBase.Presentation.App.Extensions
     public static IServiceCollection AddMvcRazorPages(this IServiceCollection services)
     {
       if (services == null)
-      {
         throw new ArgumentNullException(nameof(services));
-      }
 
       services
         .AddMvc()
@@ -146,9 +132,7 @@ namespace AspNetBase.Presentation.App.Extensions
     public static IServiceCollection AddElmahErrorLogger(this IServiceCollection services)
     {
       if (services == null)
-      {
         throw new ArgumentNullException(nameof(services));
-      }
 
       return services.AddElmah<XmlFileErrorLog>(opts =>
       {

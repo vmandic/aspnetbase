@@ -10,12 +10,6 @@
 
 <h2>Roles</h2>
 
-<p>
-    <a asp-page="Create">
-      <button class="btn btn-default" type="button">Create New</button>
-    </a>
-</p>
-
 @(Html.Grid(Model.Roles).Build(c =>
   {
     c.Add(m => m.Id).Titled("Id");

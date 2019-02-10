@@ -8,7 +8,7 @@ using Serilog.Sinks.RollingFileAlternate;
 
 namespace AspNetBase.Presentation.App.Utils
 {
-  public class SerilogHelper
+  internal class SerilogHelper
   {
     const int SERILOG_ROLLING_FILE_SIZE_BYTES = 1024 * 1024 * 2; // 2 MB
     const string SERILOG_FILE_OUTPUT = "{Timestamp:yy-MM-dd HH:mm:ss.fff} [{Level:u3}] [SRC: {SourceContext}]{NewLine}{Message:l}{NewLine}{Exception}{Properties:j}{NewLine}{NewLine}";

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.Enums;
+using AspNetBase.Presentation.App.Controllers.Base;
 using AspNetBase.Presentation.App.Models;
 using ElmahCore;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetBase.Presentation.App.Controllers
 {
-  public class HomeController : Controller
+  public class HomeController : BaseController
   {
     private readonly IEmailSender emailSender;
     private readonly UserManager<AppUser> userManager;

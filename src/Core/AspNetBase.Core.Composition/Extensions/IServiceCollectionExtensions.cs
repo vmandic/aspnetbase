@@ -26,8 +26,24 @@ namespace AspNetBase.Core.Composition.Extensions
 
     public static IServiceCollection RegisterExportedTypes(this IServiceCollection services, ILogger<CompositionRoot> logger)
     {
+      if (services == null)
+        throw new ArgumentNullException(nameof(services));
+
+      if (logger == null)
+        throw new ArgumentNullException(nameof(logger));
+
+      var diStartDateTime = DateTime.Now;
+
+      var targetTypes = GetIocCoreProviderRegisteredTypes().ToList();
+      var targetTypeNames = string.Join(Environment.NewLine, targetTypes.Select(x => x.FullName));
+
+      logger.LogInformation(
+        "Found ({count}) attribute registered types for IoC DI: {types}",
+        targetTypes.Count,
+        Environment.NewLine + targetTypeNames);
+
       // WARNING: parallel processing causes issues
-      foreach (var registerType in GetIocCoreProviderRegisteredTypes())
+      foreach (var registerType in targetTypes)
       {
         var dependencyAttr = registerType.GetCustomAttribute<RegisterDependencyAttribute>();
         var contractType = dependencyAttr.ContractType ?? registerType.GetInterface($"I{registerType.Name}");
@@ -57,6 +73,7 @@ namespace AspNetBase.Core.Composition.Extensions
         }
       }
 
+      logger.LogInformation("Dependency injection finished in: '{elapsed}'", DateTime.Now - diStartDateTime);
       return services;
     }
 

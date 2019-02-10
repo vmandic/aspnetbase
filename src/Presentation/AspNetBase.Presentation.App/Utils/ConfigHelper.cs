@@ -3,12 +3,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace AspNetBase.Presentation.App.Utils
 {
-    public class ConfigHelper
+    internal class ConfigHelper
     {
       static readonly object locker = new object();
       static IConfigurationRoot root;
 
-      public static IConfigurationRoot GetRoot()
+      internal static IConfigurationRoot GetRoot()
       {
         lock(locker)
         {

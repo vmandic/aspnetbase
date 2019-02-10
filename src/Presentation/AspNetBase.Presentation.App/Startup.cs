@@ -1,5 +1,6 @@
 using System;
 using AspNetBase.Core.Composition;
+using AspNetBase.Core.Settings;
 using AspNetBase.Core.Settings.Extensions;
 using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Presentation.App.Extensions;
@@ -31,7 +32,7 @@ namespace AspNetBase.Presentation.App
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
       services
-        .AddSettings(Configuration)
+        .AddSettings(Configuration, LoggerFactory.CreateLogger<SettingsRegistration>())
         .AddHttpHelpers()
         .AddEntityFramework(Configuration, LoggerFactory, HostEnv)
         .AddIdentityUserRoleAuth()

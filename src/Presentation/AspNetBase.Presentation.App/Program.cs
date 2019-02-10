@@ -7,11 +7,13 @@ using Serilog;
 
 namespace AspNetBase.Presentation.App
 {
-    public class Program
+  public class Program
   {
     public static void Main(string[] args)
     {
-      Log.Logger = SerilogHelper.CreateConsoleLogger();
+      Log.Logger = SerilogHelper
+        .CreateConsoleLogger()
+        .ForContext<Program>();
 
       try
       {
