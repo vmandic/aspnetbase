@@ -22,6 +22,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using AspNetBase.Core.Settings;
 
 namespace AspNetBase.Presentation.App.Extensions
 {
@@ -29,15 +30,15 @@ namespace AspNetBase.Presentation.App.Extensions
   {
     public static IServiceCollection AddEntityFramework(
       this IServiceCollection services,
-      IConfiguration config,
+      DatabaseSettings dbSettings,
       ILoggerFactory loggerFactory,
       IHostingEnvironment env)
     {
       if (services == null)
         throw new ArgumentNullException(nameof(services));
 
-      if (config == null)
-        throw new ArgumentNullException(nameof(config));
+      if (dbSettings == null)
+        throw new ArgumentNullException(nameof(dbSettings));
 
       if (loggerFactory == null)
         throw new ArgumentNullException(nameof(loggerFactory));
@@ -51,7 +52,7 @@ namespace AspNetBase.Presentation.App.Extensions
       {
         opts
           .UseLoggerFactory(loggerFactory)
-          .UseOsDependentDbProvider(config);
+          .UseOsDependentDbProvider(dbSettings);
 
         if (env.IsDevelopment())
           opts.EnableSensitiveDataLogging();

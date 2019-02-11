@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using AspNetBase.Core.Settings;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -9,38 +10,40 @@ namespace AspNetBase.Infrastructure.DataAccess.Extensions
 {
   public static class DbContextOptionsBuilderExtensions
   {
+    const string DB_MIGRATIONS_ASSEMBLY_NAME = "AspNetBase.Infrastructure.DbMigrations";
+
     public static DbContextOptionsBuilder UseOsDependentDbProvider(
       this DbContextOptionsBuilder builder,
-      IConfiguration config)
+      DatabaseSettings dbSettings)
     {
       if (builder == null)
         throw new ArgumentNullException(nameof(builder));
 
-      if (config == null)
-        throw new ArgumentNullException(nameof(config));
+      if (dbSettings == null)
+        throw new ArgumentNullException(nameof(dbSettings));
 
-      var(connectionString, forceSqlite, migrationsAssembly) = DbConfigHelper.GetDbProviderDetails(config);
+      var conStr = dbSettings.GetConnectionString();
 
-      return !forceSqlite && DbConfigHelper.IsCurrentOsWindows ?
-        builder.UseSqlServer(connectionString, opts => opts.MigrationsAssembly(migrationsAssembly)) :
-        builder.UseSqlite(connectionString, opts => opts.MigrationsAssembly(migrationsAssembly));
+      return dbSettings.ShouldUseSqlServer() ?
+        builder.UseSqlServer(conStr, opts => opts.MigrationsAssembly(DB_MIGRATIONS_ASSEMBLY_NAME)) :
+        builder.UseSqlite(conStr, opts => opts.MigrationsAssembly(DB_MIGRATIONS_ASSEMBLY_NAME));
     }
 
     public static DbContextOptionsBuilder<AppDbContext> UseOsDependentDbProvider(
       this DbContextOptionsBuilder<AppDbContext> builder,
-      IConfiguration config)
+      DatabaseSettings dbSettings)
     {
       if (builder == null)
         throw new ArgumentNullException(nameof(builder));
 
-      if (config == null)
-        throw new ArgumentNullException(nameof(config));
+      if (dbSettings == null)
+        throw new ArgumentNullException(nameof(dbSettings));
 
-      var(connectionString, forceSqlite, migrationsAssembly) = DbConfigHelper.GetDbProviderDetails(config);
+      var conStr = dbSettings.GetConnectionString();
 
-      return !forceSqlite && DbConfigHelper.IsCurrentOsWindows ?
-        builder.UseSqlServer(connectionString, opts => opts.MigrationsAssembly(migrationsAssembly)) :
-        builder.UseSqlite(connectionString, opts => opts.MigrationsAssembly(migrationsAssembly));
+      return dbSettings.ShouldUseSqlServer() ?
+        builder.UseSqlServer(conStr, opts => opts.MigrationsAssembly(DB_MIGRATIONS_ASSEMBLY_NAME)) :
+        builder.UseSqlite(conStr, opts => opts.MigrationsAssembly(DB_MIGRATIONS_ASSEMBLY_NAME));
     }
   }
 }

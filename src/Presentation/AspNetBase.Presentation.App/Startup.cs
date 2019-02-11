@@ -34,7 +34,7 @@ namespace AspNetBase.Presentation.App
       services
         .AddSettings(Configuration, LoggerFactory.CreateLogger<SettingsRegistration>())
         .AddHttpHelpers()
-        .AddEntityFramework(Configuration, LoggerFactory, HostEnv)
+        .AddEntityFramework(SettingsLocator.Get<DatabaseSettings>(), LoggerFactory, HostEnv)
         .AddIdentityUserRoleAuth()
         .AddMvcRazorPages()
         .AddElmahErrorLogger();
@@ -43,11 +43,11 @@ namespace AspNetBase.Presentation.App
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app)
+    public void Configure(IApplicationBuilder app, DatabaseSettings dbSettings)
     {
       app
-        .MigrateDb()
-        .SeedDb();
+        .MigrateDb(dbSettings)
+        .SeedDb(dbSettings);
 
       if (HostEnv.IsDevelopment())
       {

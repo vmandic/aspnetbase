@@ -8,7 +8,7 @@
             "name": ".NET Core Launch (web)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build-app",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.App/bin/Debug/netcoreapp2.1/AspNetBase.Presentation.App.dll",
             "args": [],
