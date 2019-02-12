@@ -1,14 +1,11 @@
 using System;
-using System.Runtime.InteropServices;
 using AspNetBase.Core.Settings;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
-using AspNetBase.Infrastructure.Utils;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace AspNetBase.Infrastructure.DataAccess.Extensions
 {
-  public static class DbContextOptionsBuilderExtensions
+    public static class DbContextOptionsBuilderExtensions
   {
     const string DB_MIGRATIONS_ASSEMBLY_NAME = "AspNetBase.Infrastructure.DbMigrations";
 
