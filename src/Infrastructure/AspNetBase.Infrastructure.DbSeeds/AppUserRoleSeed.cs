@@ -37,7 +37,16 @@ namespace AspNetBase.Infrastructure.DbSeeds
         UserId = 2
       };
 
+      var adminToRegUserRole = new AppUserRole
+      {
+        Id = 3,
+        RoleId = (int) Roles.RegularUser,
+        Uid = Guid.Parse("2448dd6b-5711-4409-8db4-602f6bdd1e77"),
+        UserId = 1
+      };
+
       Context.AddOrUpdate(adminToSysAdminRole);
+      Context.AddOrUpdate(adminToRegUserRole);
       Context.AddOrUpdate(testToRegUserRole);
 
       Context.SaveChanges();

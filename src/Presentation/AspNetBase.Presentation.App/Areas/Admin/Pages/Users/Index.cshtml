@@ -6,7 +6,6 @@
 
     Func<int, string> editLink = (int rowId) => Url.Page("Edit", new { id = rowId});
     Func<int, string> detailsLink = (int rowId) => Url.Page("Details", new { id = rowId});
-    Func<int, string> deleteLink = (int rowId) => Url.Page("Delete", new { id = rowId});
 }
 
 <h2>Users</h2>
@@ -20,8 +19,9 @@
 @(Html.Grid(Model.Users).Build(c =>
   {
     c.Add(m => m.Id).Titled("Id");
-    c.Add(m => m.UserName).Titled("Username");
-    c.Add(m => m.Email).Titled("Email");
+    c.Add(m => m.UserName).Titled("Username / Email");
+    c.Add(m => m.EmailConfirmed).Titled("Email confirmed");
+    c.Add(m => string.Join(", ", m.UserRoles.Select(x => x.Role.Name))).Titled("Roles");
     c.Add(m => m.TwoFactorEnabled).Titled("2FA enabled");
 
     c.Add(m =>
@@ -32,9 +32,6 @@
           </button>
           <button class='btn btn-default btn-sm' type='button' data-nav='{detailsLink(m.Id)}' onclick='gridNavButtonClick(this)'>
             Details
-          </button>
-          <button class='btn btn-default btn-sm' type='button' data-nav='{deleteLink(m.Id)}' onclick='gridNavButtonClick(this)'>
-            Delete
           </button>
       </div>
       ").Titled("Actions").Encoded(false);

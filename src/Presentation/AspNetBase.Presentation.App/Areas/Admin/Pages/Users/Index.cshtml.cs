@@ -1,30 +1,25 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
-using AspNetBase.Infrastructure.DataAccess.EntityFramework;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetBase.Presentation.App.Pages.ManageUsers
 {
-  public class IndexModel : PageModel
+    public class IndexModel : PageModel
   {
-    private readonly AspNetBase.Infrastructure.DataAccess.EntityFramework.AppDbContext _context;
+    private readonly UserManager<AppUser> userManger;
 
-    public IndexModel(AspNetBase.Infrastructure.DataAccess.EntityFramework.AppDbContext context)
+    public IndexModel(UserManager<AppUser> userManger)
     {
-      _context = context;
+      this.userManger = userManger;
     }
 
     public IQueryable<AppUser> Users { get; set; }
 
     public void OnGet()
     {
-      Users = _context.Users;
+      Users = userManger.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role);
     }
   }
 }

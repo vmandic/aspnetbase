@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
-using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Core.App.Models.Identity;
+using AspNetBase.Core.Contracts.Services.Identity;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -39,19 +39,13 @@ namespace AspNetBase.Core.Providers.Services.Identity
       bool sendEmailConfirmation = true)
     {
       if (string.IsNullOrWhiteSpace(email))
-      {
         throw new ArgumentException("Invalid argument value provided.", nameof(email));
-      }
 
       if (string.IsNullOrWhiteSpace(password))
-      {
         throw new ArgumentException("Invalid argument value provided.", nameof(password));
-      }
 
       if (getCallbackUrl == null)
-      {
         throw new ArgumentNullException(nameof(getCallbackUrl));
-      }
 
       var user = new AppUser { UserName = email, Email = email };
       var result = await userManager.CreateAsync(user, password);

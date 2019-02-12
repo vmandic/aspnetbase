@@ -13,5 +13,8 @@ namespace AspNetBase.Infrastructure.DataAccess.Entities.Identity
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+
+    public AppRole Role { get; set; }
+    public AppUser User { get; set; }
   }
 }

@@ -16,8 +16,10 @@ namespace AspNetBase.Infrastructure.DataAccess.EntityFramework
     protected override void OnModelCreating(ModelBuilder builder)
     {
       base.OnModelCreating(builder);
-
       ConfigureAllEntities(builder);
+
+      AppUser.Configure(builder);
+      AppRole.Configure(builder);
     }
 
     private static void ConfigureAllEntities(ModelBuilder builder)

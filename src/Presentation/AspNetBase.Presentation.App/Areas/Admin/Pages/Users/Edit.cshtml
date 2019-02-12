@@ -7,7 +7,7 @@
 
 <h2>Edit</h2>
 
-<h4>AppUser</h4>
+<h4>User account</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,51 +15,27 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="AppUser.Uid" class="control-label"></label>
-                <input asp-for="AppUser.Uid" class="form-control" />
+                <input asp-for="AppUser.Uid" class="form-control" disabled />
                 <span asp-validation-for="AppUser.Uid" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="AppUser.Id" />
             <div class="form-group">
                 <label asp-for="AppUser.UserName" class="control-label"></label>
-                <input asp-for="AppUser.UserName" class="form-control" />
+                <input asp-for="AppUser.UserName" class="form-control" disabled />
                 <span asp-validation-for="AppUser.UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AppUser.NormalizedUserName" class="control-label"></label>
-                <input asp-for="AppUser.NormalizedUserName" class="form-control" />
-                <span asp-validation-for="AppUser.NormalizedUserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="AppUser.Email" class="control-label"></label>
-                <input asp-for="AppUser.Email" class="form-control" />
+                <input asp-for="AppUser.Email" class="form-control" disabled />
                 <span asp-validation-for="AppUser.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppUser.NormalizedEmail" class="control-label"></label>
-                <input asp-for="AppUser.NormalizedEmail" class="form-control" />
-                <span asp-validation-for="AppUser.NormalizedEmail" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="AppUser.EmailConfirmed" /> @Html.DisplayNameFor(model => model.AppUser.EmailConfirmed)
+                        <input asp-for="AppUser.EmailConfirmed" disabled />
+                        @Html.DisplayNameFor(model => model.AppUser.EmailConfirmed)
                     </label>
                 </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppUser.PasswordHash" class="control-label"></label>
-                <input asp-for="AppUser.PasswordHash" class="form-control" />
-                <span asp-validation-for="AppUser.PasswordHash" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppUser.SecurityStamp" class="control-label"></label>
-                <input asp-for="AppUser.SecurityStamp" class="form-control" />
-                <span asp-validation-for="AppUser.SecurityStamp" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppUser.ConcurrencyStamp" class="control-label"></label>
-                <input asp-for="AppUser.ConcurrencyStamp" class="form-control" />
-                <span asp-validation-for="AppUser.ConcurrencyStamp" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AppUser.PhoneNumber" class="control-label"></label>
@@ -69,14 +45,16 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="AppUser.PhoneNumberConfirmed" /> @Html.DisplayNameFor(model => model.AppUser.PhoneNumberConfirmed)
+                        <input asp-for="AppUser.PhoneNumberConfirmed" disabled />
+                        @Html.DisplayNameFor(model => model.AppUser.PhoneNumberConfirmed)
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="AppUser.TwoFactorEnabled" /> @Html.DisplayNameFor(model => model.AppUser.TwoFactorEnabled)
+                        <input asp-for="AppUser.TwoFactorEnabled" disabled />
+                        @Html.DisplayNameFor(model => model.AppUser.TwoFactorEnabled)
                     </label>
                 </div>
             </div>
@@ -88,7 +66,8 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="AppUser.LockoutEnabled" /> @Html.DisplayNameFor(model => model.AppUser.LockoutEnabled)
+                        <input asp-for="AppUser.LockoutEnabled" />
+                        @Html.DisplayNameFor(model => model.AppUser.LockoutEnabled)
                     </label>
                 </div>
             </div>
@@ -98,7 +77,7 @@
                 <span asp-validation-for="AppUser.AccessFailedCount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </form>
     </div>
