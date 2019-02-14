@@ -8,84 +8,104 @@
 <h2>Edit</h2>
 
 <h4>User account</h4>
+
+<div><a asp-page="./Index">Back to List</a></div>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="AppUser.Uid" class="control-label"></label>
-                <input asp-for="AppUser.Uid" class="form-control" disabled />
-                <span asp-validation-for="AppUser.Uid" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="AppUser.Id" />
-            <div class="form-group">
-                <label asp-for="AppUser.UserName" class="control-label"></label>
-                <input asp-for="AppUser.UserName" class="form-control" disabled />
-                <span asp-validation-for="AppUser.UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppUser.Email" class="control-label"></label>
-                <input asp-for="AppUser.Email" class="form-control" disabled />
-                <span asp-validation-for="AppUser.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="AppUser.EmailConfirmed" disabled />
-                        @Html.DisplayNameFor(model => model.AppUser.EmailConfirmed)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppUser.PhoneNumber" class="control-label"></label>
-                <input asp-for="AppUser.PhoneNumber" class="form-control" />
-                <span asp-validation-for="AppUser.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="AppUser.PhoneNumberConfirmed" disabled />
-                        @Html.DisplayNameFor(model => model.AppUser.PhoneNumberConfirmed)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="AppUser.TwoFactorEnabled" disabled />
-                        @Html.DisplayNameFor(model => model.AppUser.TwoFactorEnabled)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppUser.LockoutEnd" class="control-label"></label>
-                <input asp-for="AppUser.LockoutEnd" class="form-control" />
-                <span asp-validation-for="AppUser.LockoutEnd" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="AppUser.LockoutEnabled" />
-                        @Html.DisplayNameFor(model => model.AppUser.LockoutEnabled)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppUser.AccessFailedCount" class="control-label"></label>
-                <input asp-for="AppUser.AccessFailedCount" class="form-control" />
-                <span asp-validation-for="AppUser.AccessFailedCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-success" />
-            </div>
-        </form>
-    </div>
+<form method="post">
+
+  <div class="row">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+  </div>
+
+  <div class="row">
+      <div class="col-md-4">
+          <div class="form-group">
+              <label asp-for="UserEditModel.Id" class="control-label"></label>
+              <input type="text" value="@Model.UserEditModel.Id" class="form-control" disabled />
+              <span asp-validation-for="UserEditModel.Id" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+              <label asp-for="UserEditModel.Uid" class="control-label"></label>
+              <input asp-for="UserEditModel.Uid" class="form-control" disabled />
+              <span asp-validation-for="UserEditModel.Uid" class="text-danger"></span>
+          </div>
+          <input type="hidden" asp-for="UserEditModel.Id" />
+          <div class="form-group">
+              <label asp-for="UserEditModel.UserName" class="control-label"></label>
+              <input asp-for="UserEditModel.UserName" class="form-control" disabled />
+              <span asp-validation-for="UserEditModel.UserName" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+              <label asp-for="UserEditModel.Email" class="control-label"></label>
+              <input asp-for="UserEditModel.Email" class="form-control" disabled />
+              <span asp-validation-for="UserEditModel.Email" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+              <div class="checkbox">
+                  <label>
+                      <input asp-for="UserEditModel.EmailConfirmed" disabled />
+                      @Html.DisplayNameFor(model => model.UserEditModel.EmailConfirmed)
+                  </label>
+              </div>
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="form-group">
+              <label asp-for="UserEditModel.PhoneNumber" class="control-label"></label>
+              <input asp-for="UserEditModel.PhoneNumber" class="form-control" />
+              <span asp-validation-for="UserEditModel.PhoneNumber" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+              <div class="checkbox">
+                  <label>
+                      <input asp-for="UserEditModel.PhoneNumberConfirmed" disabled />
+                      @Html.DisplayNameFor(model => model.UserEditModel.PhoneNumberConfirmed)
+                  </label>
+              </div>
+          </div>
+          <div class="form-group">
+              <div class="checkbox">
+                  <label>
+                      <input asp-for="UserEditModel.TwoFactorEnabled" disabled />
+                      @Html.DisplayNameFor(model => model.UserEditModel.TwoFactorEnabled)
+                  </label>
+              </div>
+          </div>
+          <div class="form-group">
+              <label asp-for="UserEditModel.LockoutEnd" class="control-label"></label>
+              <input asp-for="UserEditModel.LockoutEnd" class="form-control" />
+              <span asp-validation-for="UserEditModel.LockoutEnd" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+              <div class="checkbox">
+                  <label>
+                      <input asp-for="UserEditModel.LockoutEnabled" />
+                      @Html.DisplayNameFor(model => model.UserEditModel.LockoutEnabled)
+                  </label>
+              </div>
+          </div>
+          <div class="form-group">
+              <label asp-for="UserEditModel.AccessFailedCount" class="control-label"></label>
+              <input asp-for="UserEditModel.AccessFailedCount" class="form-control" />
+              <span asp-validation-for="UserEditModel.AccessFailedCount" class="text-danger"></span>
+          </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label asp-for="UserEditModel.RoleIds" class="control-label"></label>
+          <select class="form-control" asp-for="UserEditModel.RoleIds" asp-items="@Model.Roles" multiple></select>
+        </div>
+      </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
+<div class="row">
+  <div class="col-md-12">
+    <input type="submit" value="Save" class="btn btn-success" />
+  </div>
 </div>
+
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -19,10 +19,10 @@
 @(Html.Grid(Model.Users).Build(c =>
   {
     c.Add(m => m.Id).Titled("Id");
-    c.Add(m => m.UserName).Titled("Username / Email");
+    c.Add(m => m.Email).Titled("Username / Email");
     c.Add(m => m.EmailConfirmed).Titled("Email confirmed");
-    c.Add(m => string.Join(", ", m.UserRoles.Select(x => x.Role.Name))).Titled("Roles");
-    c.Add(m => m.TwoFactorEnabled).Titled("2FA enabled");
+    c.Add(m => m.RolesForDisplay).Titled("Roles");
+    c.Add(m => m.TwoFaEnabled).Titled("2FA enabled");
 
     c.Add(m =>
       $@"
