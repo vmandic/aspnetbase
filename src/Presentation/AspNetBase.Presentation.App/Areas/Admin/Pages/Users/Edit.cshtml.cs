@@ -77,6 +77,16 @@ namespace AspNetBase.Presentation.App.Pages.ManageUsers
       var rolesToAdd = Roles.Where(x => UserEditModel.RoleIds.Contains(int.Parse(x.Value))).Select(x => x.Text);
 
       // TODO: fix roles management, don't use RoleManager<TRole> maybe?
+
+      foreach (var role in Roles)
+      {
+        if (UserEditModel.RoleIds.Contains(int.Parse(role.Value)) && !await userManager.IsInRoleAsync(user, role.Text))
+        {
+
+        }
+      }
+
+      // await userManager.IsInRoleAsync()
       var removeRolesResult = await userManager.RemoveFromRolesAsync(user, Roles.Select(x => x.Text));
       var addRolesResult = await userManager.AddToRolesAsync(user, rolesToAdd);
 
@@ -97,5 +107,6 @@ namespace AspNetBase.Presentation.App.Pages.ManageUsers
 
       return RedirectToPage("./Index");
     }
-  }
+
+ }
 }
