@@ -11,13 +11,20 @@
 <hr />
 
 @if(emailSettings.Enabled) {
-  <div class="alert alert-danger"><strong>Warning!</strong> An email will be sent to the email address.</div>
+  <div class="alert alert-danger"><strong>Warning!</strong> An email will be sent to the email address if '@Html.DisplayNameFor(m => m.Input.SendEmail)' option is checked.</div>
 }
 
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
+            @if(emailSettings.Enabled)
+            {
+            <div class="form-group">
+              <label asp-for="Input.SendEmail"></label>
+              <input asp-for="Input.SendEmail" />
+            </div>
+            }
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />

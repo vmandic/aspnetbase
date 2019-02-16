@@ -4,6 +4,9 @@ namespace AspNetBase.Core.App.Models.Identity
 {
   public class RegisterAccountFm
   {
+    [Display(Name="Send email?")]
+    public bool SendEmail { get; set; }
+
     [Required]
     [EmailAddress]
     [Display(Name = "Email")]
