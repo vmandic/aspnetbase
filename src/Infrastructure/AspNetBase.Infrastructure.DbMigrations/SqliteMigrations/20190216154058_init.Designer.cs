@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetBase.Infrastructure.DbMigrations.SqliteMigrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190106170729_init")]
+    [Migration("20190216154058_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,7 +153,7 @@ namespace AspNetBase.Infrastructure.DbMigrations.SqliteMigrations
 
                     b.Property<string>("ProviderKey");
 
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ProviderDisplayName");
@@ -178,7 +178,7 @@ namespace AspNetBase.Infrastructure.DbMigrations.SqliteMigrations
 
                     b.Property<int>("RoleId");
 
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("Uid");
@@ -201,7 +201,7 @@ namespace AspNetBase.Infrastructure.DbMigrations.SqliteMigrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("Uid");
@@ -242,13 +242,13 @@ namespace AspNetBase.Infrastructure.DbMigrations.SqliteMigrations
 
             modelBuilder.Entity("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUserRole", b =>
                 {
-                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppRole")
-                        .WithMany()
+                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppRole", "Role")
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUser")
-                        .WithMany()
+                    b.HasOne("AspNetBase.Infrastructure.DataAccess.Entities.Identity.AppUser", "User")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

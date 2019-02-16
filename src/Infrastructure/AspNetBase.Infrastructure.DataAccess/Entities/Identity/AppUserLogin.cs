@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AspNetBase.Infrastructure.DataAccess.Entities.Identity
 {
-  public class AppUserLogin : IdentityUserLogin<int>, IEntityBase<int>
+  public class AppUserLogin : IdentityUserLogin<int>, IEntityBase<int?>
   {
     public Guid Uid { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public int? Id { get; set; }
   }
 }

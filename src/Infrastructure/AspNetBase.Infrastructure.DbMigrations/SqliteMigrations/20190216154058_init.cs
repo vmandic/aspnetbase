@@ -103,7 +103,7 @@ namespace AspNetBase.Infrastructure.DbMigrations.SqliteMigrations
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: false),
                     Uid = table.Column<Guid>(nullable: false),
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: true)
                         .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table =>
@@ -124,7 +124,7 @@ namespace AspNetBase.Infrastructure.DbMigrations.SqliteMigrations
                     UserId = table.Column<int>(nullable: false),
                     RoleId = table.Column<int>(nullable: false),
                     Uid = table.Column<Guid>(nullable: false),
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: true)
                         .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table =>
@@ -152,7 +152,7 @@ namespace AspNetBase.Infrastructure.DbMigrations.SqliteMigrations
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true),
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: true)
                         .Annotation("Sqlite:Autoincrement", true),
                     Uid = table.Column<Guid>(nullable: false)
                 },

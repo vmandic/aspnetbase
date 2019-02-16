@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace AspNetBase.Infrastructure.DbSeeds
 {
   [RegisterDependency(ServiceLifetime.Scoped, typeof(AppUserRoleSeed))]
-  public class AppUserRoleSeed : SeedBase<AppUserRole>
+  public class AppUserRoleSeed : SeedBase<AppUserRole, int?>
   {
     public AppUserRoleSeed(AppDbContext context, ILogger<AppUserRole> logger) : base(context, logger) { }
 

@@ -6,9 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNetBase.Infrastructure.DbSeeds.Base
 {
-  public abstract class SeedBase<TEntity> : ISeed where TEntity : class, IEntityBase<int>, new()
+  public abstract class BaseSeedBase<TEntity> : ISeed where TEntity : class
   {
-    public SeedBase(AppDbContext context, ILogger<TEntity> logger)
+    public BaseSeedBase(AppDbContext context, ILogger<TEntity> logger)
     {
       Context = context ??
         throw new ArgumentNullException(nameof(context));
@@ -25,5 +25,15 @@ namespace AspNetBase.Infrastructure.DbSeeds.Base
     public virtual bool Skip => false;
     public abstract int ExecutionOrder { get; }
     public abstract void Run();
+  }
+
+  public abstract class SeedBase<TEntity, TKey> : BaseSeedBase<TEntity>, ISeed where TEntity : class, IEntityBase<TKey>, new()
+  {
+    public SeedBase(AppDbContext context, ILogger<TEntity> logger) : base(context, logger) { }
+  }
+
+  public abstract class SeedBase<TEntity> : BaseSeedBase<TEntity>, ISeed where TEntity : class, IEntityBase<int>, new()
+  {
+    public SeedBase(AppDbContext context, ILogger<TEntity> logger) : base(context, logger) { }
   }
 }

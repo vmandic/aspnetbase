@@ -5,6 +5,10 @@
     <ProjectReference Include="..\..\Common\AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Interactive" Version="3.2.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>

@@ -9,14 +9,14 @@ namespace AspNetBase.Infrastructure.DbSeeds.Extensions
 {
   public static class DbContextExtensions
   {
-    public static IEnumerable<string> FindPrimaryKeyNames<T>(this DbContext dbContext, T entity)
+    public static IEnumerable<string> FindPrimaryKeyNames<T>(this DbContext dbContext, T entity, IReadOnlyList<IProperty> keyProperties = null)
     {
-      return dbContext.FindPrimaryKeyProperties(entity).Select(p => p.Name);
+      return (keyProperties ?? dbContext.FindPrimaryKeyProperties(entity)).Select(p => p.Name);
     }
 
-    public static IEnumerable<object> FindPrimaryKeyValues<T>(this DbContext dbContext, T entity)
+    public static IEnumerable<object> FindPrimaryKeyValues<T>(this DbContext dbContext, T entity, IReadOnlyList<IProperty> keyProperties = null)
     {
-      return dbContext.FindPrimaryKeyProperties(entity).Select(p => entity.GetPropertyValue(p.Name));
+      return (keyProperties ?? dbContext.FindPrimaryKeyProperties(entity)).Select(p => entity.GetPropertyValue(p.Name));
     }
 
     static IReadOnlyList<IProperty> FindPrimaryKeyProperties<T>(this DbContext dbContext, T entity)
@@ -29,15 +29,22 @@ namespace AspNetBase.Infrastructure.DbSeeds.Extensions
       return entity.GetType().GetProperty(name).GetValue(entity, null);
     }
 
-    public static void AddOrUpdate<TEntity>(this DbContext ctx, TEntity entity) where TEntity : class, IEntityBase<int>
+    public static void AddOrUpdate<TEntity>(this DbContext ctx, TEntity entity) where TEntity : class
     {
-      var existsInDb = ctx.Set<TEntity>().AsNoTracking().Any(x => x.Id == entity.Id);
+      var keyProps = ctx.FindPrimaryKeyProperties(entity);
+      var keyVals = ctx.FindPrimaryKeyValues(entity, keyProps).ToArray();
+      var dbEntity = ctx.Set<TEntity>().Find(keyVals);
 
-      if (existsInDb)
+      if (dbEntity != null)
       {
+        // NOTE: detach not to cause conflict with the one being updated
+        ctx.Entry(dbEntity).State = EntityState.Detached;
+
         var entry = ctx.Entry(entity);
         entry.State = EntityState.Modified;
-        entry.Property(x => x.Id).IsModified = false;
+
+        ctx.FindPrimaryKeyNames(entity, keyProps)
+          .ForEach(keyPropName => entry.Property(keyPropName).IsModified = false);
       }
       else
       {

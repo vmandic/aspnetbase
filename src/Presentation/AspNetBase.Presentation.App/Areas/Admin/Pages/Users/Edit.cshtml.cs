@@ -16,13 +16,11 @@ namespace AspNetBase.Presentation.App.Pages.ManageUsers
   public class EditModel : PageModel
   {
     private readonly UserManager<AppUser> userManager;
-    private readonly RoleManager<AppRole> roleManager;
     private readonly AppDbContext db;
 
-    public EditModel(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, AppDbContext db)
+    public EditModel(UserManager<AppUser> userManager, AppDbContext db)
     {
       this.userManager = userManager;
-      this.roleManager = roleManager;
       this.db = db;
     }
 
@@ -42,18 +40,18 @@ namespace AspNetBase.Presentation.App.Pages.ManageUsers
         return NotFound();
 
       UserEditModel = new UserEditModel(user);
-      LoadRoles();
+      LoadRolesDropDown();
 
       return Page();
     }
 
-    private void LoadRoles()
+    private IEnumerable<SelectListItem> LoadRolesDropDown()
     {
-      Roles = db.Roles.Select(x => new SelectListItem
+      return (Roles = db.Roles.Select(x => new SelectListItem
       {
         Value = x.Id.ToString(),
           Text = x.Name
-      });
+      }));
     }
 
     public async Task<IActionResult> OnPostAsync()
@@ -66,38 +64,11 @@ namespace AspNetBase.Presentation.App.Pages.ManageUsers
       if (user == null)
         return NotFound();
 
-      user.PhoneNumber = UserEditModel.PhoneNumber;
-      user.LockoutEnd = UserEditModel.LockoutEnd;
-      user.LockoutEnabled = UserEditModel.LockoutEnabled;
-      user.AccessFailedCount = UserEditModel.AccessFailedCount;
+      var updateUserResult = await UpdateUserDetails(user);
+      updateUserResult.Errors.ForEach(e => ModelState.AddModelError(string.Empty, e.Description));
 
-      var updateUserResult = await userManager.UpdateAsync(user);
-
-      LoadRoles();
-      var rolesToAdd = Roles.Where(x => UserEditModel.RoleIds.Contains(int.Parse(x.Value))).Select(x => x.Text);
-
-      // TODO: fix roles management, don't use RoleManager<TRole> maybe?
-
-      foreach (var role in Roles)
-      {
-        if (UserEditModel.RoleIds.Contains(int.Parse(role.Value)) && !await userManager.IsInRoleAsync(user, role.Text))
-        {
-
-        }
-      }
-
-      // await userManager.IsInRoleAsync()
-      var removeRolesResult = await userManager.RemoveFromRolesAsync(user, Roles.Select(x => x.Text));
-      var addRolesResult = await userManager.AddToRolesAsync(user, rolesToAdd);
-
-      if (!updateUserResult.Succeeded)
-        updateUserResult.Errors.ForEach(e => ModelState.AddModelError(string.Empty, e.Description));
-
-      if (!removeRolesResult.Succeeded)
-        removeRolesResult.Errors.ForEach(e => ModelState.AddModelError(string.Empty, e.Description));
-
-      if (!addRolesResult.Succeeded)
-        addRolesResult.Errors.ForEach(e => ModelState.AddModelError(string.Empty, e.Description));
+      var roles = LoadRolesDropDown();
+      await UpdateRoles(user, updateUserResult, roles.Select(x => (int.Parse(x.Value), x.Text)));
 
       if (!ModelState.IsValid)
       {
@@ -108,5 +79,56 @@ namespace AspNetBase.Presentation.App.Pages.ManageUsers
       return RedirectToPage("./Index");
     }
 
- }
+    private Task<IdentityResult> UpdateUserDetails(AppUser user)
+    {
+      user.PhoneNumber = UserEditModel.PhoneNumber;
+      user.LockoutEnd = UserEditModel.LockoutEnd;
+      user.LockoutEnabled = UserEditModel.LockoutEnabled;
+      user.AccessFailedCount = UserEditModel.AccessFailedCount;
+
+      return userManager.UpdateAsync(user);
+    }
+
+    private async Task UpdateRoles(AppUser user, IdentityResult updateUserResult, IEnumerable < (int id, string name) > allRoles)
+    {
+      if (updateUserResult.Succeeded)
+      {
+        var addRolesResult = await AddRoles(user, allRoles);
+        addRolesResult.Errors.ForEach(e => ModelState.AddModelError(string.Empty, e.Description));
+
+        if (addRolesResult.Succeeded)
+        {
+          var removeRolesResult = await RemoveRoles(user, allRoles);
+          removeRolesResult.Errors.ForEach(e => ModelState.AddModelError(string.Empty, e.Description));
+        }
+      }
+    }
+
+    private Task<IdentityResult> RemoveRoles(AppUser user, IEnumerable < (int id, string name) > allRoles)
+    {
+      var rolesToRemove = allRoles
+        .Where(role =>
+          !UserEditModel.RoleIds.Contains(role.id))
+        .Select(x => x.name)
+        .ToList();
+
+      return rolesToRemove.Count > 0 ?
+        userManager.RemoveFromRolesAsync(user, rolesToRemove) :
+        Task.FromResult(IdentityResult.Success);
+    }
+
+    private Task<IdentityResult> AddRoles(AppUser user, IEnumerable < (int id, string name) > allRoles)
+    {
+      var rolesToAdd = allRoles
+        .Where(role =>
+          UserEditModel.RoleIds.Contains(role.id) &&
+          !userManager.IsInRoleAsync(user, role.name).GetAwaiter().GetResult())
+        .Select(x => x.name)
+        .ToList();
+
+      return rolesToAdd.Count > 0 ?
+        userManager.AddToRolesAsync(user, rolesToAdd) :
+        Task.FromResult(IdentityResult.Success);
+    }
+  }
 }

@@ -24,15 +24,15 @@ namespace AspNetBase.Infrastructure.DataAccess.EntityFramework
 
     private static void ConfigureAllEntities(ModelBuilder builder)
     {
-      var entities = typeof(IEntityBase<>)?.Assembly ?
-        .GetTypes() ?
-        .Where(x =>
+      var entities = typeof(IEntityBase<>)?.Assembly
+        ?.GetTypes()
+        ?.Where(x =>
           x != null &&
           x.IsClass &&
           x.Namespace != null &&
           x.Namespace.Contains("Entities") &&
-          !x.IsDefined(typeof(CompilerGeneratedAttribute), false)) ?
-        .Distinct();
+          !x.IsDefined(typeof(CompilerGeneratedAttribute), false))
+        ?.Distinct();
 
       foreach (var entityType in entities)
       {
@@ -41,7 +41,8 @@ namespace AspNetBase.Infrastructure.DataAccess.EntityFramework
         // NOTE: careful not to override the Identity defaults due to the default UserStore impl. relying on it
         if (!entityType.Namespace.EndsWith("Identity"))
         {
-          type.HasKey(nameof(IEntityBase<int>.Id));
+          type.HasKey("Id");
+          type.Property("Id").ValueGeneratedOnAdd();
         }
 
         type.Property(nameof(IEntityBase<int>.Uid)).HasValueGenerator<GuidValueGenerator>();
