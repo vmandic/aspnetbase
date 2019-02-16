@@ -1,29 +1,32 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using AspNetBase.Core.App.Models.Admin.Roles;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
-using AspNetBase.Infrastructure.DataAccess.EntityFramework;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace AspNetBase.Presentation.App.Pages.ManageRoles
 {
-  public class IndexModel : PageModel
+    public class IndexModel : PageModel
   {
-    private readonly AspNetBase.Infrastructure.DataAccess.EntityFramework.AppDbContext _context;
+    private readonly RoleManager<AppRole> roleManager;
 
-    public IndexModel(AspNetBase.Infrastructure.DataAccess.EntityFramework.AppDbContext context)
+    public IndexModel(RoleManager<AppRole> roleManager)
     {
-      _context = context;
+
+      this.roleManager = roleManager;
     }
 
-    public IQueryable<AppRole> Roles { get; set; }
+    public IQueryable<RoleListVm> Roles { get; set; }
 
     public void OnGet()
     {
-      Roles = _context.Roles;
+      Roles = roleManager.Roles.Select(x => new RoleListVm
+      {
+        Id = x.Id,
+        Name = x.Name,
+        Users = x.UserRoles.Select(ur => ur.User.Email),
+        UserCount = x.UserRoles.Count
+      });
     }
   }
 }

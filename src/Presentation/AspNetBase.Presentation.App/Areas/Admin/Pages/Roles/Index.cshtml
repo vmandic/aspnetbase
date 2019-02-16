@@ -3,29 +3,21 @@
 
 @{
     ViewData["Title"] = "Roles";
-
-    Func<int, string> editLink = (int rowId) => Url.Page("Edit", new { id = rowId});
-    Func<int, string> detailsLink = (int rowId) => Url.Page("Details", new { id = rowId});
 }
 
 <h2>Roles</h2>
+
+<div class="alert alert-info">
+  <strong>Roles can not be edited during application runtime.</strong>
+  They are thightly bound to application logic and enum types.
+</div>
 
 @(Html.Grid(Model.Roles).Build(c =>
   {
     c.Add(m => m.Id).Titled("Id");
     c.Add(m => m.Name).Titled("Role Name");
-
-    c.Add(m =>
-      $@"
-      <div class='btn-group' role='group'>
-          <button class='btn btn-default btn-sm' type='button' data-nav='{editLink(m.Id)}' onclick='gridNavButtonClick(this)'>
-            Edit
-          </button>
-          <button class='btn btn-default btn-sm' type='button' data-nav='{detailsLink(m.Id)}' onclick='gridNavButtonClick(this)'>
-            Details
-          </button>
-      </div>
-      ").Titled("Actions").Encoded(false);
+    c.Add(m => m.UsersForDisplay).Titled("Users");
+    c.Add(m => m.UserCount).Titled("Total users");
   }).Filterable().Sortable()
 )
 
