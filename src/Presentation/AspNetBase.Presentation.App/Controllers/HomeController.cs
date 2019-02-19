@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Presentation.App.Controllers.Base;
 using AspNetBase.Presentation.App.Models;
+using AspNetBase.Presentation.App.Resources;
 using ElmahCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 
 namespace AspNetBase.Presentation.App.Controllers
 {
@@ -20,7 +25,9 @@ namespace AspNetBase.Presentation.App.Controllers
     private readonly IEmailSender emailSender;
     private readonly UserManager<AppUser> userManager;
 
-    public HomeController(UserManager<AppUser> userManager, IEmailSender emailSender)
+    public HomeController(
+      UserManager<AppUser> userManager,
+      IEmailSender emailSender)
     {
       this.emailSender = emailSender;
       this.userManager = userManager;
@@ -52,6 +59,26 @@ namespace AspNetBase.Presentation.App.Controllers
     public IActionResult Privacy()
     {
       return View();
+    }
+
+    [HttpPost]
+    public IActionResult SetLanguage(string culture, string returnUrl = null)
+    {
+      if (string.IsNullOrWhiteSpace(culture))
+        throw new ArgumentException("Invalid culture argument value provided.", nameof(culture));
+
+      Response.Cookies.Append(
+        CookieRequestCultureProvider.DefaultCookieName,
+        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+        new CookieOptions
+        {
+          Expires = DateTimeOffset.UtcNow.AddYears(1),
+            HttpOnly = true,
+            Secure = Request.IsHttps
+        }
+      );
+
+      return LocalRedirect(returnUrl ?? "~/");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

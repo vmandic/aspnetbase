@@ -4,25 +4,27 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Common.Utils.Extensions;
+using AspNetBase.Core.Settings;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Infrastructure.DataAccess.Extensions;
-using AspNetBase.Presentation.App.Utils;
 using AspNetBase.Presentation.App.Constants;
+using AspNetBase.Presentation.App.Resources;
+using AspNetBase.Presentation.App.Utils;
 using ElmahCore;
 using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using AspNetBase.Core.Settings;
 
 namespace AspNetBase.Presentation.App.Extensions
 {
@@ -110,13 +112,17 @@ namespace AspNetBase.Presentation.App.Extensions
       return services;
     }
 
-    public static IServiceCollection AddMvcRazorPages(this IServiceCollection services)
+    public static IServiceCollection AddMvcRazorPagesWithLocalization(this IServiceCollection services)
     {
       if (services == null)
         throw new ArgumentNullException(nameof(services));
 
       services
         .AddMvc()
+        .AddMvcLocalization(opts =>
+          opts.DataAnnotationLocalizerProvider =
+            (type, factory) => factory.Create(typeof(SharedResources)))
+        .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
         .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
         .AddRazorPagesOptions(options =>
         {
@@ -127,7 +133,7 @@ namespace AspNetBase.Presentation.App.Extensions
           options.Conventions.AuthorizeAreaFolder("Admin", "/", AppAuthorizationPolicies.RequiresSystemAdministrator);
         });
 
-      return services;
+      return services.AddLocalization();
     }
 
     public static IServiceCollection AddElmahErrorLogger(this IServiceCollection services)

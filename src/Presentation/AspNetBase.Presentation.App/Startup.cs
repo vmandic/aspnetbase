@@ -35,18 +35,21 @@ namespace AspNetBase.Presentation.App
         .AddHttpHelpers()
         .AddEntityFramework(SettingsLocator.Get<DatabaseSettings>(), LoggerFactory, HostEnv)
         .AddIdentityUserRoleAuth()
-        .AddMvcRazorPages()
+        .AddMvcRazorPagesWithLocalization()
         .AddElmahErrorLogger();
 
       return CompositionRoot.Initialize(services, LoggerFactory.CreateLogger<CompositionRoot>());
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, DatabaseSettings dbSettings)
+    public void Configure(IApplicationBuilder app, AppSettings appSettings)
     {
+      if (appSettings == null)
+        throw new ArgumentNullException(nameof(appSettings));
+
       app
-        .MigrateDb(dbSettings)
-        .SeedDb(dbSettings);
+        .MigrateDb(appSettings.Database)
+        .SeedDb(appSettings.Database);
 
       if (HostEnv.IsDevelopment())
       {
@@ -65,13 +68,9 @@ namespace AspNetBase.Presentation.App
         .UseHttpsRedirection()
         .UseAuthentication()
         .UseStaticFiles()
+        .UseLocalization(appSettings.Localization)
         .UseElmah()
-        .UseMvc(routes =>
-        {
-          routes.MapRoute(
-            name: "default",
-            template: "{controller=Home}/{action=Index}/{id?}");
-        });
+        .UseMvcWithDefaultRoute();
     }
   }
 }

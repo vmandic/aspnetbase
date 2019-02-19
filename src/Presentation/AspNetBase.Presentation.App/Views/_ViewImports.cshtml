@@ -1,4 +1,8 @@
 ﻿@using AspNetBase.Presentation.App
 @using AspNetBase.Presentation.App.Models
 @using NonFactors.Mvc.Grid;
+@using Microsoft.AspNetCore.Mvc.Localization
+@using AspNetBase.Presentation.App.Resources
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject IHtmlLocalizer<SharedResources> Localizer
