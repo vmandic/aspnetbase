@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetBase.Core.Settings;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Presentation.App.Controllers.Base;
@@ -62,13 +63,16 @@ namespace AspNetBase.Presentation.App.Controllers
     }
 
     [HttpPost]
-    public IActionResult SetLanguage(string culture, string returnUrl = null)
+    public IActionResult SetLanguage(
+      [FromServices] LocalizationSettings settings,
+      string culture,
+      string returnUrl = null)
     {
       if (string.IsNullOrWhiteSpace(culture))
         throw new ArgumentException("Invalid culture argument value provided.", nameof(culture));
 
       Response.Cookies.Append(
-        CookieRequestCultureProvider.DefaultCookieName,
+        settings.LocalizationCookieName,
         CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
         new CookieOptions
         {

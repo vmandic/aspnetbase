@@ -14,6 +14,7 @@ using AspNetBase.Presentation.App.Resources;
 using AspNetBase.Presentation.App.Utils;
 using ElmahCore;
 using ElmahCore.Mvc;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -112,16 +113,21 @@ namespace AspNetBase.Presentation.App.Extensions
       return services;
     }
 
-    public static IServiceCollection AddMvcRazorPagesWithLocalization(this IServiceCollection services)
+    public static IServiceCollection AddMvcRazorPagesWithLocalization(
+      this IServiceCollection services,
+      LocalizationSettings localizationSettings)
     {
       if (services == null)
         throw new ArgumentNullException(nameof(services));
+
+      if (localizationSettings == null)
+        throw new ArgumentNullException(nameof(localizationSettings));
 
       services
         .AddMvc()
         .AddMvcLocalization(opts =>
           opts.DataAnnotationLocalizerProvider =
-            (type, factory) => factory.Create(typeof(SharedResources)))
+          (type, factory) => factory.Create(typeof(SharedResources)))
         .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
         .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
         .AddRazorPagesOptions(options =>
@@ -132,6 +138,12 @@ namespace AspNetBase.Presentation.App.Extensions
           options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
           options.Conventions.AuthorizeAreaFolder("Admin", "/", AppAuthorizationPolicies.RequiresSystemAdministrator);
         });
+
+      services.Configure<RequestLocalizationOptions>(opts => {
+        LocalizationHelper.ConfigureLocalizationOptions(
+            opts,
+            localizationSettings);
+      });
 
       return services.AddLocalization();
     }

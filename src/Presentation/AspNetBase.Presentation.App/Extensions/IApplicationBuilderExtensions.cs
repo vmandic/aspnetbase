@@ -8,6 +8,7 @@ using AspNetBase.Presentation.App.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace AspNetBase.Presentation.App.Extensions
 {
@@ -34,24 +35,5 @@ namespace AspNetBase.Presentation.App.Extensions
 
       return app;
     }
-
-    public static IApplicationBuilder UseLocalization(
-      this IApplicationBuilder app,
-      LocalizationSettings localizationSettings)
-    {
-      if (localizationSettings == null)
-        throw new ArgumentNullException(nameof(localizationSettings));
-
-      var localiztionOptions = LocalizationHelper.CreateLocalizationOptions(
-        localizationSettings);
-
-      LocalizationHelper.ConfigureLocalizationCookieProvider(
-        localizationSettings,
-        localiztionOptions);
-
-      return app.UseRequestLocalization(localiztionOptions);
-    }
-
-
   }
 }

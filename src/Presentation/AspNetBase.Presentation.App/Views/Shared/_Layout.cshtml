@@ -3,42 +3,28 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AspNetBase.Presentation.App</title>
+    <title>@ViewData["Title"] - @AppSettings.Name</title>
 
     <partial name="_StylesPartial" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">AspNetBase.Presentation.App</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="Admin" asp-page="/Users/Index">Users</a></li>
-                    <li><a asp-area="Admin" asp-page="/Roles/Index">Roles</a></li>
-                </ul>
-                <partial name="_LoginPartial" />
-            </div>
-        </div>
-    </nav>
-
+    <partial name="_TopNavPartial" />
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
         @RenderBody()
+
         <hr />
         <footer>
-            <p>&copy; 2018 - AspNetBase.Presentation.App</p>
+          <div class="row">
+            <div class="col-md-6 text-left">
+              <p>@DateTime.Now.Year - @AppSettings.Name</p>
+            </div>
+            <div class="col-md-6 text-right">
+              <partial name="_SelectLanguagePartial" />
+            </div>
+          </div>
         </footer>
     </div>
 

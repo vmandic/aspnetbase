@@ -26,20 +26,27 @@ namespace AspNetBase.Presentation.App.Utils
       cookieProvider.CookieName = localizationSettings.LocalizationCookieName;
     }
 
-    internal static RequestLocalizationOptions CreateLocalizationOptions(
+    internal static RequestLocalizationOptions ConfigureLocalizationOptions(
+      RequestLocalizationOptions localizationOptions,
       LocalizationSettings localizationSettings)
     {
+      if (localizationOptions == null)
+        throw new ArgumentNullException(nameof(localizationOptions));
+
       if (localizationSettings == null)
         throw new ArgumentNullException(nameof(localizationSettings));
 
       var supportedCultures = GetSupportedCultures(localizationSettings);
 
-      return new RequestLocalizationOptions
-      {
-        DefaultRequestCulture = new RequestCulture(localizationSettings.DefaultCulture),
-          SupportedCultures = supportedCultures,
-          SupportedUICultures = supportedCultures
-      };
+      localizationOptions.DefaultRequestCulture = new RequestCulture(localizationSettings.DefaultCulture);
+      localizationOptions.SupportedCultures = supportedCultures;
+      localizationOptions.SupportedUICultures = supportedCultures;
+
+      LocalizationHelper.ConfigureLocalizationCookieProvider(
+          localizationSettings,
+          localizationOptions);
+
+      return localizationOptions;
     }
 
     private static CookieRequestCultureProvider GetLocalizationCookieProvider(
