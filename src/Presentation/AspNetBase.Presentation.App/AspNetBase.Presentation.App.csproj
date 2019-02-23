@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\Core\AspNetBase.Core.App.Models\AspNetBase.Core.App.Models.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbMigrations\AspNetBase.Infrastructure.DbMigrations.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbInitilizer\AspNetBase.Infrastructure.DbInitilizer.csproj" />
+    <ProjectReference Include="..\AspNetBase.Presentation.Common\AspNetBase.Presentation.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

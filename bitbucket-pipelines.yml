@@ -10,8 +10,8 @@ pipelines:
     - step:
         caches:
           - dotnetcore
-        script: # Modify the comma`nds below to build your repository.
-          # - export PROJECT_NAME=HzzoPharmApi.sln
+        script: # Modify the commands below to build your repository.
+          # - export PROJECT_NAME=name.sln
           # - export TEST_NAME=yourTestName
           - dotnet --info
           - dotnet restore

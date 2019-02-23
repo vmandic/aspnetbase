@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using AspNetBase.Common.Utils.Attributes;
 using AspNetBase.Common.Utils.Extensions;
+using AspNetBase.Core.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -13,7 +14,7 @@ namespace AspNetBase.Core.Composition.Extensions
 {
   public static class IServiceCollectionExtensions
   {
-    private static IEnumerable<Type> GetIocCoreProviderRegisteredTypes() =>
+    private static IEnumerable<Type> GetIocCoreProviderRegisteredTypes(string[] skipTypeIfFqnContains) =>
       new List<Type[]>
       {
         typeof(CoreProvidersAssemblyMarker).Assembly.GetTypes(),
@@ -22,19 +23,26 @@ namespace AspNetBase.Core.Composition.Extensions
       }
       .SelectMany(x => x)
       .Where(x => x.IsDefined(typeof(RegisterDependencyAttribute), false))
+      .Where(x => skipTypeIfFqnContains.All(n => !x.FullName.Contains(n)))
       .Distinct(x => x.FullName);
 
-    public static IServiceCollection RegisterExportedTypes(this IServiceCollection services, ILogger<CompositionRoot> logger)
+    public static IServiceCollection RegisterExportedTypes(
+      this IServiceCollection services,
+      CompositionSettings compositionSettings,
+      ILogger<CompositionRoot> logger)
     {
       if (services == null)
         throw new ArgumentNullException(nameof(services));
+
+      if (compositionSettings == null)
+        throw new ArgumentNullException(nameof(compositionSettings));
 
       if (logger == null)
         throw new ArgumentNullException(nameof(logger));
 
       var diStartDateTime = DateTime.Now;
 
-      var targetTypes = GetIocCoreProviderRegisteredTypes().ToList();
+      var targetTypes = GetIocCoreProviderRegisteredTypes(compositionSettings.SkipTypeIfFqnContainsAnyOf).ToList();
       var targetTypeNames = string.Join(Environment.NewLine, targetTypes.Select(x => x.FullName));
 
       logger.LogInformation(

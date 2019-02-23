@@ -10,6 +10,7 @@ using AspNetBase.Infrastructure.DataAccess.EntityFramework;
 using AspNetBase.Infrastructure.DataAccess.Enums;
 using AspNetBase.Infrastructure.DataAccess.Extensions;
 using AspNetBase.Presentation.App.Constants;
+using AspNetBase.Presentation.App.Extensions;
 using AspNetBase.Presentation.App.Resources;
 using AspNetBase.Presentation.App.Utils;
 using ElmahCore;
@@ -31,39 +32,6 @@ namespace AspNetBase.Presentation.App.Extensions
 {
   public static class IServiceCollectionExtensions
   {
-    public static IServiceCollection AddEntityFramework(
-      this IServiceCollection services,
-      DatabaseSettings dbSettings,
-      ILoggerFactory loggerFactory,
-      IHostingEnvironment env)
-    {
-      if (services == null)
-        throw new ArgumentNullException(nameof(services));
-
-      if (dbSettings == null)
-        throw new ArgumentNullException(nameof(dbSettings));
-
-      if (loggerFactory == null)
-        throw new ArgumentNullException(nameof(loggerFactory));
-
-      if (env == null)
-        throw new ArgumentNullException(nameof(env));
-
-      services.AddSingleton<IDesignTimeDbContextFactory<AppDbContext>, DesignTimeDbContextFactory>();
-
-      services.AddDbContext<AppDbContext>(opts =>
-      {
-        opts
-          .UseLoggerFactory(loggerFactory)
-          .UseOsDependentDbProvider(dbSettings);
-
-        if (env.IsDevelopment())
-          opts.EnableSensitiveDataLogging();
-      });
-
-      return services;
-    }
-
     public static IServiceCollection AddIdentityUserRoleAuth(this IServiceCollection services)
     {
       if (services == null)
@@ -99,20 +67,6 @@ namespace AspNetBase.Presentation.App.Extensions
       return services;
     }
 
-    public static IServiceCollection AddHttpHelpers(this IServiceCollection services)
-    {
-      if (services == null)
-        throw new ArgumentNullException(nameof(services));
-
-      // NOTE: already injected with AddIdentity (but later)
-      services.AddHttpContextAccessor();
-      services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
-      services.TryAddScoped<IUrlHelper>(
-        s => new UrlHelper(s.GetService<IActionContextAccessor>().ActionContext));
-
-      return services;
-    }
-
     public static IServiceCollection AddMvcRazorPagesWithLocalization(
       this IServiceCollection services,
       LocalizationSettings localizationSettings)
@@ -139,28 +93,14 @@ namespace AspNetBase.Presentation.App.Extensions
           options.Conventions.AuthorizeAreaFolder("Admin", "/", AppAuthorizationPolicies.RequiresSystemAdministrator);
         });
 
-      services.Configure<RequestLocalizationOptions>(opts => {
+      services.Configure<RequestLocalizationOptions>(opts =>
+      {
         LocalizationHelper.ConfigureLocalizationOptions(
-            opts,
-            localizationSettings);
+          opts,
+          localizationSettings);
       });
 
       return services.AddLocalization();
-    }
-
-    public static IServiceCollection AddElmahErrorLogger(this IServiceCollection services)
-    {
-      if (services == null)
-        throw new ArgumentNullException(nameof(services));
-
-      return services.AddElmah<XmlFileErrorLog>(opts =>
-      {
-        opts.CheckPermissionAction = ctx =>
-          ctx.User.Identity.IsAuthenticated &&
-          ctx.User.IsInRole(Roles.SystemAdministrator);
-
-        opts.LogPath = "~/logs/errors";
-      });
     }
   }
 }

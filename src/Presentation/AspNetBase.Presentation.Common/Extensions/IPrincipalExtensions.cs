@@ -1,7 +1,7 @@
 using System.Security.Principal;
 using AspNetBase.Infrastructure.DataAccess.Enums;
 
-namespace AspNetBase.Presentation.App.Extensions
+namespace AspNetBase.Presentation.Common.Extensions
 {
   public static class IPrincipalExtensions
   {

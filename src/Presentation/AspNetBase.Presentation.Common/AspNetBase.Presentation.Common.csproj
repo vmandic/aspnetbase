@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj" />
+    <ProjectReference Include="..\..\Core\AspNetBase.Core.Settings\AspNetBase.Core.Settings.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbInitilizer\AspNetBase.Infrastructure.DbInitilizer.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="elmahcore" Version="1.2.3" />
+    <PackageReference Include="Microsoft.AspNetCore.HostFiltering" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.EventSource" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.6" PrivateAssets="All" />
+    <PackageReference Include="NonFactors.Grid.Mvc6" Version="4.0.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Enrichers.AspnetcoreHttpcontext" Version="1.1.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.RollingFileAlternate" Version="2.0.9" />
+  </ItemGroup>
+
+</Project>

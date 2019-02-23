@@ -12,6 +12,16 @@
       "problemMatcher": "$msCompile"
     },
     {
+      "label": "build-spa",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.Spa/AspNetBase.Presentation.Spa.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
       "label": "build-sln",
       "command": "dotnet",
       "type": "process",

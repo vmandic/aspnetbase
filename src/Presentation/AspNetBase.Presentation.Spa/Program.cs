@@ -5,9 +5,9 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 
-namespace AspNetBase.Presentation.App
+namespace AspNetBase.Presentation.Spa
 {
-    public class Program
+  public class Program
   {
     public static void Main(string[] args)
     {
@@ -17,7 +17,7 @@ namespace AspNetBase.Presentation.App
 
       try
       {
-        Log.Information("Starting web host...");
+        Log.Information("Starting Spa web host...");
         BuildWebHost(args).Run();
       }
       catch (Exception ex)

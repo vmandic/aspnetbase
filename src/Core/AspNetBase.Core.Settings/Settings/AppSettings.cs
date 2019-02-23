@@ -9,5 +9,6 @@ namespace AspNetBase.Core.Settings
     public DatabaseSettings Database { get; set; }
     public ServicesSettings Services { get; set; }
     public LocalizationSettings Localization { get; set; }
+    public CompositionSettings Composition { get; set; }
   }
 }

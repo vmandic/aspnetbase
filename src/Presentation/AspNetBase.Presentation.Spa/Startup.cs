@@ -1,23 +1,24 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AspNetBase.Core.Composition;
 using AspNetBase.Core.Settings;
 using AspNetBase.Core.Settings.Extensions;
-using AspNetBase.Infrastructure.DataAccess.EntityFramework;
-using AspNetBase.Presentation.App.Extensions;
-using AspNetBase.Presentation.App.Utils;
 using AspNetBase.Presentation.Common.Extensions;
 using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AspNetBase.Presentation.App
+namespace AspNetBase.Presentation.Spa
 {
-    public class Startup
+  public class Startup
   {
     public ILoggerFactory LoggerFactory { get; }
     public IConfiguration Configuration { get; }
@@ -38,12 +39,10 @@ namespace AspNetBase.Presentation.App
         .AddSettings(Configuration, LoggerFactory.CreateLogger<SettingsRegistration>())
         .AddHttpHelpers()
         .AddEntityFramework(SettingsLocator.Get<DatabaseSettings>(), LoggerFactory, HostEnv)
-        .AddIdentityUserRoleAuth()
-        .AddMvcRazorPagesWithLocalization(SettingsLocator.Get<LocalizationSettings>())
-        .AddElmahErrorLogger();
+        .AddMvc()
+        .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-      // NOTE: required for database migrations
-      services.AddSingleton<IDesignTimeDbContextFactory<AppDbContext>, DesignTimeDbContextFactory>();
+      services.AddElmahErrorLogger();
 
       return CompositionRoot.Initialize(
         services,
@@ -52,41 +51,22 @@ namespace AspNetBase.Presentation.App
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(
-      IApplicationBuilder app,
-      AppSettings appSettings,
-      IOptions<RequestLocalizationOptions> localizationOpts)
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
-      if (appSettings == null)
-        throw new ArgumentNullException(nameof(appSettings));
-
-      if (localizationOpts == null || localizationOpts.Value == null)
-        throw new ArgumentNullException(nameof(localizationOpts));
-
-      app
-        .MigrateDb(appSettings.Database)
-        .SeedDb(appSettings.Database);
-
-      if (HostEnv.IsDevelopment())
+      if (env.IsDevelopment())
       {
-        app
-          .UseDeveloperExceptionPage()
+        app.UseDeveloperExceptionPage()
           .UseDatabaseErrorPage();
       }
       else
       {
-        app
-          .UseHsts()
-          .UseExceptionHandler("/Home/Error");
+        app.UseHsts();
       }
 
-      app
-        .UseHttpsRedirection()
-        .UseAuthentication()
+      app.UseHttpsRedirection()
         .UseStaticFiles()
-        .UseRequestLocalization(localizationOpts.Value)
         .UseElmah()
-        .UseMvcWithDefaultRoute();
+        .UseMvc();
     }
   }
 }
