@@ -341,3 +341,5 @@ ASALocalRun/
 # Custom ignores:
 logs/
 *.sqlite
+dist/
+wwwroot/dist

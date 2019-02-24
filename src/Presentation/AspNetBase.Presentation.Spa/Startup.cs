@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetBase.Core.Composition;
@@ -10,6 +11,7 @@ using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,7 +58,12 @@ namespace AspNetBase.Presentation.Spa
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage()
-          .UseDatabaseErrorPage();
+          .UseDatabaseErrorPage()
+          .UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+          {
+            ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Client"),
+              HotModuleReplacement = true
+          });
       }
       else
       {

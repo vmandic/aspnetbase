@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ClientAppFolder>Client</ClientAppFolder>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="elmahcore" Version="1.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,5 +21,25 @@
     <ProjectReference Include="..\..\Core\AspNetBase.Core.Composition\AspNetBase.Core.Composition.csproj" />
     <ProjectReference Include="..\..\Core\AspNetBase.Core.Contracts\AspNetBase.Core.Contracts.csproj" />
   </ItemGroup>
+
+  <Target Name="EnsureNodeModules" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(ClientAppFolder)\node_modules') ">
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(ClientAppFolder)" Command="npm install" />
+  </Target>
+
+  <Target Name="BuildClientAssets" AfterTargets="ComputeFilesToPublish">
+    <Exec WorkingDirectory="$(ClientAppFolder)" Command="npm install" />
+    <Exec WorkingDirectory="$(ClientAppFolder)" Command="npm run prod" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(ClientAppFolder)\wwwroot\dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+
+  </Target>
 
 </Project>
