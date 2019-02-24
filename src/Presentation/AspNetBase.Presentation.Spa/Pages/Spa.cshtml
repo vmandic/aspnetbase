@@ -1,0 +1,16 @@
+@page
+@{
+    ViewData["Title"] = "SPA (Index)";
+}
+
+<div id="spaRootNode"></div>
+
+@section scripts
+{
+    <environment names="Development">
+        <script src="~/dist/spa.bundle.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/dist/spa.bundle.js" asp-append-version="true"></script>
+    </environment>
+}

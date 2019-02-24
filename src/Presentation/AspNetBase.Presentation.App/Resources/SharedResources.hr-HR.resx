@@ -129,4 +129,35 @@
   <data name="Language" xml:space="preserve">
     <value>Jezik</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>O projektu</value>
+  </data>
+
+  <data name="Contact" xml:space="preserve">
+    <value>Kontakt</value>
+  </data>
+
+  <data name="Users" xml:space="preserve">
+    <value>Korisnici</value>
+  </data>
+
+  <data name="Roles" xml:space="preserve">
+    <value>Role</value>
+  </data>
+
+  <data name="Register" xml:space="preserve">
+    <value>Registracija</value>
+  </data>
+
+  <data name="Login" xml:space="preserve">
+    <value>Prijava</value>
+  </data>
+
+  <data name="Logout" xml:space="preserve">
+    <value>Odjava</value>
+  </data>
+
+  <data name="Hello {0}!" xml:space="preserve">
+    <value>Pozdrav {0}!</value>
+  </data>
 </root>

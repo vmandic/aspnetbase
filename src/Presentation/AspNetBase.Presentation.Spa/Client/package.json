@@ -4,8 +4,14 @@
   "description": "SPA client application for a ASP.NET Core web api project.",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf ../wwwroot/dist && webpack --mode development --progress",
-    "prod": "rimraf ../wwwroot/dist && webpack --mode production --progress",
+    "build-spa": "rimraf ../wwwroot/dist && webpack --mode development --progress",
+    "dev-spa": "rimraf ../wwwroot/dist && webpack --watch --mode development --progress",
+    "prod-spa": "rimraf ../wwwroot/dist && webpack --mode production --progress",
+
+    "build-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/dist && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/dist --mode development --progress",
+    "dev-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/dist && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/dist --watch --mode development --progress",
+    "prod-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/dist && webpack -output-path=../../AspNetBase.Presentation.App/wwwroot/dist --mode production --progress",
+
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -18,14 +24,25 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "jquery": "^3.3.1",
-    "popper.js": "^1.14.7"
+    "jquery-validation": "^1.19.0",
+    "jquery-validation-unobtrusive": "^3.2.11",
+    "popper.js": "^1.14.7",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3"
   },
   "devDependencies": {
+    "@types/jquery": "^3.3.29",
+    "@types/jquery-validation-unobtrusive": "^3.2.32",
+    "@types/jquery.validation": "^1.16.6",
+    "@types/react": "^16.8.4",
+    "@types/react-dom": "^16.8.2",
     "aspnet-webpack": "^3.0.0",
+    "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^2.1.0",
     "mini-css-extract-plugin": "^0.5.0",
     "rimraf": "^2.6.3",
     "style-loader": "^0.23.1",
+    "typescript": "^3.3.3333",
     "webpack": "^4.29.5",
     "webpack-cli": "^3.2.3",
     "webpack-dev-middleware": "^3.6.0",

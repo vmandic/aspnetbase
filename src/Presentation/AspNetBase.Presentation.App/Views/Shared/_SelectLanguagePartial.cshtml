@@ -25,6 +25,7 @@
       role="form">
         <label asp-for="@requestCulture.RequestCulture.UICulture.Name">@Localizer["Language"]:</label>
         <select name="culture"
+          class="language custom-select"
           onchange="this.form.submit();"
           asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems">
         </select>

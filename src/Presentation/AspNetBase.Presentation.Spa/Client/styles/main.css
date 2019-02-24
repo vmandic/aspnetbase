@@ -1,5 +1,15 @@
 @import '~bootstrap/dist/css/bootstrap.css';
 
-body {
-  background-color: #cdf;
+main.container {
+  margin: 15px auto;
+}
+
+ul.nav-login li {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+select.custom-select.language {
+  width: auto;
 }

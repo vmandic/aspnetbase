@@ -12,7 +12,7 @@
     <partial name="_TopNavPartial" />
     <partial name="_CookieConsentPartial" />
 
-    <div class="container body-content">
+    <main class="container">
         @RenderBody()
 
         <hr />
@@ -26,9 +26,11 @@
             </div>
           </div>
         </footer>
-    </div>
+    </m>
 
     <partial name="_ScriptsPartial" />
-    @RenderSection("Scripts", required: false)
+    <div id="app-section-scripts">
+      @RenderSection("Scripts", required: false)
+    </div>
 </body>
 </html>

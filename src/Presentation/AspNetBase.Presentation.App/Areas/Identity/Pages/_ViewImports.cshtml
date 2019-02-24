@@ -1,5 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using AspNetBase.Presentation.App.Areas.Identity
 @using AspNetBase.Infrastructure.DataAccess.Entities.Identity
+@using Microsoft.AspNetCore.Mvc.Localization
+@using AspNetBase.Presentation.App.Resources
 @namespace AspNetBase.Presentation.App.Areas.Identity.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject IHtmlLocalizer<SharedResources> Localizer
+@inject AspNetBase.Core.Settings.AppSettings AppSettings

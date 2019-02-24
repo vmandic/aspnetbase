@@ -1,0 +1,17 @@
+@page
+@{
+  ViewData["Title"] = "SPA (React) in Razor Page";
+}
+
+<h1>This heading is from the Razor Page</h1>
+<div id="spaRootNode"></div>
+
+@section scripts
+{
+    <environment names="Development">
+        <script src="~/dist/spa.bundle.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/dist/spa.bundle.js" asp-append-version="true"></script>
+    </environment>
+}

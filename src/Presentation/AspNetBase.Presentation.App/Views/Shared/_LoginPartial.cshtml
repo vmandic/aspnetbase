@@ -11,24 +11,26 @@
       asp-page="/Account/Logout"
       asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
       method="post"
-      id="logoutForm"
-      class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
+      id="logoutForm">
+        <ul class="navbar-nav nav-login">
             <li>
-                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                  Hello @(UserManager.GetUserName(User))!
+                <a class="btn btn-outline-light btn-block"
+                asp-area="Identity"
+                asp-page="/Account/Manage/Index"
+                title="@Localizer["Manage"]">
+                  @Localizer["Hello {0}!", UserManager.GetUserName(User)]
                 </a>
             </li>
             <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
+                <button type="submit" class="btn btn-primary btn-block">@Localizer["Logout"]</button>
             </li>
         </ul>
     </form>
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
-        <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+    <ul class="navbar-nav nav-login">
+        <li><a class="nav-link" asp-area="Identity" asp-page="/Account/Register">@Localizer["Register"]</a></li>
+        <li><a class="nav-link" asp-area="Identity" asp-page="/Account/Login">@Localizer["Login"]</a></li>
     </ul>
 }

@@ -12,7 +12,7 @@
 
 <p>
     <a asp-page="Create">
-      <button class="btn btn-default" type="button">Create New</button>
+      <button class="btn btn-primary" type="button">Create New</button>
     </a>
 </p>
 
@@ -27,10 +27,10 @@
     c.Add(m =>
       $@"
       <div class='btn-group' role='group'>
-          <button class='btn btn-default btn-sm' type='button' data-nav='{editLink(m.Id)}' onclick='gridNavButtonClick(this)'>
+          <button class='btn btn-outline-primary btn-sm' type='button' data-nav='{editLink(m.Id)}' onclick='gridNavButtonClick(this)'>
             Edit
           </button>
-          <button class='btn btn-default btn-sm' type='button' data-nav='{detailsLink(m.Id)}' onclick='gridNavButtonClick(this)'>
+          <button class='btn btn-outline-primary btn-sm' type='button' data-nav='{detailsLink(m.Id)}' onclick='gridNavButtonClick(this)'>
             Details
           </button>
       </div>
