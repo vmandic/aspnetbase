@@ -11,8 +11,14 @@ pipelines:
         name: Build dotnetcore sln
         caches:
           - dotnetcore
+          - node
+          - spa-client-node
         script: 
           - echo "Building dotnet solution..."
           - dotnet --info
           - dotnet restore
           - dotnet build
+
+definitions:
+  caches:
+    spa-client-node: src/Presentation/AspNetBase.Presentation.Spa/Client/node_modules
