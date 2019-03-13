@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetBase.Core.App.Models.Identity;
-using AspNetBase.Core.Contracts.Services.Admin;
-using AspNetBase.Core.Contracts.Services.Identity;
+using AspNetBase.Core.App.Contracts.Services.Admin;
+using AspNetBase.Core.App.Contracts.Services.Identity;
 using AspNetBase.Core.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

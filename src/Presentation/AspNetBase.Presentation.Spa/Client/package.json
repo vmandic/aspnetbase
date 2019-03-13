@@ -4,14 +4,11 @@
   "description": "SPA client application for a ASP.NET Core web api project.",
   "main": "index.js",
   "scripts": {
-    "build-spa": "rimraf ../wwwroot/dist && webpack --mode development --progress",
-    "dev-spa": "rimraf ../wwwroot/dist && webpack --watch --mode development --progress",
-    "prod-spa": "rimraf ../wwwroot/dist && webpack --mode production --progress",
-
+    "build": "rimraf ../wwwroot/dist && webpack --mode development --progress",
+    "build-prod": "rimraf ../wwwroot/dist && webpack --mode production --progress",
     "build-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/dist && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/dist --mode development --progress",
     "dev-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/dist && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/dist --watch --mode development --progress",
-    "prod-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/dist && webpack -output-path=../../AspNetBase.Presentation.App/wwwroot/dist --mode production --progress",
-
+    "build-prod-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/dist && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/dist --mode production --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

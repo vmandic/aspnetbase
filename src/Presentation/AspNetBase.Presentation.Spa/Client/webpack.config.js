@@ -2,10 +2,18 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (env = {}, argv = {}) => {
-  const isProd = argv.mode === "production";
+  console.info("webpack env: ", env);
+
+  const isProd = env.webpack_mode === "production"
+    ? env.webpack_mode
+    : argv.mode === "production";
+
+  const runInMode = argv.mode || (isProd ? "production" : "development");
+
+  console.info("webpack running in mode: ", runInMode);
 
   const config = {
-    mode: argv.mode || "development",
+    mode: runInMode,
 
     entry: {
       app: "./js/app.ts",
@@ -34,7 +42,9 @@ module.exports = (env = {}, argv = {}) => {
         {
           test: /\.css$/,
           use: [
-            isProd ? MiniCssExtractPlugin.loader : "style-loader",
+            isProd
+              ? MiniCssExtractPlugin.loader
+              : "style-loader",
             "css-loader"
           ]
         },
@@ -47,9 +57,11 @@ module.exports = (env = {}, argv = {}) => {
     }
   };
 
-  if (!isProd) {
+  // if (!isProd) {
     config.devtool = 'eval-source-map';
-  }
+  // }
+
+  console.info("webpack running with config:", config);
 
   return config;
 };

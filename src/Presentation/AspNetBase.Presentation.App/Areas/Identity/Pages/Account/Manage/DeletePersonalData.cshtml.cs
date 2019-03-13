@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using AspNetBase.Core.Contracts.Services.Identity.AccountManagement;
+using AspNetBase.Core.App.Contracts.Services.Identity.AccountManagement;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

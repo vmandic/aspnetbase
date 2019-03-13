@@ -1,15 +1,36 @@
 {
   "version": "2.0.0",
-  "tasks": [
+  "tasks": [{
+      "label": "del-bin-obj",
+      "command": "rimraf",
+      "type": "shell",
+      "args": [
+        "${workspaceFolder}/src/**/bin",
+        "${workspaceFolder}/src/**/obj"
+      ],
+    },
     {
       "label": "build-app",
       "command": "dotnet",
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.App/AspNetBase.Presentation.App.csproj"
+        "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.App"
       ],
-      "problemMatcher": "$msCompile"
+      "problemMatcher": "$msCompile",
+      "dependsOn": ["build-spa-cli-dev4app"]
+    },
+    {
+      "label": "build-spa-cli-dev4app",
+      "command": "npm",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.Spa/Client"
+      },
+      "args": [
+        "run",
+        "build-app"
+      ]
     },
     {
       "label": "build-spa",
@@ -17,7 +38,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.Spa/AspNetBase.Presentation.Spa.csproj"
+        "${workspaceFolder}/src/Presentation/AspNetBase.Presentation.Spa"
       ],
       "problemMatcher": "$msCompile"
     },

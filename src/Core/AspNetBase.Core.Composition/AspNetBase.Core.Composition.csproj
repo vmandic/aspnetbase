@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\AspNetBase.Common.Utils\AspNetBase.Common.Utils.csproj" />
-    <ProjectReference Include="..\AspNetBase.Core.Providers\AspNetBase.Core.Providers.csproj" />
-    <ProjectReference Include="..\AspNetBase.Core.Contracts\AspNetBase.Core.Contracts.csproj" />
+    <ProjectReference Include="..\AspNetBase.Core.App.Providers\AspNetBase.Core.App.Providers.csproj" />
+    <ProjectReference Include="..\AspNetBase.Core.App.Contracts\AspNetBase.Core.App.Contracts.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DataAccess\AspNetBase.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AspNetBase.Infrastructure.DbSeeds\AspNetBase.Infrastructure.DbSeeds.csproj" />
   </ItemGroup>

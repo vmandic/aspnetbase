@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using AspNetBase.Core.Contracts.Services.Identity.AccountManagement;
+using AspNetBase.Core.App.Contracts.Services.Identity.AccountManagement;
 using AspNetBase.Infrastructure.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

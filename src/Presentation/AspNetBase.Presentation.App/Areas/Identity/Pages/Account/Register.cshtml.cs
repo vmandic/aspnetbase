@@ -1,5 +1,5 @@
 using AspNetBase.Core.App.Models.Identity;
-using AspNetBase.Core.Contracts.Services.Identity;
+using AspNetBase.Core.App.Contracts.Services.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

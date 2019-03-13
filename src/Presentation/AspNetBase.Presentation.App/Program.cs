@@ -32,7 +32,7 @@ namespace AspNetBase.Presentation.App
 
     public static IWebHost BuildWebHost(string[] args) =>
       WebHost.CreateDefaultBuilder(args)
-      .ReconfigureConfiguration(args)
+      .UseAppSettingsConfiguration(args)
       .UseStartup<Startup>()
       .UseSerilogConfigured()
       .Build();

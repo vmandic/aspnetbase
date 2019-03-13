@@ -11,7 +11,8 @@
     <environment names="Staging,Production">
         <link rel="stylesheet" href="~/dist/styles.css" asp-append-version="true" />
     </environment>
-    @RenderSection("ScriptsHead", required: false)
+    <script src="~/dist/app.bundle.js"></script>
+    @RenderSection("headscripts", required: false)
 </head>
 
 <body>
@@ -25,13 +26,6 @@
     </main>
 
     <div id="app-layout-scripts">
-      <environment names="Development">
-          <script src="~/dist/app.bundle.js"></script>
-      </environment>
-      <environment names="Staging,Production">
-          <script src="~/dist/app.bundle.js" asp-append-version="true"></script>
-      </environment>
-
       <div id="app-section-scripts">
         @RenderSection("scripts", required: false)
       </div>

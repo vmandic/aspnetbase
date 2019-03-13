@@ -25,7 +25,7 @@ namespace AspNetBase.Presentation.Common.Extensions
           .WriteTo.Logger(config => SerilogHelper.ConfigRichFileLogger(config, serviceProvider));
       });
 
-    public static IWebHostBuilder ReconfigureConfiguration(this IWebHostBuilder webHostBuilder, string[] args) =>
+    public static IWebHostBuilder UseAppSettingsConfiguration(this IWebHostBuilder webHostBuilder, string[] args) =>
       webHostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
       {
         config.Sources.Clear();

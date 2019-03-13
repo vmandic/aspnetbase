@@ -25,12 +25,14 @@ namespace AspNetBase.Presentation.Spa
     public ILoggerFactory LoggerFactory { get; }
     public IConfiguration Configuration { get; }
     public IHostingEnvironment HostEnv { get; }
+    public ILogger Logger { get; set; }
 
     public Startup(IConfiguration config, ILoggerFactory loggerFact, IHostingEnvironment env)
     {
       LoggerFactory = loggerFact;
       Configuration = config;
       HostEnv = env;
+      Logger = loggerFact.CreateLogger<Startup>();
     }
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -55,6 +57,9 @@ namespace AspNetBase.Presentation.Spa
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
+      var arg_webpack_mode = Configuration.GetValue<string>("cli:webpack_mode") ?? "development";
+      Logger.LogInformation("Setting for 'arg_webpack_mode' is set to: '{mode}'", arg_webpack_mode);
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage()
@@ -62,7 +67,8 @@ namespace AspNetBase.Presentation.Spa
           .UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
           {
             ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Client"),
-              HotModuleReplacement = true
+              HotModuleReplacement = true,
+              EnvParam = new { webpack_mode = arg_webpack_mode }
           });
       }
       else

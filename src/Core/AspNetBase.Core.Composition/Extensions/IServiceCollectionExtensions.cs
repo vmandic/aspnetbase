@@ -17,7 +17,7 @@ namespace AspNetBase.Core.Composition.Extensions
     private static IEnumerable<Type> GetIocCoreProviderRegisteredTypes(string[] skipTypeIfFqnContains) =>
       new List<Type[]>
       {
-        typeof(CoreProvidersAssemblyMarker).Assembly.GetTypes(),
+        typeof(CoreAppProvidersAssemblyMarker).Assembly.GetTypes(),
         typeof(InfrastructureDataAccessAssemblyMarker).Assembly.GetTypes(),
         typeof(InfrastructureDbSeedsAssemblyMarker).Assembly.GetTypes()
       }
