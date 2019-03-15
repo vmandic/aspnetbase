@@ -10,7 +10,7 @@
 
 @font-face {
     font-family: 'GridGlyphs';
-    src: url('../MvcGrid/Fonts/GridGlyphs.woff') format('woff');
+    src: url('./GridGlyphs.woff') format('woff');
 }
 
 .mvc-grid {

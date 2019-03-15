@@ -1,12 +1,5 @@
 <div id="app-base-scripts">
-  <environment names="Development">
-      <script src="~/dist/app.bundle.js"></script>
-  </environment>
-  <environment names="Staging,Production">
-      <script src="~/dist/app.bundle.js" asp-append-version="true"></script>
-  </environment>
-
-  <script src="~/lib/mvcgrid/mvc-grid.js"></script>
+  <script src="~/lib/lib.bundle.min.js"></script>
   <script defer>
     (function() {
       [].forEach.call(document.getElementsByClassName('mvc-grid'), function (el) {

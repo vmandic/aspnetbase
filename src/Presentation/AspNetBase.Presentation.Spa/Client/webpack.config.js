@@ -1,4 +1,6 @@
 const path = require("path");
+
+// extracts CSS into a separate file in production mode:
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (env = {}, argv = {}) => {
@@ -16,7 +18,7 @@ module.exports = (env = {}, argv = {}) => {
     mode: runInMode,
 
     entry: {
-      app: "./js/app.ts",
+      //app: "./js/app.ts",
       spa: "./js/spa.tsx"
     },
 

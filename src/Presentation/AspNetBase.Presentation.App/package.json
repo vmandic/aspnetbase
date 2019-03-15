@@ -1,0 +1,32 @@
+{
+  "name": "aspnetbase.presentation.app",
+  "version": "1.0.0",
+  "description": "Root presentation ASP.NET Core MVC application of the AspNetBase project template.",
+  "main": "Program.cs",
+  "scripts": {
+    "gulp-copyNodeModules": "gulp copyNodeModules",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "aspnet",
+    "aspnetcore",
+    "dotnetcore",
+    "template",
+    "boilerplate"
+  ],
+  "author": "Vedran Mandić",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.14.7",
+    "jquery-validation": "^1.19.0",
+    "jquery-validation-unobtrusive": "^3.2.11"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^3.0.2",
+    "rimraf": "^2.6.3"
+  }
+}
