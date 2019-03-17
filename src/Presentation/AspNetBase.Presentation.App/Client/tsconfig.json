@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "checkJs": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "lib": ["dom", "es2015", "dom.iterable"],
+    "module": "amd",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "../wwwroot/dist/app/js",
+    "preserveConstEnums": true,
+    "pretty": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "sourceRoot": "ts",
+    "strict": true,
+    "target": "es5",
+    "typeRoots": ["node_modules/@types", "typings"]
+  },
+  "include": [
+    "ts/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

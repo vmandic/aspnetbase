@@ -32,4 +32,9 @@
     <Folder Include="Areas\Identity\Services\" />
   </ItemGroup>
 
+  <Target Name="BuildClient" AfterTargets="BeforeBuild">
+    <Exec Command="npm run build" WorkingDirectory="Client" />
+    <Exec Command="npm run build-app" WorkingDirectory="..\AspNetBase.Presentation.Spa\Client" />
+  </Target>
+
 </Project>

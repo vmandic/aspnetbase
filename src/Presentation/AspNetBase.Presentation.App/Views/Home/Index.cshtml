@@ -6,3 +6,12 @@
   <h1>Hello to AspNetBase!</h1>
   <p>The next value should be localized: <strong>@Localizer["This string should be localized"]</strong></p>
 </div>
+
+@section scripts {
+  <script>
+  require(["test"], function(test) {
+    console.log("test loaded!");
+    test.default();
+  });
+  </script>
+}

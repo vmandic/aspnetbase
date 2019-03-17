@@ -17,7 +17,7 @@ using Microsoft.Extensions.Options;
 
 namespace AspNetBase.Presentation.App
 {
-    public class Startup
+  public class Startup
   {
     public ILoggerFactory LoggerFactory { get; }
     public IConfiguration Configuration { get; }
@@ -72,6 +72,9 @@ namespace AspNetBase.Presentation.App
         app
           .UseDeveloperExceptionPage()
           .UseDatabaseErrorPage();
+
+        // allows debugging .ts files over sourcemaps
+        app.UseStaticFiles("/Client/ts");
       }
       else
       {

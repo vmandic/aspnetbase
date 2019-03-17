@@ -6,9 +6,9 @@
   "scripts": {
     "build": "rimraf ../wwwroot/dist && webpack --mode development --progress",
     "build-prod": "rimraf ../wwwroot/dist && webpack --mode production --progress",
-    "build-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/spa && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/spa --mode development --progress",
-    "dev-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/spa && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/spa --watch --mode development --progress",
-    "build-prod-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/spa && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/spa --mode production --progress",
+    "build-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/dist/spa && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/dist/spa --mode development --progress",
+    "dev-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/dist/spa && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/dist/spa --watch --mode development --progress",
+    "build-prod-app": "rimraf ../../AspNetBase.Presentation.App/wwwroot/dist/spa && webpack --output-path=../../AspNetBase.Presentation.App/wwwroot/dist/spa --mode production --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
