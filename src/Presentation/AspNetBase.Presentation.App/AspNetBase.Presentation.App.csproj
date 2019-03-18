@@ -33,7 +33,9 @@
   </ItemGroup>
 
   <Target Name="BuildClient" AfterTargets="BeforeBuild">
+    <Exec Command="npm install" WorkingDirectory="Client" />
     <Exec Command="npm run build" WorkingDirectory="Client" />
+    <Exec Command="npm install" WorkingDirectory="..\AspNetBase.Presentation.Spa\Client" />
     <Exec Command="npm run build-app" WorkingDirectory="..\AspNetBase.Presentation.Spa\Client" />
   </Target>
 
