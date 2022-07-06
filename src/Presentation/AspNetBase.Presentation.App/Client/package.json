@@ -22,7 +22,7 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "jquery": "^3.5.0",
-    "jquery-validation": "^1.19.0",
+    "jquery-validation": "^1.19.5",
     "jquery-validation-unobtrusive": "^3.2.11",
     "popper.js": "^1.14.7",
     "requirejs": "^2.3.6",
